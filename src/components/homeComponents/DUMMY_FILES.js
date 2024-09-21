@@ -351,18 +351,6 @@ export const TOPICS = [
     editors: ['Robert Harris', 'Nina Patel', 'Guo Ming'],
     deadline: '2024-12-15',
   },
-  {
-    category: 'Agriculture, Soil Science, Sustainability',
-    topic: 'Sustainable Practices for Soil Conservation',
-    editors: ['Helen White', 'Rajesh Gupta', 'Amira El-Sayed'],
-    deadline: '2024-09-30',
-  },
-  {
-    category: 'Waste Management, Environmental Engineering, Sustainability',
-    topic: 'Innovations in Plastic Waste Recycling',
-    editors: ['Tom Brown', 'Lisa Green', 'Carlos Rodriguez'],
-    deadline: '2024-11-15',
-  },
 ];
 
 export const SPECIAL = [
@@ -419,16 +407,6 @@ export const COLLECTIONS = [
     topic: 'Special Issue in Physics',
     title: 'Quantum Computing and Information Theory',
     editors: ['Michael Brown', 'Liu Wei', 'Anita Patel'],
-  },
-  {
-    topic: 'Topical Collection in Engineering',
-    title: 'Innovations in Sustainable Building Materials',
-    editors: ['Alexandra Green', 'Robert Wilson', 'Liam Johnson'],
-  },
-  {
-    topic: 'Special Issue in Chemistry',
-    title: 'Recent Advances in Organic Synthesis',
-    editors: ['Julia Martinez', 'Hassan Ali', 'Lena Garcia'],
   },
 ];
 

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { FaSearch, FaTimes } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import { MdMenu } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { IoMdClose } from 'react-icons/io';
 import { useSearch } from '../Context/SearchContext';
 
 const Navbar = () => {
@@ -34,51 +35,219 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white border-b border-gray-200">
-      <div className="container bg-white mx-auto md:px-10 px-1 text-xs md:text-sm shadow-sm flex justify-between items-center h-1-6 text-slate-800">
-        <div className="flex-shrink-1">
+      <div className="container bg-white mx-auto md:px-10 px-1 md:py-1 text-xs md:text-sm shadow-sm flex justify-between items-center h-1-6 text-slate-800">
+        <div className="flex-shrink-1 pl-2">
           <Link to="/" className="text-2xl font-semibold text-gray-800">
-            <img src="/mdpi.svg" className="w-[3.5rem] h-[3.5rem]" />
+            <img
+              src="/mdpi.svg"
+              className="w-[3.5rem] h-[3.5rem] md:w-[4rem] md:h-[4rem]"
+            />
           </Link>
         </div>
         <div className="hidden md:flex space-x-9">
           <div className="group relative">
-            <Link to="/journals" className="text-slate-800 hover:underline">
+            <Link
+              to="/journals"
+              className="text-slate-800 hover:underline font-semibold"
+            >
               Journals
             </Link>
             {/* Dropdown Content for Desktop */}
-            <div className="hidden group-hover:block transition-all ease-in-out duration-300 text-xs absolute px-5 py-2 bg-[#52527a] text-white shadow-lg">
+            <div className="hidden min-w-[10rem] group-hover:block transition-all ease-in-out duration-300 text-xs absolute px-5 py-2 bg-[#52527a] text-white shadow-lg">
               <Link
-                to="/journals/sub1"
+                to="/journals"
                 className="block whitespace-nowrap py-1 hover:underline"
               >
                 Active Journals
               </Link>
               <Link
-                to="/journals/sub2"
+                to="/journals/find"
                 className="block whitespace-nowrap py-1 hover:underline"
               >
                 Find a Journal
               </Link>
               <Link
-                to="/journals/sub3"
+                to="/journals/proposal"
+                className="block whitespace-nowrap py-1 hover:underline"
+              >
+                Journal Proposal
+              </Link>
+              <Link
+                to="/journals/proceeding"
                 className="block whitespace-nowrap py-1 hover:underline"
               >
                 Proceeding Series
               </Link>
             </div>
           </div>
-          <Link to="/topics" className="text-slate-800 hover:underline">
+          <Link
+            to="/topics"
+            className="text-slate-800 hover:underline font-semibold"
+          >
             Topics
           </Link>
-          <Link to="/information" className="text-slate-800 hover:underline">
-            Information
+          <div className="group relative">
+            <Link
+              to="/information"
+              className="text-slate-800 hover:underline font-semibold"
+            >
+              Information
+            </Link>
+            {/* Dropdown Content for Desktop */}
+            <div className="hidden group-hover:flex gap-4 transition-all ease-in-out duration-300 text-xs absolute px-5 py-2 bg-[#52527a] text-white shadow-lg">
+              {/* section 1 */}
+              <section>
+                <Link
+                  to="/information"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Authors
+                </Link>
+                <Link
+                  to="/information/reviewers"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Reviewers
+                </Link>
+                <Link
+                  to="/information/editors"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Editors
+                </Link>
+                <Link
+                  to="/information/librarians"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Librarians
+                </Link>
+                <Link
+                  to="/information/publishers"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Publishers
+                </Link>
+                <Link
+                  to="/information/societies"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Societies
+                </Link>
+                <Link
+                  to="/information/conference"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Conference Organizers
+                </Link>
+              </section>
+              {/* section 2 */}
+              <section>
+                <Link
+                  to="/information/access"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Open Access Policy
+                </Link>
+                <Link
+                  to="/information/program"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Institutional Open Access Program
+                </Link>
+                <Link
+                  to="/information/special"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Special Issues Guidelines
+                </Link>
+                <Link
+                  to="/information/editorial"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Editorial Process
+                </Link>
+                <Link
+                  to="/information/research"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Research and Publication Ethics
+                </Link>
+                <Link
+                  to="/information/article"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Article Processing Charges
+                </Link>
+                <Link
+                  to="/information/awards"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Awards
+                </Link>
+                <Link
+                  to="/information/testimonials"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Testimonials
+                </Link>
+              </section>
+            </div>
+          </div>
+          <Link
+            to="/about"
+            className="text-slate-800 hover:underline font-semibold"
+          >
+            Author Services
           </Link>
-          <Link to="/about" className="text-slate-800 hover:underline">
-            About
-          </Link>
-          <Link to="/contact" className="text-slate-800 hover:underline">
-            Contact Us
-          </Link>
+          {/*  */}
+
+          <div className="group relative">
+            <Link
+              to="/about"
+              className="text-slate-800 hover:underline font-semibold"
+            >
+              About
+            </Link>
+            {/* Dropdown Content for Desktop */}
+            <div className="hidden min-w-[10rem] group-hover:block transition-all ease-in-out duration-300 text-xs absolute px-5 py-2 bg-[#52527a] text-white shadow-lg">
+              <Link
+                to="/journals/sub1"
+                className="block whitespace-nowrap py-1 hover:underline"
+              >
+                Overview
+              </Link>
+              <Link
+                to="/contact"
+                className="block whitespace-nowrap py-1 hover:underline"
+              >
+                Contact
+              </Link>
+              <Link
+                to="/journals/sub3"
+                className="block whitespace-nowrap py-1 hover:underline"
+              >
+                Careers
+              </Link>
+              <Link
+                to="/journals/sub3"
+                className="block whitespace-nowrap py-1 hover:underline"
+              >
+                News
+              </Link>
+              <Link
+                to="/journals/sub3"
+                className="block whitespace-nowrap py-1 hover:underline"
+              >
+                Press
+              </Link>
+              <Link
+                to="/journals/sub3"
+                className="block whitespace-nowrap py-1 hover:underline"
+              >
+                Blogs
+              </Link>
+            </div>
+          </div>
         </div>
         <div className="hidden md:flex items-center space-x-5">
           <h6 className="border border-solid border-black rounded-lg p-1.5 text-xs hover:bg-slate-700 hover:text-white cursor-pointer transition-bg ease-in-out duration-200">
@@ -90,15 +259,15 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="md:hidden flex gap-3 items-center">
+        <div className="md:hidden flex gap-3 p-3 items-center">
           <button onClick={toggleSearchBar}>
-            <FaSearch />
+            <FaSearch size={20} />
           </button>
           <button
             onClick={toggleMenu}
             className="text-gray-800 focus:outline-none"
           >
-            {isOpen ? <FaTimes size={21} /> : <MdMenu size={23} />}
+            {isOpen ? <IoMdClose size={25} /> : <MdMenu size={25} />}
           </button>
         </div>
       </div>
@@ -118,20 +287,26 @@ const Navbar = () => {
             {openDropdown === 1 && (
               <div className="pl-6 text-xs">
                 <Link
-                  to="/journals/sub1"
-                  className="block py-2 hover:bg-gray-800 hover:underline"
+                  to="/journals"
+                  className="block whitespace-nowrap py-1 hover:underline"
                 >
                   Active Journals
                 </Link>
                 <Link
-                  to="/journals/sub2"
-                  className="block py-2 hover:bg-gray-800 hover:underline"
+                  to="/find"
+                  className="block whitespace-nowrap py-1 hover:underline"
                 >
                   Find a Journal
                 </Link>
                 <Link
-                  to="/journals/sub3"
-                  className="block py-2 hover:bg-gray-800 hover:underline"
+                  to="/proposal"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Journal Proposal
+                </Link>
+                <Link
+                  to="/proceeding"
+                  className="block whitespace-nowrap py-1 hover:underline"
                 >
                   Proceeding Series
                 </Link>
@@ -140,19 +315,157 @@ const Navbar = () => {
             <Link to="/topics" className="block px-4 py-2 hover:bg-gray-800">
               Topics
             </Link>
-            <Link
-              onClick={() => setIsOpen(false)}
-              to="/information"
-              className="block px-4 py-2 hover:bg-gray-800"
+            <button
+              className="flex justify-between items-center w-full px-4 py-2 focus:outline-none"
+              onClick={() => toggleDropdown(2)}
             >
-              Information
-            </Link>
+              <span>Information</span>
+              {openDropdown === 2 ? <FaChevronUp /> : <FaChevronDown />}
+            </button>
+            {openDropdown === 2 && (
+              <div className="pl-6 text-xs">
+                <Link
+                  to="/information"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Authors
+                </Link>
+                <Link
+                  to="/information/reviewers"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Reviewers
+                </Link>
+                <Link
+                  to="/information/editors"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Editors
+                </Link>
+                <Link
+                  to="/information/librarians"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Librarians
+                </Link>
+                <Link
+                  to="/information/publishers"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Publishers
+                </Link>
+                <Link
+                  to="/information/societies"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Societies
+                </Link>
+                <Link
+                  to="/information/conference"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  For Conference Organizers
+                </Link>
+                <Link
+                  to="/information/access"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Open Access Policy
+                </Link>
+                <Link
+                  to="/information/program"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Institutional Open Access Program
+                </Link>
+                <Link
+                  to="/information/special"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Special Issues Guidelines
+                </Link>
+                <Link
+                  to="/information/editorial"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Editorial Process
+                </Link>
+                <Link
+                  to="/information/research"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Research and Publication Ethics
+                </Link>
+                <Link
+                  to="/information/article"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Article Processing Charges
+                </Link>
+                <Link
+                  to="/information/awards"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Awards
+                </Link>
+                <Link
+                  to="/information/testimonials"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Testimonials
+                </Link>
+              </div>
+            )}
             <Link to="/about" className="block px-4 py-2 hover:bg-gray-800">
-              About
+              Author Services
             </Link>
-            <Link to="/contact" className="block px-4 py-2 hover:bg-gray-800">
-              Contact Us
-            </Link>
+            <button
+              className="flex justify-between items-center w-full px-4 py-2 focus:outline-none"
+              onClick={() => toggleDropdown(3)}
+            >
+              <span>About</span>
+              {openDropdown === 3 ? <FaChevronUp /> : <FaChevronDown />}
+            </button>
+            {openDropdown === 3 && (
+              <div className="pl-6 text-xs">
+                <Link
+                  to="/about"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Overview
+                </Link>
+                <Link
+                  to="/contact"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Contact
+                </Link>
+                <Link
+                  to="/about/careers"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Careers
+                </Link>
+                <Link
+                  to="/about/news"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  News
+                </Link>
+                <Link
+                  to="/about/press"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Press
+                </Link>
+                <Link
+                  to="/about/blogs"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  Blogs
+                </Link>
+              </div>
+            )}
             <hr className="py-2"></hr>
             <h6 className="border border-solid text-center border-white rounded-lg p-1.5 text-xs hover:bg-gray-800 cursor-pointer">
               Sign In/Sign Up

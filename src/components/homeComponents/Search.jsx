@@ -7,12 +7,14 @@ export const SelectInput = ({
   options,
   placeholder,
   className,
+  name,
 }) => (
   <select
     value={value}
     onChange={onChange}
     className={className}
     aria-label={placeholder}
+    name={name}
   >
     <option value={''}>{placeholder}</option>
     {options.map((option) => (
@@ -23,7 +25,7 @@ export const SelectInput = ({
   </select>
 );
 export const inputStyle =
-  'lg:w-50 border-slate-800 text-[12px] text-slate-800 border-solid border border-slate-400 placeholder:placeholder-custom-gray placeholder:text-[11px] px-4 py-1 rounded-md items-center focus:outline-none';
+  'lg:w-50 border-gray-300 text-[12px] text-slate-800 border-[1.5px] placeholder:placeholder-custom-gray placeholder:text-[11px] px-4 py-1 rounded-md items-center focus:outline-none';
 
 export default function Search() {
   const [form, setForm] = useState({
@@ -58,7 +60,7 @@ export default function Search() {
     <div
       className={`${
         isSearchOpen ? 'block' : 'hidden'
-      } md:flex-row md:px-10 md:gap-3 flex-col flex-wrap md:flex w-full bg-white items-start p-5 md:justify-between gap-2`}
+      } md:flex-row md:px-10 md:gap-10 flex-col flex-wrap md:flex w-full bg-white items-start p-5 gap-2`}
     >
       <div>
         <p className="text-slate-800 text-l font-bold">Search for Articles:</p>

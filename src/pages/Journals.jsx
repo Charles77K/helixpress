@@ -1,90 +1,77 @@
-import React from 'react';
+import { useState } from 'react';
+
+import { Outlet, Link } from 'react-router-dom';
 import { Search } from '../components/homeComponents';
-import { JOURNALS_INDEX } from '../components/DOCS';
+import Share from '../components/Share';
+import { SelectInput } from '../components/homeComponents/Search';
+
+export const inputClass =
+  'border border-gray-300 text-xs my-2 border-[0.5px] rounded-md p-1.5 w-full text-gray-700 focus:outline-none';
 
 export default function Journals() {
+  const [activeJournal, setActiveJournal] = useState('');
+
+  const journalOptions = [
+    { value: 'biology', label: 'Biology' },
+    { value: 'english', label: 'English' },
+    { value: 'maths', label: 'Maths' },
+    { value: 'physics', label: 'Physics' },
+  ];
+
   return (
     <div>
       <Search />
-      <div className="flex p-4 gap-2 overflow-hidden flex-col items-start justify-center mx-auto text-slate-700  max-w-[60rem] bg-white mt-8">
-        <section className="p-3 flex-col items-start flex gap-3">
-          <h1 className="text-3xl font-bold">MDPI Journal List</h1>
-          <h2 className="text-xl font-bold">427 Journals</h2>
-          <p className="text-xs">
-            MDPI currently publishes 418 peer-reviewed journals, and 9
-            conference journals which are dedicated to publishing outputs from
-            academic conferences
-          </p>
-          <h1 className="text-xl font-bold">Journal Proposal</h1>
-          <p className="text-xs">
-            As an open access pioneer and innovative publisher, MDPI is always
-            interested in exploring new opportunities for collaboration,
-            including the launch of new journals and the transfer of existing
-            journals. Researchers interested in submitting a proposal for a new
-            journal for consideration, or interested in having their journal
-            published by MDPI, can submit their proposal here.
-          </p>
-        </section>
-        <div className="overflow-x-auto p-3">
-          <table className="min-w-full bg-white border-gray-200 rounded-md shadow-md">
-            <thead className=" border-gray-200 text-[8px] sm:text-xs  md:text-sm">
-              <tr>
-                <th className="px-6 py-3 text-left text-gray-600">#</th>
-                <th className="px-6 py-3 text-left text-gray-600">
-                  Journal Name
-                </th>
-                <th className="px-6 py-3 text-left text-gray-600">ISSN</th>
-                <th className="px-6 py-3 text-left text-gray-600">
-                  Launch Date
-                </th>
-                <th className="px-6 py-3 text-left text-gray-600 hidden lg:table-cell">
-                  Impact Factor
-                </th>
-                <th className="px-6 py-3 text-left text-gray-600 hidden lg:table-cell">
-                  Cite Score
-                </th>
-                <th className="px-6 py-3 text-left text-gray-600 hidden lg:table-cell">
-                  Current Issue
-                </th>
-                <th className="px-6 py-3 text-left text-gray-600">
-                  Total Articles
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {JOURNALS_INDEX.map((item) => (
-                <tr
-                  key={item.id}
-                  className="border-b border-gray-200 text-[8px] sm:text-[10px] md:text-xs"
+      <div className="flex p-4 gap-10 flex-col md:flex-row items-start justify-center text-slate-700">
+        {/* First section */}
+        <section className="flex-grow md:flex-grow-[1] md:basis-1/4 min-w-[10rem] w-full flex flex-col gap-3">
+          <nav className="bg-white p-6">
+            <h1 className="text-slate-700 text-xl font-bold">MDPI Journals</h1>
+            <SelectInput
+              className={inputClass}
+              onChange={(e) => setActiveJournal(e.target.value)}
+              value={activeJournal}
+              options={journalOptions}
+              placeholder={'Find active Journal'}
+            />
+            <ul className="space-y-2 text-xs">
+              <li>
+                <Link
+                  to="/journals"
+                  className="block whitespace-nowrap py-1 hover:underline"
                 >
-                  <td className="px-6 py-4 text-gray-600">{item.id}</td>
-                  <td className="px-6 py-4 flex items-center space-x-2 text-gray-600">
-                    <img
-                      src={item.name.img}
-                      alt={item.name.title}
-                      className="w-8 h-8 object-cover rounded-sm"
-                    />
-                    <span>{item.name.title}</span>
-                  </td>
-                  <td className="px-6 py-4 text-gray-600">{item.issn}</td>
-                  <td className="px-6 py-4 text-gray-600">{item.launchDate}</td>
-                  <td className="px-6 py-4 text-gray-600 hidden lg:table-cell">
-                    {item.if}
-                  </td>
-                  <td className="px-6 py-4 text-gray-600 hidden lg:table-cell">
-                    {item.citeScore}
-                  </td>
-                  <td className="px-6 py-4 text-gray-600 hidden lg:table-cell">
-                    {item.currentIssue}
-                  </td>
-                  <td className="px-6 py-4 text-gray-600">
-                    {item.totalArticles}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  <span className="text-gray-400">•</span> Active Journals
+                </Link>
+                <Link
+                  to="/journals/find"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  <span className="text-gray-400">•</span> Find a Journal
+                </Link>
+                <Link
+                  to="/journals/proposal"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  <span className="text-gray-400">•</span> Journal Proposal
+                </Link>
+                <Link
+                  to="/journals/proceeding"
+                  className="block whitespace-nowrap py-1 hover:underline"
+                >
+                  <span className="text-gray-400">•</span> Proceeding Series
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </section>
+
+        {/* Middle section (wider than the others) */}
+        <section className="flex-grow md:flex-grow-[2] md:basis-[75%] min-w-[20rem] w-full flex flex-col">
+          <Outlet /> {/* This is where the content will change */}
+        </section>
+        {/* Last section */}
+        <section className="hidden flex-grow md:flex-grow-[1] md:basis-[10%] min-w-[10rem] w-full md:flex flex-col">
+          <Share />
+        </section>
       </div>
     </div>
   );

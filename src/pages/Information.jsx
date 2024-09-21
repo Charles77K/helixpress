@@ -1,8 +1,5 @@
 import { useState } from 'react';
 
-import { BiSolidMessageError } from 'react-icons/bi';
-import { GiShare } from 'react-icons/gi';
-
 import Authors from '../components/infoComponents/Authors';
 import { Search } from '../components/homeComponents';
 import Reviewers from '../components/infoComponents/Reviewers';
@@ -11,6 +8,7 @@ import AccessPolicy from '../components/infoComponents/AccessPolicy';
 import Editorial from '../components/infoComponents/Editorial';
 import Reasearch from '../components/infoComponents/Reasearch';
 import Articles from '../components/infoComponents/Articles';
+import Share from '../components/Share';
 
 export default function Information() {
   const [selectedSection, setSelectedSection] = useState('authors');
@@ -105,12 +103,7 @@ export default function Information() {
           {renderContent()}
         </section>
         <section className="max-w-[12rem] md:w-full hidden md:block p-4">
-          <div className="w-full">
-            <div className="bg-white py-6 px-4 md:px-8 flex flex-col items-center gap-4">
-              <GiShare size={30} aria-label="Share" />
-              <BiSolidMessageError size={30} aria-label="Error" />
-            </div>
-          </div>
+          <Share />
         </section>
       </div>
     </>

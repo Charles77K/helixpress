@@ -25,16 +25,19 @@ export default function Home() {
       />
       <Search />
       {/* rendering articles */}
-      <div className="flex p-4 gap-6 overflow-hidden flex-col md:flex-row items-start justify-center text-slate-700">
-        <section className="md:max-w-[22.5rem] w-full flex flex-col gap-3">
+      <div className="flex p-4 gap-10 flex-col md:flex-row items-start justify-center text-slate-700">
+        {/* First section */}
+        <section className="flex-grow md:flex-grow-[1] md:basis-1/4 min-w-[10rem] w-full flex flex-col gap-3">
           <AccessJournals />
           <HighlyAccessed />
         </section>
-        <section className="md:max-w-[43rem] w-full flex flex-col">
+        {/* Middle section (wider than the others) */}
+        <section className="flex-grow md:flex-grow-[2] md:basis-1/2 min-w-[20rem] w-full flex flex-col">
           <Carousel images={IMAGES} />
           <RecentArticles />
         </section>
-        <section className="md:max-w-[22.5rem] w-full flex flex-col gap-3">
+        {/* Last section */}
+        <section className="flex-grow md:flex-grow-[1] md:basis-1/4 min-w-[10rem] w-full flex flex-col gap-3">
           <News />
           <BlogPosts title={'Blog Posts'} blogs={BLOGS} />
           <Topics />
@@ -43,7 +46,7 @@ export default function Home() {
         </section>
       </div>
       {/* journals by subject */}
-      <div className="p-4 mt-[-15px]">
+      <div className="p-4">
         <JournalsBySubject />
       </div>
     </>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import PropTypes from 'prop-types';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
 export default function BlogPosts({ title, blogs }) {
