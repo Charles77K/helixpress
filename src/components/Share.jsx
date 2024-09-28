@@ -1,11 +1,12 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { BiSolidMessageError } from 'react-icons/bi';
 import { GiShare } from 'react-icons/gi';
 import ShareModal from './modal/ShareModal';
+import HelpModal from './modal/HelpModal';
 
-export default function Share() {
+export default function Share({ linkToShare }) {
   const modalRef = useRef(); // Reference for ShareModal
-  const linkToShare = 'https://example.com/special-link'; // Link to share
+  const shareRef = useRef();
 
   return (
     <div className="w-full">
@@ -24,7 +25,7 @@ export default function Share() {
 
         {/* Error Button with BiSolidMessageError Icon */}
         <div className="group relative">
-          <button>
+          <button onClick={() => shareRef.current.open()}>
             <BiSolidMessageError size={30} aria-label="Error" />
           </button>
           <div className="hidden group-hover:block absolute left-5 top-6 transition-all duration-300">
@@ -39,6 +40,7 @@ export default function Share() {
         link={linkToShare} // Pass the link
         onClose={() => console.log('Modal closed')} // Optional onClose handler
       />
+      <HelpModal ref={shareRef} />
     </div>
   );
 }

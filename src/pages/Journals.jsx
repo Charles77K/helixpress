@@ -70,7 +70,7 @@ export default function Journals() {
         </section>
         {/* Last section */}
         <section className="hidden flex-grow md:flex-grow-[1] md:basis-[10%] min-w-[10rem] w-full md:flex flex-col">
-          <Share />
+          <Share linkToShare={'https://www.mdpi.com/about/journals/'} />
         </section>
       </div>
     </div>
