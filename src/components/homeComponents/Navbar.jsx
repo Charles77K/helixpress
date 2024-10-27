@@ -250,9 +250,12 @@ const Navbar = () => {
           </div>
         </div>
         <div className="hidden md:flex items-center space-x-5">
-          <h6 className="border border-solid border-black rounded-lg p-1.5 text-xs hover:bg-slate-700 hover:text-white cursor-pointer transition-bg ease-in-out duration-200">
+          <Link
+            className="border border-solid border-black rounded-lg p-1.5 text-xs hover:bg-slate-700 hover:text-white cursor-pointer transition-bg ease-in-out duration-200"
+            to={'/admin'}
+          >
             Sign In/Sign Up
-          </h6>
+          </Link>
           <button className="bg-slate-600 px-4 py-1.5 rounded-lg text-white text-xs hover:bg-slate-800 transition-bg ease-in-out duration-200">
             Submit
           </button>

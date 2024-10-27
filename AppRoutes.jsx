@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom';
 import {
   Home,
   About,
@@ -29,15 +34,27 @@ import {
   Publishers,
   Societies,
 } from './src/components/infoComponents';
+import Admin from './src/admin/Admin';
 // import Journals from './src/components/Journals';
 
 export default function AppRoutes() {
   return (
     <Router>
-      <Navbar />
+      <AppContent />
+    </Router>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
+  return (
+    <>
+      {!isAdmin && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/topics" element={<Topics />} />
+        <Route path="/admin" element={<Admin />} />
         {/* information section */}
         <Route path="/information/librarians" element={<Librarians />} />
         <Route path="/information/societies" element={<Societies />} />
@@ -65,7 +82,7 @@ export default function AppRoutes() {
           <Route path="proceeding" element={<ProceedingSeries />} />
         </Route>
       </Routes>
-      <Footer />
-    </Router>
+      {!isAdmin && <Footer />}
+    </>
   );
 }
