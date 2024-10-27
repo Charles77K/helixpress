@@ -6,7 +6,7 @@ export const queryClient = new QueryClient();
 const baseURL = 'https://ogbesomto.pythonanywhere.com/api'; // Use base URL
 
 // Utility function to handle errors
-const handleError = (error) => {
+export const handleError = (error) => {
   if (axios.isCancel(error)) {
     console.log('Request canceled:', error.message);
   } else if (error.response) {

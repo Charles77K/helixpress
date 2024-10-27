@@ -71,6 +71,8 @@ import ViewAbouts from './About/ViewAbouts';
 import EditAbout from './About/EditAbout';
 import DeleteAbout from './About/DeleteAbout';
 import Dashboard from './Dashboard.jsx';
+import CreateAdmin from './Admin-actions/CreateAdmin.jsx';
+import DeleteAdmin from './Admin-actions/DeleteAdmin';
 
 export const COMPONENT_MAP = {
   //Dashboard default
@@ -111,6 +113,10 @@ export const COMPONENT_MAP = {
   'View Sliders': <ViewSlider />,
   'Edit Slider': <EditSlider />,
   'Delete Slider': <DeleteSlider />,
+
+  //Admin
+  'Create Admin': <CreateAdmin />,
+  'Delete Admin': <DeleteAdmin />,
 
   // Submissions
   'Create Submission': <CreateSubmission />,

@@ -154,7 +154,7 @@ export default function Admin() {
     'Delete VisibilityStatement',
   ];
   const newsOptions = ['Create News', 'View News', 'Edit News', 'Delete News'];
-  const adminOptions = ['Create an Admin', 'Delete an Admin Account'];
+  const adminOptions = ['Create Admin', 'Delete Admin'];
 
   const dropdownItems = [
     {

@@ -35,6 +35,7 @@ import {
   Societies,
 } from './src/components/infoComponents';
 import Admin from './src/admin/Admin';
+import Login from './src/pages/Login';
 // import Journals from './src/components/Journals';
 
 export default function AppRoutes() {
@@ -48,9 +49,10 @@ export default function AppRoutes() {
 function AppContent() {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
+  const login = location.pathname.startsWith('/login');
   return (
     <>
-      {!isAdmin && <Navbar />}
+      {!isAdmin && !login && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/topics" element={<Topics />} />
@@ -72,6 +74,7 @@ function AppContent() {
           <Route path="editorial" element={<Editorial />} />
         </Route>
         {/* end of information section */}
+        <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         {/* journals section */}
@@ -82,7 +85,7 @@ function AppContent() {
           <Route path="proceeding" element={<ProceedingSeries />} />
         </Route>
       </Routes>
-      {!isAdmin && <Footer />}
+      {!isAdmin && !login && <Footer />}
     </>
   );
 }

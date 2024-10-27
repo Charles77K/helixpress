@@ -252,7 +252,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-5">
           <Link
             className="border border-solid border-black rounded-lg p-1.5 text-xs hover:bg-slate-700 hover:text-white cursor-pointer transition-bg ease-in-out duration-200"
-            to={'/admin'}
+            to={'/login'}
           >
             Sign In/Sign Up
           </Link>
