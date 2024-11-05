@@ -82,6 +82,10 @@ const GenericCRUD = ({ getJournals, getItems, deleteItem, entityLabel }) => {
 
   return (
     <div className="p-4">
+      <h2 className="text-2xl font-bold mb-6 text-slate-800">
+        Delete a Volume
+      </h2>
+
       <label htmlFor="journals" className="block text-lg font-bold mb-2">
         Select a Journal
       </label>

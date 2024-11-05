@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { useMutation } from '@tanstack/react-query';
 import { createAdmin } from '../../utils/auth';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const adminSchema = z.object({
   username: z
@@ -14,11 +15,12 @@ const adminSchema = z.object({
   email: z.string().email({ message: 'Invalid email format' }),
   password: z
     .string()
-    .min(8, { message: 'Password must be at least 8 characters' }),
+    .min(4, { message: 'Password must be at least 4 characters' }),
   role: z.enum(['admin', 'super admin', 'editor', 'reviewer']).optional(),
 });
 
 export default function CreateAdmin() {
+  const token = useSelector((state) => state.auth.token);
   const {
     register,
     handleSubmit,
@@ -60,7 +62,8 @@ export default function CreateAdmin() {
 
   const onSubmit = (data) => {
     console.log(data);
-    mutate(data);
+    mutate({ data, token });
+    console.log(token);
   };
 
   return (

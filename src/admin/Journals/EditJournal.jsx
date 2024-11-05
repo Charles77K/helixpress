@@ -4,23 +4,39 @@ import { editJournal, getJournals, queryClient } from '../../utils/http';
 import Loader from '../../UI/Loader';
 import Error from '../../utils/Error';
 import { toast } from 'react-toastify';
+4;
+
+const initialForm = {
+  name: '',
+  about: '',
+  abbrv: '',
+  impact: '',
+  pic: null,
+  issn: '',
+  aim_scope: '',
+  reviewer_board: '',
+  author_instructions: '',
+  article_processing_charge: '',
+  indexing_and_archiving: '',
+  visibility: '',
+  rapid_publication: '',
+  rank: '',
+  cite_score: '',
+};
 
 export default function EditJournal() {
   const [selectedJournal, setSelectedJournal] = useState(null);
   const imageRef = useRef('');
-  const [formData, setFormData] = useState({
-    name: '',
-    about: '',
-    abbrv: '',
-    impact: '',
-    pic: null, // For file uploads
-    issn: '',
-    aim_scope: '',
-    reviewer_board: '',
-    author_instructions: '',
-    article_processing_charge: '',
-    indexing_and_archiving: '',
-  });
+  const [formData, setFormData] = useState(initialForm);
+
+  const resetForm = () => {
+    setFormData(initialForm);
+    setImagePreview(null);
+    imageRef.current.value = '';
+    setSelectedJournal('');
+  };
+
+  console.log(formData);
 
   const {
     data: journals,
@@ -60,6 +76,10 @@ export default function EditJournal() {
         article_processing_charge:
           selectedJournal.article_processing_charge || '',
         indexing_and_archiving: selectedJournal.indexing_and_archiving || '',
+        visibility: selectedJournal.visibility || '',
+        rapid_publication: selectedJournal.rapid_publication || '',
+        rank: selectedJournal.rank || '',
+        cite_score: selectedJournal.cite_score || '',
       });
     }
   }, [selectedJournal]);
@@ -69,22 +89,7 @@ export default function EditJournal() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['journals'] });
       toast.success('Journal updated successfully');
-      setFormData({
-        name: '',
-        about: '',
-        abbrv: '',
-        impact: '',
-        pic: null,
-        issn: '',
-        aim_scope: '',
-        reviewer_board: '',
-        author_instructions: '',
-        article_processing_charge: '',
-        indexing_and_archiving: '',
-      });
-      setImagePreview(null);
-      imageRef.current.value = '';
-      setSelectedJournal(null);
+      resetForm();
     },
     onError: (error) => {
       const errorMessage =
@@ -121,6 +126,7 @@ export default function EditJournal() {
     }
   };
 
+  //get the current journal
   const handleSelectChange = (e) => {
     const journalId = e.target.value;
     const journal = journals.find((j) => j.id === journalId);
@@ -208,6 +214,57 @@ export default function EditJournal() {
               type="text"
               name="impact"
               value={formData.impact}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">
+              Visibility
+            </label>
+            <input
+              type="text"
+              name="visibility"
+              value={formData.visibility}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">
+              Rapid Publication
+            </label>
+            <input
+              type="text"
+              name="rapid_publication"
+              value={formData.rapid_publication}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">Rank</label>
+            <input
+              type="text"
+              name="rank"
+              value={formData.rank}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">
+              Cite Score
+            </label>
+            <input
+              type="number"
+              step="0.01"
+              name="cite_score"
+              value={formData.cite_score}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />

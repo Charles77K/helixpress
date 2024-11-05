@@ -3,6 +3,7 @@ import { BiSolidMessageError } from 'react-icons/bi';
 import { GiShare } from 'react-icons/gi';
 import ShareModal from './modal/ShareModal';
 import HelpModal from './modal/HelpModal';
+import PropTypes from 'prop-types';
 
 export default function Share({ linkToShare }) {
   const modalRef = useRef(); // Reference for ShareModal
@@ -44,3 +45,7 @@ export default function Share({ linkToShare }) {
     </div>
   );
 }
+
+Share.propTypes = {
+  linkToShare: PropTypes.string.isRequired,
+};

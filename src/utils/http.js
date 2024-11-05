@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const queryClient = new QueryClient();
 
-const baseURL = 'https://ogbesomto.pythonanywhere.com/api'; // Use base URL
+export const baseURL = 'https://ogbesomto.pythonanywhere.com/api'; // Use base URL
 
 // Utility function to handle errors
 export const handleError = (error) => {
@@ -195,7 +195,9 @@ export async function createPaper({ issueId, paperData }) {
       `${baseURL}/issue/${issueId}/papers`,
       paperData
     );
-    if (response.status !== 201) {
+    if (response.status == 200) {
+      return response.data;
+    } else {
       throw new Error('Error creating paper');
     }
   } catch (error) {
@@ -211,6 +213,34 @@ export async function getPapers({ issueId, signal }) {
     });
     if (response.status !== 200) {
       throw new Error('Error fetching papers');
+    }
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+//get all papers
+export async function getAllPapers({ signal }) {
+  try {
+    const response = await axios.get(`${baseURL}/papers`, {
+      signal,
+    });
+    if (response.status !== 200) {
+      throw new Error('Error fetching papers');
+    }
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+//get paper
+export async function getPaper({ signal, paperId }) {
+  try {
+    const response = await axios.get(`${baseURL}/paper/${paperId}`, { signal });
+    if (response.status !== 200) {
+      throw new Error('Failed to fetch paper');
     }
     return response.data;
   } catch (error) {
@@ -978,6 +1008,62 @@ export async function deleteVisibilityStatement({ id }) {
       throw new Error(`Unexpected response status: ${response.status}`);
     }
     return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+//create topic
+export async function createTopic({ topicData }) {
+  try {
+    const response = await axios.post(`${baseURL}/topics/`, topicData);
+    if (response.status == 201) {
+      return response.data;
+    } else {
+      console.log('An error ocurred: ' + response.status);
+    }
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+//get topics
+export async function getTopics({ signal }) {
+  try {
+    const response = await axios.get(`${baseURL}/topics`, { signal });
+    if (response.status == 200) {
+      return response.data;
+    } else {
+      console.log('An error ocurred: ' + response.status);
+    }
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+//edit topics
+export async function editTopics({ topicData, topicId }) {
+  try {
+    const response = await axios.put(`${baseURL}/topic/${topicId}/`, topicData);
+    if (response.status == 201) {
+      return response.data;
+    } else {
+      console.log('An error ocurred: ' + response.status);
+    }
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+//delete topics
+export async function deleteTopic({ id }) {
+  try {
+    const response = await axios.delete(`${baseURL}/topic/${id}/`);
+    if (response.status == 204) {
+      return response.data;
+    } else {
+      console.log('An error ocurred: ' + response.status);
+    }
   } catch (error) {
     handleError(error);
   }

@@ -84,7 +84,7 @@ export default function CreateVolume() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full mx-auto bg-white shadow-md p-6 rounded-lg"
+      className="w-full md:w-1/2 min-h-screen bg-white  p-6 rounded-lg"
     >
       <h2 className="text-2xl font-bold mb-6 text-slate-800">Create Volume</h2>
 

@@ -1,18 +1,14 @@
 // import React from 'react'
-import { useQuery } from '@tanstack/react-query';
-import { getJournals } from '../../utils/http';
+import { useFetchJournals } from '../components/Tanstack';
 
 export default function ViewJournals() {
-  const { data, error, isLoading } = useQuery({
-    queryKey: ['journals'],
-    queryFn: getJournals,
-  });
+  const { data, isError, isLoading } = useFetchJournals();
 
   let content;
 
   if (isLoading) {
     content = <p className="text-center text-gray-500">Loading...</p>;
-  } else if (error) {
+  } else if (isError) {
     content = (
       <p className="text-center text-red-500">Error loading journals.</p>
     );

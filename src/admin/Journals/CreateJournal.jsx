@@ -2,21 +2,31 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { PostJournals, queryClient } from '../../utils/http';
 
+const initialForm = {
+  name: '',
+  about: '',
+  abbrv: '',
+  impact: '',
+  pic: null,
+  issn: '',
+  aim_scope: '',
+  reviewer_board: '',
+  author_instructions: '',
+  article_processing_charge: '',
+  indexing_and_archiving: '',
+  visibility: '',
+  rapid_publication: '',
+  rank: '',
+  cite_score: '',
+};
 
 export default function CreateJournal() {
-  const [formData, setFormData] = useState({
-    name: '',
-    about: '',
-    abbrv: '',
-    impact: '',
-    pic: null,
-    issn: '',
-    aim_scope: '',
-    reviewer_board: '',
-    author_instructions: '',
-    article_processing_charge: '',
-    indexing_and_archiving: '',
-  });
+  const [formData, setFormData] = useState(initialForm);
+
+  const resetForm = () => {
+    setFormData(initialForm);
+  };
+
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     setFormData({
@@ -30,19 +40,7 @@ export default function CreateJournal() {
     onSuccess: () => {
       console.log('Form data sent successfully');
       queryClient.invalidateQueries['journals'];
-      setFormData({
-        name: '',
-        about: '',
-        abbrv: '',
-        impact: '',
-        pic: null,
-        issn: '',
-        aim_scope: '',
-        reviewer_board: '',
-        author_instructions: '',
-        article_processing_charge: '',
-        indexing_and_archiving: '',
-      });
+      resetForm();
     },
   });
 
@@ -124,6 +122,53 @@ export default function CreateJournal() {
           type="text"
           name="impact"
           value={formData.impact}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2">Visibility</label>
+        <input
+          type="text"
+          name="visibility"
+          value={formData.visibility}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2">
+          Rapid Publication
+        </label>
+        <input
+          type="text"
+          name="rapid_publication"
+          value={formData.rapid_publication}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2">Rank</label>
+        <input
+          type="text"
+          name="rank"
+          value={formData.rank}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2">Cite Score</label>
+        <input
+          type="number"
+          step="0.01"
+          name="cite_score"
+          value={formData.cite_score}
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />

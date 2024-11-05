@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   useFetchIssues,
   useFetchJournals,
@@ -8,26 +8,29 @@ import SelectComponent from '../components/SelectComponent';
 import { useMutation } from '@tanstack/react-query';
 import { createPaper } from '../../utils/http';
 import { toast } from 'react-toastify';
+import { Button, FormInput, SelectInput } from '../components/Inputs';
 
+const initialForm = {
+  title: '',
+  author: '',
+  description: '',
+  institution: '',
+  keywords: '',
+  volume: '',
+  issue: '',
+  journal: '',
+  abstract: '',
+  document: null,
+  doi: '',
+  editorsChoice: false,
+};
 export default function CreatePaper() {
   const [journalId, setJournalId] = useState('');
   const [volumeId, setVolumeId] = useState('');
   const [issueId, setIssueId] = useState('');
+  const docRef = useRef(null);
 
-  const [formData, setFormData] = useState({
-    title: '',
-    author: '',
-    description: '',
-    institution: '',
-    keywords: '',
-    volume: '',
-    issue: '',
-    journal: '',
-    document: null,
-    doi: '',
-    editorsChoice: false,
-    date_created: '',
-  });
+  const [formData, setFormData] = useState(initialForm);
 
   const { volumeData, isVolumeLoading, isVolumeError } = useFetchVolumes({
     id: journalId,
@@ -36,6 +39,11 @@ export default function CreatePaper() {
   const { issuesData, isIssuesError, isIssuesLoaing } = useFetchIssues({
     id: volumeId,
   });
+
+  const resetForm = () => {
+    setFormData(initialForm);
+    docRef.current.value = '';
+  };
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -92,12 +100,14 @@ export default function CreatePaper() {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['create-paper'],
-    mutationFn: ({ issueId, paperData }) => createPaper({ issueId, paperData }),
+    mutationFn: createPaper,
     onSuccess: () => {
       toast.success('created successfully');
+      resetForm();
     },
     onError: (error) => {
-      toast.error('failed to create', error);
+      toast.error('failed to create');
+      console.log(error);
     },
   });
 
@@ -117,72 +127,62 @@ export default function CreatePaper() {
       className="w-full mx-auto bg-white shadow-md p-6 rounded-lg"
     >
       <h2 className="text-2xl font-bold mb-6 text-slate-800">Submit Paper</h2>
-
       {/* Title */}
-      <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">Title</label>
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
+      <FormInput
+        label="Title"
+        name="title"
+        onChange={handleChange}
+        type="text"
+        placeholder={'Enter Title'}
+        value={formData.title}
+      />
 
       {/* Author */}
-      <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">Author</label>
-        <input
-          type="text"
-          name="author"
-          value={formData.author}
-          onChange={handleChange}
-          required
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-
-      {/* Description */}
-      <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">
-          Description
-        </label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          rows="5"
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
+      <FormInput
+        label="Author"
+        name="author"
+        onChange={handleChange}
+        type="text"
+        placeholder={'Enter author name'}
+        value={formData.author}
+      />
 
       {/* Institution */}
-      <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">
-          Institution
-        </label>
-        <input
-          type="text"
-          name="institution"
-          value={formData.institution}
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
+      <FormInput
+        label="Institution"
+        name="institution"
+        onChange={handleChange}
+        type="text"
+        placeholder={'Enter the name of the institution'}
+        value={formData.institution}
+      />
 
       {/* Keywords */}
-      <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">Keywords</label>
-        <input
-          type="text"
-          name="keywords"
-          value={formData.keywords}
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
+      <FormInput
+        name="keywords"
+        label="Keywords"
+        onChange={handleChange}
+        type="text"
+        placeholder={'Enter a keyword'}
+        value={formData.keywords}
+      />
+      {/* Abstract */}
+      <SelectInput
+        label="Abstract"
+        name="abstract"
+        onChange={handleChange}
+        value={formData.abstract}
+        rows="3"
+      />
+
+      {/* Description */}
+      <SelectInput
+        label="Description"
+        name="description"
+        onChange={handleChange}
+        rows="3"
+        value={formData.description}
+      />
       {/* Journal */}
       <SelectComponent
         isError={isError}
@@ -195,7 +195,6 @@ export default function CreatePaper() {
         options={data}
         value={formData.journal}
       />
-
       {/* Volume */}
       <SelectComponent
         isError={isVolumeError}
@@ -208,7 +207,6 @@ export default function CreatePaper() {
         options={volumeData}
         value={formData.volume}
       />
-
       {/* Issue */}
       <SelectComponent
         isError={isIssuesError}
@@ -221,32 +219,29 @@ export default function CreatePaper() {
         options={issuesData}
         value={formData.issue}
       />
-
       {/* Document Upload */}
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2">
           Upload Document
         </label>
         <input
+          ref={docRef}
           type="file"
           name="document"
           onChange={handleChange}
           accept="application/pdf"
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-1/2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
-
       {/* DOI */}
-      <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">DOI</label>
-        <input
-          type="text"
-          name="doi"
-          value={formData.doi}
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
+      <FormInput
+        label="DOI"
+        name="doi"
+        onChange={handleChange}
+        placeholder={'Enter DOI'}
+        type="text"
+        value={formData.doi}
+      />
 
       {/* Editor's Choice */}
       <div className="mb-4">
@@ -264,14 +259,9 @@ export default function CreatePaper() {
         />
         <span>Mark as Editors Choice</span>
       </div>
-
-      <button
-        type="submit"
-        disabled={isPending ? true : false}
-        className="w-full bg-slate-700 text-white font-bold py-2 px-4 rounded-md hover:bg-slate-900 transition duration-300"
-      >
+      <Button disabled={isPending}>
         {isPending ? 'Submitting' : 'Submit'}
-      </button>
+      </Button>
     </form>
   );
 }

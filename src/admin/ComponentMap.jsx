@@ -73,6 +73,10 @@ import DeleteAbout from './About/DeleteAbout';
 import Dashboard from './Dashboard.jsx';
 import CreateAdmin from './Admin-actions/CreateAdmin.jsx';
 import DeleteAdmin from './Admin-actions/DeleteAdmin';
+import CreateTopic from './Topics/CreateTopic';
+import ViewTopics from './Topics/ViewTopics.jsx';
+import EditTopic from './Topics/EditTopic.jsx';
+import DeleteTopic from './Topics/DeleteTopic.jsx';
 
 export const COMPONENT_MAP = {
   //Dashboard default
@@ -95,6 +99,12 @@ export const COMPONENT_MAP = {
   'View Volumes': <ViewVolumes />,
   'Edit Volume': <EditVolumes />,
   'Delete Volume': <DeleteVolume />,
+
+  //Topics
+  'Create Topic': <CreateTopic />,
+  'View Topics': <ViewTopics />,
+  'Edit Topic': <EditTopic />,
+  'Delete Topic': <DeleteTopic />,
 
   // Issues
   'Create Issue': <CreateIssue />,

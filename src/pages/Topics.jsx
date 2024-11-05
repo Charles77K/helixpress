@@ -4,7 +4,8 @@ import { GiShare } from 'react-icons/gi';
 import { Search } from '../components/homeComponents';
 import { inputStyle, SelectInput } from '../components/homeComponents/Search';
 import { BiSolidMessageError } from 'react-icons/bi';
-import { MDPI_TOPICS } from '../components/DOCS';
+import Error from '../utils/Error';
+import { useFetchTopics } from '../admin/components/Tanstack';
 
 const TOPICS = [
   '  Biology & Life Sciences',
@@ -30,12 +31,90 @@ const DEADLINE = [
   { value: 'Number', label: 'Number of Articles' },
 ];
 export default function Topics() {
+  const { topicsData, isTopicsLoading, isTopicsError } = useFetchTopics();
+
+  let content;
+
+  if (isTopicsLoading) {
+    content = (
+      <div className="animate-pulse space-y-4">
+        {/* Repeat the skeleton for each topic item */}
+        {[...Array(3)].map((_, index) => (
+          <ul key={index} className="space-y-2">
+            <li className="py-2">
+              {/* Placeholder for the title */}
+              <div className="bg-gray-300 h-5 w-48 rounded-md mb-2"></div>
+
+              {/* Placeholder for edited by line */}
+              <div className="bg-gray-300 h-4 w-40 rounded-md mb-1"></div>
+
+              {/* Placeholder for submission deadline and views */}
+              <div className="bg-gray-300 h-4 w-60 rounded-md mb-1"></div>
+
+              {/* Placeholder for the status badge */}
+              <div className="bg-gray-300 h-4 w-24 rounded-md inline-block mb-1"></div>
+
+              {/* Placeholder for participating journals */}
+              <div className="bg-gray-300 h-4 w-52 rounded-md mt-2"></div>
+            </li>
+            <hr />
+          </ul>
+        ))}
+      </div>
+    );
+  } else if (isTopicsError) {
+    content = (
+      <div className="flex justify-center">
+        <Error title="Error!" text="An error occured while fetching papers" />
+      </div>
+    );
+  } else if (topicsData && topicsData.length > 0) {
+    content = topicsData.map((item, index) => (
+      <ul key={index}>
+        <li className="py-2">
+          <h1 className="text-sm text-slate-800 font-bold py-1 hover:underline hover:cursor-pointer">
+            {item.title}
+          </h1>
+          <p className="text-xs mb-1">
+            created by{' '}
+            <span className="font-bold text-slate-600">{item.author}</span>
+          </p>
+          <p className="text-xs">
+            submission deadline{' '}
+            <span className="text-xs font-bold">
+              {' '}
+              {' ' +
+                new Date(item.manuscript_deadline).toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })}
+            </span>{' '}
+            |{' '}
+            <span className="text-stone-100 bg-slate-600 p-0.5 text-[11px] text-center">
+              Submission {item.submissionStatus}
+            </span>
+          </p>
+          <p className="text-xs py-2">
+            keywords{' '}
+            <span className="text-slate-600 italic text-xs font-bold">
+              {item.keywords}
+            </span>
+          </p>
+        </li>
+        <hr></hr>
+      </ul>
+    ));
+  } else {
+    content = <p>No papers found</p>;
+  }
+
   const [results, setResults] = React.useState('');
   const [deadline, setDeadline] = React.useState('');
   return (
-    <>
+    <div className="bg-gray-100">
       <Search />
-      <div className="flex flex-col md:flex-row gap-3">
+      <div className="flex flex-col md:flex-row gap-5">
         <section className="md:max-w-[22rem] flex flex-col p-4 gap-4 w-full">
           <div className="bg-white p-4 flex justify-center">
             <p className="px-6 py-1 text-center bg-slate-600 md:w-52 w-full rounded-md text-stone-100 text-sm">
@@ -55,13 +134,14 @@ export default function Topics() {
             ))}
           </div>
         </section>
+        {/* middle section */}
         <section className="md:max-w-[59rem] w-full flex flex-col p-4">
           <div className="bg-white p-8">
             {/* begining of mdpi header */}
             <div className="flex justify-between items-center">
               <div>
-                <h1 className="text-xl md:text-2xl text-slate-800">
-                  MDPI Topics
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800">
+                  Heli Express Topics
                 </h1>
               </div>
               <div className="space-x-3">
@@ -82,52 +162,7 @@ export default function Topics() {
               </div>
             </div>
             {/* end of mdpi topics */}
-            <div>
-              {MDPI_TOPICS.map((item, index) => (
-                <ul key={index}>
-                  <li className="py-2">
-                    <h1 className="text-sm text-slate-800 font-bold py-2 hover:underline hover:cursor-pointer">
-                      {item.title}
-                    </h1>
-                    <p className="text-xs mb-1">
-                      edited by{' '}
-                      <span className="font-bold text-slate-700">
-                        {item.editors.slice(0, -1).join('')}
-                      </span>{' '}
-                      and
-                      <span className="font-bold text-slate-700">
-                        {' '}
-                        {' ' + item.editors.slice(-1)}
-                      </span>
-                    </p>
-                    <p className="text-xs">
-                      submission deadline{' '}
-                      <span className="text-xs font-bold">
-                        {item.submissionDeadline}
-                      </span>{' '}
-                      | <span>{item.articlesCount} artciles </span> |{' '}
-                      <span className="text-xs font-bold">
-                        viewed by {item.views}
-                      </span>{' '}
-                      |{' '}
-                      <span className="text-stone-100 bg-slate-600 p-0.5 text-[11px] text-center">
-                        Submission {item.submissionStatus}
-                      </span>
-                    </p>
-                    <p className="text-xs py-2">
-                      Participating journals{' '}
-                      <span className="text-slate-600 italic text-xs font-bold">
-                        {item.participatingJournals.slice(0, -1).join(', ')}
-                      </span>{' '}
-                      <span className="text-slate-600 italic text-xs font-bold">
-                        {' ' + item.participatingJournals.slice(-1)}
-                      </span>
-                    </p>
-                  </li>
-                  <hr></hr>
-                </ul>
-              ))}
-            </div>
+            <div>{content}</div>
           </div>
         </section>
         <section className="max-w-[12rem] md:w-full hidden md:block p-4">
@@ -139,6 +174,6 @@ export default function Topics() {
           </div>
         </section>
       </div>
-    </>
+    </div>
   );
 }

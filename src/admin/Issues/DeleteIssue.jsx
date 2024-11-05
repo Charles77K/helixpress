@@ -149,7 +149,7 @@ export default function DeleteIssue() {
 
   return (
     <div className=" flex flex-col gap-4 w-full h-screen mx-auto bg-white shadow-md p-6 rounded-lg justify-items-center">
-      <h2 className="text-2xl font-bold mb-4 text-slate-800">Create Issue</h2>
+      <h2 className="text-2xl font-bold mb-4 text-slate-800">Delete Issue</h2>
 
       {/* Journals */}
       <SelectComponent

@@ -35,16 +35,16 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white border-b border-gray-200">
-      <div className="container bg-white mx-auto md:px-10 px-1 md:py-1 text-xs md:text-sm shadow-sm flex justify-between items-center h-1-6 text-slate-800">
-        <div className="flex-shrink-1 pl-2">
+      <div className="bg-white mx-auto md:px-5 lg:px-8 px-1 md:py-4 text-xs md:text-sm shadow-sm flex justify-between items-center text-slate-800">
+        <div className="flex-shrink-0 pl-2">
           <Link to="/" className="text-2xl font-semibold text-gray-800">
             <img
-              src="/mdpi.svg"
-              className="w-[3.5rem] h-[3.5rem] md:w-[4rem] md:h-[4rem]"
+              src="/helixNav.png"
+              className="w-[8rem] h-[1.5rem] md:w-[8rem] md:h-[1.5rem] lg:w-[10rem] lg:h-[2rem]"
             />
           </Link>
         </div>
-        <div className="hidden md:flex space-x-9">
+        <div className="hidden md:flex md:space-x-5 lg:space-x-9">
           <div className="group relative">
             <Link
               to="/journals"
@@ -211,13 +211,13 @@ const Navbar = () => {
             {/* Dropdown Content for Desktop */}
             <div className="hidden min-w-[10rem] group-hover:block transition-all ease-in-out duration-300 text-xs absolute px-5 py-2 bg-[#52527a] text-white shadow-lg">
               <Link
-                to="/journals/sub1"
+                to="/about"
                 className="block whitespace-nowrap py-1 hover:underline"
               >
                 Overview
               </Link>
               <Link
-                to="/contact"
+                to="/about/contact"
                 className="block whitespace-nowrap py-1 hover:underline"
               >
                 Contact
@@ -229,7 +229,7 @@ const Navbar = () => {
                 Careers
               </Link>
               <Link
-                to="/journals/sub3"
+                to="/about/news"
                 className="block whitespace-nowrap py-1 hover:underline"
               >
                 News
@@ -262,7 +262,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="md:hidden flex gap-3 p-3 items-center">
+        <div className="md:hidden flex gap-3 p-4 items-center">
           <button onClick={toggleSearchBar}>
             <FaSearch size={20} />
           </button>

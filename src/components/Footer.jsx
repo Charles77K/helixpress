@@ -27,10 +27,7 @@ const Footer = () => {
       <div className="bg-[#52527a] text-white px-2 md:px-8 py-2 md:py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 md:gap-8">
           <section className={'flex flex-col items-start'}>
-            <img
-              src="../../public/mdpi.svg"
-              className="w-10 h-10 md:h-14 md:w-14"
-            />
+            <img src="/helixFooter.png" className="w-36 h-10 md:h-10 md:w-40" />
             <h4 className="text-sm text-white max-w-[18rem]">
               Subscribe to receive issue release notifications and newsletters
               from MDPI journals

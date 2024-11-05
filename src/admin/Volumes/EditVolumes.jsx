@@ -201,6 +201,8 @@ export default function EditVolumes() {
 
   return (
     <div className="p-3">
+      <h2 className="text-2xl font-bold mb-6 text-slate-800">Edit Volume</h2>
+
       <label htmlFor="journals" className="block text-lg font-bold mb-2">
         Select a Journal
       </label>

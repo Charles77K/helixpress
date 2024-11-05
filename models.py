@@ -9,7 +9,7 @@ class Journal(models.Model):
     impact = models.CharField(max_length=200, null=True, blank = True)
     pic = models.ImageField(null=False, blank=False)
     issn = models.CharField(max_length=200, null=True, blank = True)
-    date_created = models.DateTimeField(auto_now_add=True, null = True) # This basically takes a snapshot of when the object was added to the database automatically
+    date_created = models.DateTimeField(auto_now_add=True, null = True) # This basically takes a 
     aim_scope = models.TextField(null=True, blank=True)
     reviewer_board = models.TextField(null=True, blank=True)
     author_instructions = models.TextField(null=True, blank=True)
@@ -24,7 +24,6 @@ class Journal(models.Model):
         papers = self.paper_set.all()
         article_no = papers.count()
         return article_no
-    
 class Volume(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True)
     number = models.IntegerField(null=True)
@@ -33,7 +32,7 @@ class Volume(models.Model):
 
     def __str__(self):
         return str(self.number) +" "+ self.journal.name
-
+    
 class Issue(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True)
     number = models.IntegerField(null=True)
@@ -170,3 +169,16 @@ class VisibilityStatement(models.Model):
 
     def __str__(self):
         return self.content
+
+class Topic(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True)
+    title = models.CharField(max_length=200, null=True)
+    author = models.CharField(max_length=200, null=True)
+    keywords = models.CharField(max_length=200, null=True)
+    content = models.CharField(max_length=200, null=True)
+    abstract_deadline = models.DateField(null=True)
+    manuscript_deadline = models.DateField(null=True)
+    participating_journals = models.ManyToManyField("Journal")
+
+    def _str_(self):
+        return self.title

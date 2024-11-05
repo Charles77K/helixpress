@@ -40,7 +40,7 @@ export default function ProceedingSeries() {
   return (
     <div className="text-slate-700 bg-white md:px-16 px-8 py-8 text-xs flex flex-col align-start gap-5">
       <section>
-        <h1 className="text-2xl font-bold">MDPI Proceeding Journals</h1>
+        <h1 className="text-2xl font-bold">Heli Express Proceeding Journals</h1>
         <p className="leading-5 my-3">
           MDPI publishes a series of open access conference journals in all
           research fields. These journals provide a high quality service and are

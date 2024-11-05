@@ -19,13 +19,15 @@ export default function Journals() {
   ];
 
   return (
-    <div>
+    <div className="bg-gray-100">
       <Search />
       <div className="flex p-4 gap-10 flex-col md:flex-row items-start justify-center text-slate-700">
         {/* First section */}
         <section className="flex-grow md:flex-grow-[1] md:basis-1/4 min-w-[10rem] w-full flex flex-col gap-3">
           <nav className="bg-white p-6">
-            <h1 className="text-slate-700 text-xl font-bold">MDPI Journals</h1>
+            <h1 className="text-slate-700 text-xl font-bold">
+              Heli Express Journals
+            </h1>
             <SelectInput
               className={inputClass}
               onChange={(e) => setActiveJournal(e.target.value)}

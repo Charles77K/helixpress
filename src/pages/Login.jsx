@@ -5,7 +5,8 @@ import { loginUser } from '../utils/auth';
 import { toast } from 'react-toastify';
 import * as z from 'zod'; // Import Zod
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { setToken } from '../store/authentication';
 // Zod schema definition
 const loginSchema = z.object({
   username: z.string().min(1, 'Username is required'),
@@ -13,6 +14,7 @@ const loginSchema = z.object({
 });
 
 export default function Login() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -38,13 +40,14 @@ export default function Login() {
       console.log(data);
       if (data?.token) {
         localStorage.setItem('authToken', data.token);
+        dispatch(setToken(data.token));
         toast.success(data.message);
         setFormData((prevData) => ({
           ...prevData,
           username: '',
           password: '',
         }));
-        navigate('/admin');
+        navigate('/admin', { replace: true });
       } else {
         toast.error('Login failed: Invalid response');
       }

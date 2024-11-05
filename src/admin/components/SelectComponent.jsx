@@ -13,16 +13,23 @@ const SelectComponent = ({
   optionValue,
   optionMain,
   name,
+  multiple,
+  chooseStyle,
 }) => {
   return (
     <div>
       <label className="block text-lg font-bold mb-1">{label}</label>
       <select
-        className="block w-full md:w-1/2 p-3 bg-gray-100 border border-gray-300 rounded"
+        className={
+          chooseStyle
+            ? chooseStyle
+            : 'block w-full md:w-1/2 p-3 bg-gray-100 border border-gray-300 rounded'
+        }
         name={name}
         value={value}
         onChange={onChange}
         required
+        multiple={multiple}
         disabled={isDisabled}
       >
         <option value="" disabled>
@@ -31,8 +38,11 @@ const SelectComponent = ({
         {isLoading && <option value={'loading'}>Loading...</option>}
         {isError && <option value={'error'}>Error fetching data...</option>}
         {options ? (
-          options.map((option) => (
-            <option key={option.id ? option.id : 1} value={optionValue(option)}>
+          options.map((option, index) => (
+            <option
+              key={option.id ? option.id : index}
+              value={optionValue(option)}
+            >
               {optionMain(option) ? optionMain(option) : `no ${label} found`}
             </option>
           ))
@@ -60,6 +70,8 @@ SelectComponent.propTypes = {
   optionValue: PropTypes.func.isRequired,
   optionMain: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  multiple: PropTypes.bool,
+  chooseStyle: PropTypes.string,
 };
 
 export default SelectComponent;

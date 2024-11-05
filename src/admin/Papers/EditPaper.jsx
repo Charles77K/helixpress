@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   useFetchIssues,
   useFetchJournals,
@@ -9,30 +9,30 @@ import SelectComponent from '../components/SelectComponent';
 import { useMutation } from '@tanstack/react-query';
 import { editPaper } from '../../utils/http'; // Adjust this to the function for updating
 import { toast } from 'react-toastify';
-import Loader from '../../UI/Loader';
-import Error from '../../utils/Error';
+
+const initialForm = {
+  title: '',
+  author: '',
+  description: '',
+  institution: '',
+  keywords: '',
+  volume: '',
+  issue: '',
+  journal: '',
+  abstract: '',
+  document: null,
+  doi: '',
+  editorsChoice: false,
+  date_created: '',
+};
 
 export default function EditPaper() {
   const [journalId, setJournalId] = useState('');
   const [volumeId, setVolumeId] = useState('');
   const [issueId, setIssueId] = useState('');
   const [selectedPaper, setSelectedPaper] = useState(''); // State to store selected paper ID
-
-  const [formData, setFormData] = useState({
-    title: '',
-    author: '',
-    description: '',
-    institution: '',
-    keywords: '',
-    volume: '',
-    issue: '',
-    journal: '',
-    document: null,
-    doi: '',
-    editorsChoice: false,
-    date_created: '',
-  });
-  console.log('formdata', formData);
+  const [formData, setFormData] = useState(initialForm);
+  const docRef = useRef(null);
 
   const { volumeData, isVolumeLoading, isVolumeError } = useFetchVolumes({
     id: journalId,
@@ -44,7 +44,13 @@ export default function EditPaper() {
   const { paper, isPaperLoading, isPaperError } = useFetchPapers({
     id: issueId,
   });
-  console.log('papers: ', paper);
+
+  const resetForm = () => {
+    setFormData(initialForm);
+    docRef.current.value = '';
+    setSelectedPaper('');
+  };
+
   // Prefill form data if paper is available
   useEffect(() => {
     if (selectedPaper) {
@@ -57,6 +63,7 @@ export default function EditPaper() {
         volume: selectedPaper.volume || '',
         issue: selectedPaper.issue || '',
         journal: selectedPaper.journal || '',
+        abstract: selectedPaper.abstract || '',
         doi: selectedPaper.doi || '',
         editorsChoice: selectedPaper.editorsChoice || false,
         document: null,
@@ -122,20 +129,7 @@ export default function EditPaper() {
     mutationFn: ({ paperId, paperData }) => editPaper({ paperId, paperData }), // Adjust to use your API
     onSuccess: () => {
       toast.success('Paper updated successfully');
-      setFormData({
-        title: '',
-        author: '',
-        description: '',
-        institution: '',
-        keywords: '',
-        volume: '',
-        issue: '',
-        journal: '',
-        document: null,
-        doi: '',
-        editorsChoice: false,
-        date_created: '',
-      });
+      resetForm();
     },
     onError: (error) => {
       toast.error('Failed to update', error);
@@ -202,8 +196,8 @@ export default function EditPaper() {
       />
       {/* Paper */}
       <SelectComponent
-        isError={isError}
-        isLoading={isLoading}
+        isError={isPaperError}
+        isLoading={isPaperLoading}
         label="Paper"
         name="paper"
         onChange={handlePaperChange}
@@ -212,10 +206,8 @@ export default function EditPaper() {
         options={paper}
         value={selectedPaper ? selectedPaper.id : ''}
       />
-      {isPaperLoading && <Loader />}
-      {isPaperError && <Error title={'Error'} text={'Error fetching papers'} />}
-      {selectedPaper && selectedPaper.length === 0 && <p>No data found</p>}
-      {selectedPaper && selectedPaper.length !== 0 && (
+
+      {selectedPaper && (
         <>
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">Title</label>
@@ -284,12 +276,26 @@ export default function EditPaper() {
             />
           </div>
 
+          {/* Abstarct */}
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">
+              Abstract
+            </label>
+            <input
+              type="text"
+              name="abstract"
+              value={formData.abstract}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
           {/* Document Upload */}
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">
               Upload Document (leave empty to keep existing)
             </label>
             <input
+              ref={docRef}
               type="file"
               name="document"
               onChange={handleChange}

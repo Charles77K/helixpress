@@ -17,6 +17,9 @@ import {
   getEthics,
   getEditorialProcess,
   getOpenAccess,
+  getTopics,
+  getAllPapers,
+  getPaper,
 } from '../../utils/http';
 import { useQuery } from '@tanstack/react-query';
 
@@ -25,8 +28,8 @@ export function useFetchJournals() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['journals'],
     queryFn: ({ signal }) => getJournals({ signal }),
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    gcTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 10, // 5 minutes
+    gcTime: 1000 * 60 * 30, // 10 minutes
   });
   // Return an object containing the necessary values
   return { data, isLoading, isError };
@@ -89,6 +92,38 @@ export function useFetchPapers({ id }) {
     enabled: !!id,
   });
   return { paper, isPaperError, isPaperLoading };
+}
+
+//fetch all papers
+export function useFetchAllPapers() {
+  const {
+    data: papersData,
+    isLoading: isPapersLoading,
+    isError: isPapersError,
+  } = useQuery({
+    queryKey: ['papers'],
+    queryFn: ({ signal }) => getAllPapers({ signal }),
+    staleTime: 1000 * 60 * 10, // 5 minutes
+    gcTime: 1000 * 60 * 20,
+  });
+  return { papersData, isPapersError, isPapersLoading };
+}
+
+export function useFetchCurrentPaper(id) {
+  const {
+    data: currentPaperData,
+    isLoading: isCurrentPaperLoading,
+    isError: isCurrentPaperError,
+  } = useQuery({
+    queryKey: ['papers', id],
+    queryFn: ({ signal, queryKey }) => {
+      const paperId = queryKey[1];
+      return getPaper({ signal, paperId });
+    },
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 20,
+  });
+  return { currentPaperData, isCurrentPaperLoading, isCurrentPaperError };
 }
 
 //fetch news
@@ -306,5 +341,24 @@ export function useFetchVisibilityStatements() {
     visibilityStatementsData,
     isVisibilityStatementsError,
     isVisibilityStatementsLoading,
+  };
+}
+
+//Fetch topics
+export function useFetchTopics() {
+  const {
+    data: topicsData,
+    isPending: isTopicsLoading,
+    isError: isTopicsError,
+  } = useQuery({
+    queryKey: ['topics'],
+    queryFn: ({ signal }) => getTopics({ signal }),
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
+  });
+  return {
+    topicsData,
+    isTopicsError,
+    isTopicsLoading,
   };
 }

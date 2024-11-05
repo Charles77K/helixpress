@@ -7,7 +7,7 @@ import InfoList from '../components/infoComponents/InfoList';
 
 export default function Information() {
   return (
-    <>
+    <div className="bg-gray-100">
       <Search />
       <div className="flex flex-col md:flex-row">
         <section className="md:max-w-[22.5rem] w-full flex flex-col gap-3 p-4">
@@ -55,6 +55,6 @@ export default function Information() {
           <Share linkToShare={'https://www.mdpi.com/information'} />
         </section>
       </div>
-    </>
+    </div>
   );
 }

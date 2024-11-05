@@ -164,8 +164,8 @@ export default function DeletePaper() {
   }
 
   return (
-    <div className="w-full h-screen mx-auto bg-white shadow-md p-6 rounded-lg">
-      <h2 className="text-2xl font-bold mb-6 text-slate-800">Edit Paper</h2>
+    <div className="w-full h-full mx-auto bg-white shadow-md p-6 rounded-lg">
+      <h2 className="text-2xl font-bold mb-6 text-slate-800">Delete a Paper</h2>
       {/* Journal */}
       <SelectComponent
         isError={isError}

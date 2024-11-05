@@ -53,11 +53,21 @@ export const FileInput = forwardRef(
   }
 );
 
+FileInput.propTypes = {
+  name: PropTypes.string.isRequired,
+  accept: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  chooseStyle: PropTypes.string,
+};
+
 FileInput.displayName = 'FileInput';
 
 export function Button({ children, disabled }) {
   return (
     <button
+      type="submit"
       className="w-full rounded-md md:w-1/2 bg-slate-800 text-white p-3 hover:bg-slate-600 mt-4"
       disabled={disabled}
     >
@@ -81,15 +91,6 @@ SelectInput.propTypes = {
   value: PropTypes.any.isRequired,
   rows: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-};
-
-FileInput.propTypes = {
-  name: PropTypes.string.isRequired,
-  accept: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-  label: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  chooseStyle: PropTypes.string,
 };
 
 Button.propTypes = {

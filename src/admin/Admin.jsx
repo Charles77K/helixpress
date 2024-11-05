@@ -1,36 +1,62 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import DropDown from './DropDown';
 import DropDownOptions from './DropDownOptions';
-import { FaBook } from 'react-icons/fa';
-import { FaBookJournalWhills } from 'react-icons/fa6';
-import { IoDocument } from 'react-icons/io5';
-import { IoIosPaper } from 'react-icons/io';
-import { MdAdminPanelSettings, MdDashboard, MdTopic } from 'react-icons/md';
+import { DROPDOWN_OPTIONS } from './components/Constants';
+import { MdDashboard } from 'react-icons/md';
 import Navbar from './Navbar.jsx';
 import { COMPONENT_MAP } from './ComponentMap.jsx';
+import { useMutation } from '@tanstack/react-query';
+import { logout } from '../utils/auth.js';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearToken } from '../store/authentication.js';
 
 export default function Admin() {
+  const navigate = useNavigate();
   const sideBarRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [selectedPage, setSelectedPage] = useState();
 
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+
   const toggleSideBar = () => {
     setIsOpen((prevState) => !prevState);
   };
-  //
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (sideBarRef.current && !sideBarRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
 
+  //mutate function to logout
+  const { mutate } = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      toast.success('logout successfully');
+      dispatch(clearToken());
+      navigate('/login', { replace: true });
+    },
+    onError: (error) => {
+      toast.error('failed to logout');
+      console.error('Login failed:', error);
+    },
+  });
+
+  //handlde logout
+  const handleLogout = () => {
+    mutate(token);
+  };
+
+  const handleClickOutside = useCallback((event) => {
+    if (sideBarRef.current && !sideBarRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [sideBarRef]);
+  }, [handleClickOutside]);
 
   const renderPage = () => {
     if (!selectedPage) {
@@ -44,216 +70,14 @@ export default function Admin() {
   const toggleDropdown = (index) => {
     setOpenDropdown((prevValue) => (prevValue === index ? null : index));
   };
-  const sliderOptions = [
-    'Create Slider',
-    'View Sliders',
-    'Edit Slider',
-    'Delete Slider',
-  ];
-  const expenseOptions = [
-    'Create Journal',
-    'View Journals',
-    'Edit Journal',
-    'Delete Journal',
-  ];
-
-  const volumeOptions = [
-    'Create Volume',
-    'View Volumes',
-    'Edit Volume',
-    'Delete Volume',
-  ];
-  const issuesOptions = [
-    'Create an Issue',
-    'View Issues',
-    'Edit Issue',
-    'Delete Issue',
-  ];
-  const papersOptions = [
-    'Create Paper',
-    'View Papers',
-    'Edit Paper',
-    'Delete Paper',
-  ];
-  const topicsOptions = [
-    'Create Topic',
-    'View Topics',
-    'Edit Topic',
-    'Delete Topic',
-  ];
-  const submissionOptions = [
-    'Create Submission',
-    'View Submissions',
-    'Edit Submission',
-    'Delete Submission',
-  ];
-  const newsletterOptions = [
-    'Create Newsletter',
-    'View Newsletter',
-    'Edit Newsletter',
-    'Delete Newsletter',
-  ];
-  const aboutOptions = [
-    'Create About',
-    'View Abouts',
-    'Edit About',
-    'Delete About',
-  ];
-  const contactOptions = [
-    'Create Contact',
-    'View Contacts',
-    'Edit Contact',
-    'Delete Contact',
-  ];
-  const authorOptions = [
-    'Create Author',
-    'View Authors',
-    'Edit Author',
-    'Delete Author',
-  ];
-  const reviewerOptions = [
-    'Create Reviewer',
-    'View Reviewers',
-    'Edit Reviewer',
-    'Delete Reviewer',
-  ];
-  const editorOptions = [
-    'Create Editor',
-    'View Editors',
-    'Edit Editor',
-    'Delete Editor',
-  ];
-  const openAccessOptions = [
-    'Create OpenAccess',
-    'View OpenAccess',
-    'Edit OpenAccess',
-    'Delete OpenAccess',
-  ];
-  const editorialProcessOptions = [
-    'Create EditorialProcess',
-    'View EditorialProcesses',
-    'Edit EditorialProcess',
-    'Delete EditorialProcess',
-  ];
-  const ethicsOptions = [
-    'Create Ethics',
-    'View Ethics',
-    'Edit Ethics',
-    'Delete Ethics',
-  ];
-  const chargesOptions = [
-    'Create Charges',
-    'View Charges',
-    'Edit Charges',
-    'Delete Charges',
-  ];
-  const visibilityStatementOptions = [
-    'Create VisibilityStatement',
-    'View VisibilityStatements',
-    'Edit VisibilityStatement',
-    'Delete VisibilityStatement',
-  ];
-  const newsOptions = ['Create News', 'View News', 'Edit News', 'Delete News'];
-  const adminOptions = ['Create Admin', 'Delete Admin'];
-
-  const dropdownItems = [
-    {
-      content: 'Journals',
-      logo: <FaBookJournalWhills size={16} />,
-      options: expenseOptions,
-    },
-    { content: 'Volumes', logo: <FaBook size={16} />, options: volumeOptions },
-    {
-      content: 'Issues',
-      logo: <IoDocument size={18} />,
-      options: issuesOptions,
-    },
-    {
-      content: 'Papers',
-      logo: <IoIosPaper size={18} />,
-      options: papersOptions,
-    },
-    { content: 'Topics', logo: <MdTopic size={18} />, options: topicsOptions },
-    {
-      content: 'Admin Users',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: adminOptions,
-    },
-    {
-      content: 'News',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: newsOptions,
-    },
-    {
-      content: 'Slider',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: sliderOptions,
-    },
-    {
-      content: 'Submission',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: submissionOptions,
-    },
-    {
-      content: 'NewsLetter',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: newsletterOptions,
-    },
-    {
-      content: 'About',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: aboutOptions,
-    },
-    {
-      content: 'Contact',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: contactOptions,
-    },
-    {
-      content: 'Author',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: authorOptions,
-    },
-    {
-      content: 'Reviewer',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: reviewerOptions,
-    },
-    {
-      content: 'Editor',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: editorOptions,
-    },
-    {
-      content: 'OpenAccess',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: openAccessOptions,
-    },
-    {
-      content: 'EditorialProcess',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: editorialProcessOptions,
-    },
-    {
-      content: 'Ethics',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: ethicsOptions,
-    },
-    {
-      content: 'Charges',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: chargesOptions,
-    },
-    {
-      content: 'VisibilityStatement',
-      logo: <MdAdminPanelSettings size={18} />,
-      options: visibilityStatementOptions,
-    },
-  ];
 
   return (
     <div className="bg-white h-full w-full min-h-[100vh]">
-      <Navbar onClick={toggleSideBar} toggle={isOpen} />
+      <Navbar
+        onClick={toggleSideBar}
+        toggle={isOpen}
+        handleLogout={handleLogout}
+      />
       <div className="bg-white h-full w-full flex">
         <aside className="hidden md:flex flex-grow md:flex-grow-1 md:basis-[25%] gap-3">
           <div className="flex flex-col items-start p-4 w-full gap-5">
@@ -273,7 +97,7 @@ export default function Admin() {
             </div>
             {/* side bar content */}
             <div className="w-full">
-              {dropdownItems.map((item, index) => (
+              {DROPDOWN_OPTIONS.map((item, index) => (
                 <div key={index} className="py-2">
                   <DropDown
                     content={item.content}
@@ -304,9 +128,8 @@ export default function Admin() {
       {isOpen && (
         <div
           ref={sideBarRef}
-          className="flex absolute top-10 left-0 md:hidden h-screen flex-col items-start p-4 w-[60%] gap-5 bg-white"
+          className="flex absolute top-10 left-0 md:hidden min-h-screen flex-col items-start p-4 w-[60%] min-[500px]:w-[50%] gap-5 bg-white"
         >
-          {/* the header */}
           {/* dashboard */}
           <div className="flex items-center py-2 px-3.5">
             <span className="mr-2">
@@ -314,9 +137,8 @@ export default function Admin() {
             </span>
             <h1 className="text-slate-800 font-bold text-xl">Dashboard</h1>
           </div>
-          {/* Journals */}
           <div className="w-full">
-            {dropdownItems.map((item, index) => (
+            {DROPDOWN_OPTIONS.map((item, index) => (
               <div key={index} className="py-2">
                 <DropDown
                   content={item.content}
