@@ -118,9 +118,12 @@ export default function AccessJournals() {
             <hr />
           </ul>
         ))} */}
-        <p className="my-4 font-bold text-slate-800 hover:cursor-pointer hover:underline text-xs">
+        <Link
+          to={'/journals'}
+          className="my-4 font-bold text-slate-800 hover:cursor-pointer hover:underline text-xs"
+        >
           Explore All Journals...
-        </p>
+        </Link>
       </div>
     </div>
   );
