@@ -1,13 +1,15 @@
-import PropTypes from 'prop-types'; // No need to import { PropTypes }
+import PropTypes from 'prop-types';
 import { BiSolidError } from 'react-icons/bi';
 
 export default function Error({ title, text }) {
   return (
-    <div className="flex items-start bg-red-300 p-4 w-1/2 h-auto shadow-lg">
-      <BiSolidError size={30} color="red" />
-      <aside className="ml-2">
-        <p className="font-semibold">{title}</p>
-        <p>{text}</p>
+    <div className="flex items-start bg-red-50 border-l-4 border-red-500 p-4 rounded-r w-1/2 shadow-md">
+      <div className="flex-shrink-0 bg-red-100 p-2 rounded-full">
+        <BiSolidError size={24} className="text-red-600" />
+      </div>
+      <aside className="ml-3">
+        <p className="font-bold text-red-700">{title}</p>
+        <p className="text-red-600 mt-1 text-sm">{text}</p>
       </aside>
     </div>
   );
