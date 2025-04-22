@@ -1,23 +1,20 @@
 import { QueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { handleError } from './http';
 import { redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import AxiosHelper from '../services/http';
 
 export const queryClient = new QueryClient();
 
 const baseURL = 'https://ogbesomto.pythonanywhere.com/api';
 
-// export function getAuthToken() {
-//   const token = localStorage.getItem('authToken');
-//   return token;
-// }
+const api = new AxiosHelper();
 
 export function useAuthLoader() {
   const token = useSelector((state) => state.authentication.token);
   console.log(token);
   if (!token) {
-    console.log('redirecting to loginn');
+    console.log('redirecting to login');
     return redirect('/login');
   }
   return null;
@@ -30,15 +27,15 @@ export const loginUser = async ({ data }) => {
       console.log(response);
       return response.data;
     } else {
-      console.log('An error occured');
+      console.log('An error occurred');
     }
   } catch (error) {
-    handleError(error);
+    api.handleError(error);
   }
 };
 
-export const createAdmin = async ({data, token}) => {
-  console.log('authtokwn:', token);
+export const createAdmin = async ({ data, token }) => {
+  console.log('authToken:', token);
   try {
     const response = await axios.post(`${baseURL}/create_user`, data, {
       headers: {
@@ -55,7 +52,7 @@ export const createAdmin = async ({data, token}) => {
       return null; // Return null or handle it as needed
     }
   } catch (error) {
-    handleError(error);
+    api.handleError(error);
   }
 };
 
@@ -75,6 +72,6 @@ export const logout = async (token) => {
       return null; // Return null or handle it as needed
     }
   } catch (error) {
-    handleError(error);
+    api.handleError(error);
   }
 };

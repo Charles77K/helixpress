@@ -1,8 +1,7 @@
 import { SearchProvider } from './components/Context/SearchContext';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from './utils/http';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ToastContainer } from 'react-toastify';
-import { Fragment } from 'react';
 import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
 import routesConfig from './routes/routesConfig';
 import { Provider } from 'react-redux';
@@ -13,20 +12,30 @@ function AppRoutes() {
   return element;
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60000,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 function App() {
   return (
-    <div className="bg-white-500  min-h-screen">
+    <div className="bg-white-500 min-h-screen">
+      {/* Data and state management */}
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <SearchProvider>
-            <Fragment>
-              <ToastContainer />
-              <Router>
-                <AppRoutes />
-              </Router>
-            </Fragment>
+            {/* UI and routing */}
+            <ToastContainer />
+            <Router>
+              <AppRoutes />
+            </Router>
           </SearchProvider>
         </Provider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </div>
   );

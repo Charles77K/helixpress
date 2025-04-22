@@ -1,6 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { createSlider, queryClient } from '../../utils/http';
 import {
   Button,
   FileInput,
@@ -8,6 +6,7 @@ import {
   SelectInput,
 } from '../components/Inputs';
 import { toast } from 'react-toastify';
+import { useCreate } from '../../services/hooks';
 
 export default function CreateSlider() {
   const [formData, setFormData] = useState({
@@ -16,33 +15,30 @@ export default function CreateSlider() {
     pic: null,
   });
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data) => createSlider({ sliderData: data }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['sliders'],
-      });
-      toast.success('slder created successfully', {
-        autoClose: 2000,
-      });
-      setFormData({
-        title: '',
-        body: '',
-        pic: null,
-      });
-    },
-    onError: (error) => {
-      toast.error('something went wrong');
-      console.log(error);
-    },
-  });
+  const { mutate, isPending } = useCreate('/homesliders/');
 
+  // handle submit fn
   const handleSubmit = (e) => {
     e.preventDefault();
     const newForm = new FormData();
     Object.keys(formData).forEach((key) => newForm.append(key, formData[key]));
     console.log(newForm);
-    mutate(newForm);
+    mutate(newForm, {
+      onSuccess: () => {
+        toast.success('slider created successfully', {
+          autoClose: 2000,
+        });
+        setFormData({
+          title: '',
+          body: '',
+          pic: null,
+        });
+      },
+      onError: (error) => {
+        toast.error('something went wrong');
+        console.log(error);
+      },
+    });
   };
 
   const handleChange = (e) => {
