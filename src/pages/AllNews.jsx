@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
-import { useFetchNews } from '../admin/components/Tanstack';
 import Share from '../components/Share';
 import Error from '../utils/Error';
 import Search from './../components/homeComponents/Search';
+import { useFetch } from '../services/hooks';
 
 export default function AllNews() {
-  const { newsData, isNewsLoading, isNewsError } = useFetchNews();
+  const {
+    data: newsData,
+    isPending: isNewsLoading,
+    isError: isNewsError,
+  } = useFetch();
 
   let content;
 

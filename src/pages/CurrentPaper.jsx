@@ -1,10 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
-import { useFetchCurrentPaper } from '../admin/components/Tanstack';
 import Share from '../components/Share';
 import { News, Search } from '../components/homeComponents';
 import SkeletonArticle from '../components/SkeletonArticle';
 import Error from '../utils/Error';
 import { saveAs } from 'file-saver';
+import { useFetchById } from '../services/hooks';
 
 export default function CurrentPaper() {
   const { id } = useParams();
@@ -12,11 +12,11 @@ export default function CurrentPaper() {
     currentPaperData: item,
     isCurrentPaperError,
     isCurrentPaperLoading,
-  } = useFetchCurrentPaper(id);
+  } = useFetchById('/papers/', id);
 
   const handleDownload = async () => {
     try {
-      const baseUrl = 'https://ogbesomto.pythonanywhere.com/'; // Adjust this to your API’s base URL
+      const baseUrl = 'https://helixpress-backend.vercel.app/'; // Adjust this to your API’s base URL
       const documentUrl = `${baseUrl}${item.document}`;
 
       const response = await fetch(documentUrl);

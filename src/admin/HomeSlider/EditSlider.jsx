@@ -1,6 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
-import { editSlider, queryClient } from '../../utils/http';
 import {
   Button,
   FileInput,
@@ -8,10 +6,11 @@ import {
   SelectInput,
 } from '../components/Inputs';
 import { toast } from 'react-toastify';
-import { useFetchSlider } from '../components/Tanstack';
 import SelectComponent from '../components/SelectComponent';
 import Loader from '../../UI/Loader';
 import Error from '../../utils/Error';
+import { useFetch, useUpdate } from '../../services/hooks';
+import { baseURL } from '../../services/http';
 
 export default function EditSlider() {
   const [selectedSlider, setSelectedSlider] = useState('');
@@ -20,9 +19,13 @@ export default function EditSlider() {
     body: '',
     pic: null,
   });
-  const [imagePreview, setImagePreview] = useState('');
-  const { sliderData, isSliderLoading, isSliderError } = useFetchSlider();
   const imageRef = useRef(null);
+  const [imagePreview, setImagePreview] = useState('');
+  const {
+    data: sliderData,
+    isPending: isSliderLoading,
+    isError: isSliderError,
+  } = useFetch('/homesliders/');
 
   // When a slider is selected, populate the form and set image preview
   useEffect(() => {
@@ -36,23 +39,9 @@ export default function EditSlider() {
     }
   }, [selectedSlider]);
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: ({ data, id }) =>
-      editSlider({ sliderId: id, sliderData: data }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['sliders'] });
-      toast.success('Slider updated successfully', { autoClose: 2000 });
-      setFormData({ title: '', body: '', pic: null });
-      setSelectedSlider(null);
-      setImagePreview(null);
-      imageRef.current.value = '';
-    },
-    onError: (error) => {
-      toast.error('Something went wrong');
-      console.log(error);
-    },
-  });
+  const { mutate, isPending } = useUpdate('/homesliders/');
 
+  // onSubmit fn
   const handleSubmit = (e) => {
     e.preventDefault();
     const newForm = new FormData();
@@ -63,11 +52,26 @@ export default function EditSlider() {
         newForm.append(key, formData[key]);
       }
     });
-
-    console.log(newForm);
-    mutate({ data: newForm, id: selectedSlider.id });
+    // send data to the custom hook
+    mutate(
+      { id: selectedSlider.id, data: newForm },
+      {
+        onSuccess: () => {
+          toast.success('Slider updated successfully', { autoClose: 2000 });
+          setFormData({ title: '', body: '', pic: null });
+          setSelectedSlider(null);
+          setImagePreview(null);
+          imageRef.current.value = '';
+        },
+        onError: (error) => {
+          toast.error('Something went wrong');
+          console.log(error);
+        },
+      }
+    );
   };
 
+  // each time a new slider is selected change the selectedId
   const handleSliderChange = (e) => {
     const sliderId = e.target.value;
     const slider = sliderData.find((slider) => slider.id === sliderId);
@@ -135,7 +139,7 @@ export default function EditSlider() {
                 Current Picture
               </label>
               <img
-                src={`https://ogbesomto.pythonanywhere.com/${imagePreview}`}
+                src={`${baseURL}/${imagePreview}`}
                 alt="Preview"
                 className="w-32 h-auto max-w-xs"
               />

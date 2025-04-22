@@ -1,23 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
-import { getJournal } from './journalhttp';
 import Loader from '../UI/Loader';
 import Error from '../utils/Error';
 import { TiLockOpen } from 'react-icons/ti';
 import { RecentArticles } from '../components/homeComponents';
+import { useFetchById } from '../services/hooks';
 
 export default function CurrentJournal() {
   const { id } = useParams();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['journal', id],
-    queryFn: ({ signal, queryKey }) => {
-      const journalId = queryKey[1];
-      return getJournal({ signal, journalId });
-    },
-    staleTime: 1000 * 60 * 10,
-    gcTime: 1000 * 60 * 30,
-  });
+  const { data, isLoading, isError } = useFetchById('/journals/', id);
 
   let content;
   if (isLoading) {

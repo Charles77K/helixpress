@@ -3,45 +3,47 @@ import { useState } from 'react';
 import { MdDelete } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
-import { useFetchSlider } from '../components/Tanstack';
 import Loader from './../../UI/Loader';
 import Error from './../../utils/Error';
 import Modal from '../../UI/Modal';
-import { useMutation } from '@tanstack/react-query';
-import { deleteSlider, queryClient } from '../../utils/http';
+import { useDelete, useFetch } from '../../services/hooks';
 
 export default function DeleteSlider() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [sliderId, setSliderId] = useState('');
-  const { sliderData, isSliderError, isSliderLoading } = useFetchSlider();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (id) => deleteSlider({ sliderId: id }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['sliders'],
-      });
-      toast.success('Slider deleted successfully', {
-        autoClose: 3000,
-      });
-      setModalOpen(false);
-    },
-    onError: () => {
-      toast.error('An error occurred while deleting slider', {
-        autoClose: 3000,
-      });
-    },
-  });
+  // fetch slider data
+  const {
+    data: sliderData,
+    isPending: isSliderLoading,
+    isError: isSliderError,
+  } = useFetch('/homesliders/');
+
+  const { mutate, isPending } = useDelete('/homesliders/');
 
   const handleDelete = (id) => {
     setSliderId(id);
     setModalOpen(true);
   };
 
+  // confirm deletion from modal pop-up
   const handleConfirmDelete = () => {
-    mutate(sliderId);
+    mutate(sliderId, {
+      onSuccess: () => {
+        toast.success('Slider deleted successfully', {
+          autoClose: 3000,
+        });
+        setModalOpen(false);
+      },
+      onError: () => {
+        toast.error('An error occurred while deleting slider', {
+          autoClose: 3000,
+        });
+      },
+    });
   };
 
+  // onClose
   const handleCloseModal = () => {
     setModalOpen(false);
   };
@@ -90,7 +92,7 @@ export default function DeleteSlider() {
         </>
       </ul>
     ));
-  } else if (sliderData && !sliderData.length > 0) {
+  } else {
     content = <p className="text-gray-500">{'no slider found'}</p>;
   }
   return (

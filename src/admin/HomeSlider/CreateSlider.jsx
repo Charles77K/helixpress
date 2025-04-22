@@ -17,12 +17,23 @@ export default function CreateSlider() {
 
   const { mutate, isPending } = useCreate('/homesliders/');
 
+  // handle change event
+  const handleChange = (e) => {
+    const { name, value, files, type } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === 'file' ? files[0] : value,
+    }));
+  };
+
   // handle submit fn
   const handleSubmit = (e) => {
     e.preventDefault();
     const newForm = new FormData();
+    // append form key and values to newForm
     Object.keys(formData).forEach((key) => newForm.append(key, formData[key]));
-    console.log(newForm);
+
+    // mutate function
     mutate(newForm, {
       onSuccess: () => {
         toast.success('slider created successfully', {
@@ -41,13 +52,6 @@ export default function CreateSlider() {
     });
   };
 
-  const handleChange = (e) => {
-    const { name, value, files, type } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === 'file' ? files[0] : value,
-    }));
-  };
   return (
     <form className="p-4" onSubmit={handleSubmit}>
       <h2 className="text-slate-800 font-bold text-2xl mb-4">Create Slider</h2>

@@ -1,11 +1,14 @@
 // import React from 'react';
-
-import { useFetchSlider } from '../components/Tanstack';
+import { useFetch } from '../../services/hooks';
 import Loader from './../../UI/Loader';
 import Error from './../../utils/Error';
 
 export default function ViewSlider() {
-  const { sliderData, isSliderError, isSliderLoading } = useFetchSlider();
+  const {
+    data: sliderData,
+    isError: isSliderError,
+    isPending: isSliderLoading,
+  } = useFetch('/homesliders/');
 
   let content;
   if (isSliderLoading) {

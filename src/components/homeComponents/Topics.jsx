@@ -1,13 +1,17 @@
 import { useState } from 'react';
 
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { useFetchTopics } from '../../admin/components/Tanstack';
 import Error from '../../utils/Error';
 import { Link } from 'react-router-dom';
+import { useFetch } from '../../services/hooks';
 
 export default function Topics() {
   const [isOpen, setIsOpen] = useState(false);
-  const { topicsData, isTopicsLoading, isTopicsError } = useFetchTopics();
+  const {
+    data: topicsData,
+    isLoading: isTopicsLoading,
+    isError: isTopicsError,
+  } = useFetch();
 
   let content;
   if (isTopicsLoading) {

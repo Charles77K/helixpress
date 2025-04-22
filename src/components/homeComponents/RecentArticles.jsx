@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { useFetchAllPapers } from '../../admin/components/Tanstack';
 import Error from '../../utils/Error';
 import SkeletonArticle from './../SkeletonArticle';
 import { Link } from 'react-router-dom';
 import { FaFilePdf } from 'react-icons/fa';
+import { useFetch } from '../../services/hooks';
 
 export default function RecentArticles() {
   // Track the open state for each article
@@ -13,7 +13,11 @@ export default function RecentArticles() {
   //   Array(ARTICLES.length).fill(false)
   // );
   const [isOpen, setIsOpen] = useState(false);
-  const { papersData, isPapersLoading, isPapersError } = useFetchAllPapers();
+  const {
+    data: papersData,
+    isPending: isPapersLoading,
+    isError: isPapersError,
+  } = useFetch('/papers/');
 
   let content;
   if (isPapersLoading) {

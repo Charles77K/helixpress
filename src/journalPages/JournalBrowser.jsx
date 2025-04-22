@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import SelectComponent from '../admin/components/SelectComponent';
-import { useFetchIssues, useFetchVolumes } from '../admin/components/Tanstack';
 import Loader from '../UI/Loader';
 import Error from '../utils/Error';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import { useFetchById } from '../services/hooks';
 
 export default function JournalBrowser({ journalId }) {
   const [volumeId, setVolumeId] = useState('');
@@ -14,13 +14,16 @@ export default function JournalBrowser({ journalId }) {
     issue: '',
   });
 
-  const { volumeData, isVolumeLoading, isVolumeError } = useFetchVolumes({
-    id: journalId,
-  });
+  const {
+    data: volumeData,
+    isLoading: isVolumeLoading,
+    iisError: isVolumeError,
+  } = useFetchById('/journals/:id/volumes', journalId);
 
-  const { issuesData, isIssuesError, isIssuesLoading } = useFetchIssues({
-    id: volumeId,
-  });
+  const { issuesData, isIssuesError, isIssuesLoading } = useFetchById(
+    '/volumes/:id/issues',
+    volumeId
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;

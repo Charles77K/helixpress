@@ -21,10 +21,7 @@ import {
   Librarians,
 } from '../components/infoComponents';
 import MainLayout from './MainLayout';
-import AdminLayout from './AdminLayout';
 import Login from '../pages/Login';
-import Admin from '../admin/Admin';
-import ProtectedRoute from './ProtectedRoute';
 import JournalPage from '../journalPages/JournalPage';
 import CurrentJournal from '../journalPages/CurrentJournal';
 import AllNews from '../pages/AllNews';
@@ -84,12 +81,12 @@ const routesConfig = [
     path: '/login',
     element: <Login />,
   },
-  {
-    path: '/admin',
-    element: <AdminLayout />,
-    // loader: checkAuthLoader,
-    children: [{ path: '', element: <ProtectedRoute element={<Admin />} /> }],
-  },
+  // {
+  //   path: '/admin',
+  //   element: <AdminLayout />,
+  //   // loader: checkAuthLoader,
+  //   children: [{ path: '', element: <ProtectedRoute element={<Admin />} /> }],
+  // },
 ];
 
 export default routesConfig;

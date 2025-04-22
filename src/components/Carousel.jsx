@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useFetchSlider } from '../admin/components/Tanstack';
+import { useFetch } from '../services/hooks';
 import Error from '../utils/Error';
 
 const Carousel = () => {
-  const { sliderData, isSliderError, isSliderLoading } = useFetchSlider();
+  const {
+    data: sliderData,
+    isError: isSliderError,
+    isPending: isSliderLoading,
+  } = useFetch();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -18,7 +22,7 @@ const Carousel = () => {
     );
   } else if (isSliderError) {
     content = (
-      <div className="flex justify-center">
+      <div className="flex-center">
         <Error text={'Error fetching slider!'} title={'Error'} />
       </div>
     );

@@ -1,12 +1,12 @@
 import React from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { useFetchJournals } from '../../admin/components/Tanstack';
 import Error from '../../utils/Error';
 import { Link } from 'react-router-dom';
+import { useFetch } from '../../services/hooks';
 
 export default function JournalsBySubject() {
   const [isSubjectListOpen, setIsSubjectListOpen] = React.useState(false);
-  const { data, isError, isLoading } = useFetchJournals();
+  const { data, isError, isLoading } = useFetch('/journals');
 
   let content;
 

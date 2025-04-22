@@ -1,22 +1,13 @@
 import { Outlet, Link, useParams } from 'react-router-dom';
 import { News, Search } from '../components/homeComponents';
 import Share from '../components/Share';
-import { useQuery } from '@tanstack/react-query';
-import { getJournal } from './journalhttp';
 import JournalBrowser from './JournalBrowser';
+import { useFetchById } from '../services/hooks';
 
 export default function JournalPage() {
   const { name, id } = useParams();
 
-  const { data } = useQuery({
-    queryKey: ['journal', id],
-    queryFn: ({ signal, queryKey }) => {
-      const journalId = queryKey[1];
-      return getJournal({ signal, journalId });
-    },
-    staleTime: 1000 * 60 * 10,
-    gcTime: 1000 * 60 * 30,
-  });
+  const { data } = useFetchById('/journals', id);
 
   return (
     <div className="bg-slate-100">

@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { useFetchNews } from './../../admin/components/Tanstack';
 import Error from '../../utils/Error';
 import { Link } from 'react-router-dom';
+import { useFetch } from '../../services/hooks';
 export default function News() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { isNewsError, isNewsLoading, newsData } = useFetchNews();
+  const {
+    isError: isNewsError,
+    isLoading: isNewsLoading,
+    data: newsData,
+  } = useFetch('/news/');
 
   let content;
 

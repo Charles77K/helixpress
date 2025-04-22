@@ -28,7 +28,7 @@ export const useFetch = (endpoint, params = {}, options = {}) => {
  */
 export const useFetchById = (endpoint, id, options = {}) => {
   return useQuery({
-    queryKey: [endpoint, id],
+    queryKey: [endpoint.replace(':id', id), id],
     queryFn: () => api.getById(endpoint, id),
     // Only run the query if we have an ID
     enabled: !!id,
@@ -64,7 +64,7 @@ export const useUpdate = (endpoint, options = {}) => {
 
   return useMutation({
     // Expect an object with id and data properties
-    mutationFn: ({ id, data }) => api.update(endpoint, id, data),
+    mutationFn: ({ id, data }) => api.patch(endpoint, id, data),
     onSuccess: (_, variables) => {
       // After updating, refresh queries for this item and list
       queryClient.invalidateQueries({ queryKey: [endpoint, variables.id] });

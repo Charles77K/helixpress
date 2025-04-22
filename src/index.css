@@ -23,3 +23,16 @@
 }
  */
 
+@layer utilities {
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+
+  .flex-col-center {
+    @apply flex flex-col items-center justify-center;
+  }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+}

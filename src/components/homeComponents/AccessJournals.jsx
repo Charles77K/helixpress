@@ -3,14 +3,14 @@ import { SelectInput } from './Search';
 // import { SUBJECTS } from './DUMMY_FILES';
 
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { useFetchJournals } from '../../admin/components/Tanstack';
 import { Link } from 'react-router-dom';
 import Error from '../../utils/Error';
+import { useFetch } from '../../services/hooks';
 
 export default function AccessJournals() {
   const [journal, setJournal] = useState('');
   const [isOpen, setIsOpen] = useState(false); // State to control dropdown visibility
-  const { data, isError, isLoading } = useFetchJournals();
+  const { data, isError, isLoading } = useFetch('/journals');
 
   function handleChange(event) {
     setJournal(event.target.value);

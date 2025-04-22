@@ -94,7 +94,10 @@ class AxiosHelper {
    */
   async getById(endpoint, id, params = {}) {
     try {
-      const response = await this.client.get(`${endpoint}/${id}`, { params });
+      const url = endpoint.includes(':id')
+        ? endpoint.replace(':id', id)
+        : `${endpoint}/${id}`;
+      const response = await this.client.get(url, { params });
       return response.data;
     } catch (error) {
       throw this.handleError(error);

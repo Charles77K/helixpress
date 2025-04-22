@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { useFetchJournals } from '../../admin/components/Tanstack';
+import { useFetch } from '../../services/hooks';
 
 export default function ActiveJournals() {
-  const { data, isError, isLoading } = useFetchJournals();
+  const { data, isError, isPending } = useFetch('/journals');
   let content;
 
-  if (isLoading) {
+  if (isPending) {
     content = (
       <div className="animate-pulse">
         {Array.from({ length: 7 }).map((_, index) => (

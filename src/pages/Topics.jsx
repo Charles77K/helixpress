@@ -5,7 +5,7 @@ import { Search } from '../components/homeComponents';
 import { inputStyle, SelectInput } from '../components/homeComponents/Search';
 import { BiSolidMessageError } from 'react-icons/bi';
 import Error from '../utils/Error';
-import { useFetchTopics } from '../admin/components/Tanstack';
+import { useFetch } from '../services/hooks';
 
 const TOPICS = [
   '  Biology & Life Sciences',
@@ -31,7 +31,11 @@ const DEADLINE = [
   { value: 'Number', label: 'Number of Articles' },
 ];
 export default function Topics() {
-  const { topicsData, isTopicsLoading, isTopicsError } = useFetchTopics();
+  const {
+    data: topicsData,
+    isPending: isTopicsLoading,
+    isError: isTopicsError,
+  } = useFetch('/topics');
 
   let content;
 
