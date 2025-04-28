@@ -110,7 +110,11 @@ export default function Topics() {
       </ul>
     ));
   } else {
-    content = <p>No papers found</p>;
+    content = (
+      <div className="flex-center py-12">
+        <p>No Topics found</p>
+      </div>
+    );
   }
 
   const [results, setResults] = React.useState('');

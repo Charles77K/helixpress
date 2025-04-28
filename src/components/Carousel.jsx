@@ -7,7 +7,7 @@ const Carousel = () => {
     data: sliderData,
     isError: isSliderError,
     isPending: isSliderLoading,
-  } = useFetch();
+  } = useFetch('/homesliders/');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 

@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export const baseURL = 'https://helixpress-backend.vercel.app/api/v1'; // Use base URL
+export const BASEURL = 'https://helixpress-backend.vercel.app/';
+
+const baseURL = 'https://helixpress-backend.vercel.app/api/v1'; // Use base URL
 
 class AxiosHelper {
   constructor(defaultHeaders = {}) {

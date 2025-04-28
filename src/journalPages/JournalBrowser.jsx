@@ -64,7 +64,7 @@ export default function JournalBrowser({ journalId }) {
         } md:block`}
       >
         {/* Volume */}
-        <SelectComponent
+        {/* <SelectComponent
           isError={isVolumeError}
           isLoading={isVolumeLoading}
           chooseStyle="block w-full md:w-full p-2 bg-gray-100 border border-gray-300 rounded"
@@ -75,10 +75,10 @@ export default function JournalBrowser({ journalId }) {
           optionValue={(volume) => volume.number}
           options={volumeData}
           value={formData.volume}
-        />
+        /> */}
 
         {/* Issue */}
-        <SelectComponent
+        {/* <SelectComponent
           isError={isIssuesError}
           isLoading={isIssuesLoading}
           chooseStyle="block w-full p-2 bg-gray-100 border border-gray-300 rounded"
@@ -89,7 +89,7 @@ export default function JournalBrowser({ journalId }) {
           optionValue={(issue) => issue.number}
           options={issuesData}
           value={formData.issue}
-        />
+        /> */}
 
         <button
           type="submit"

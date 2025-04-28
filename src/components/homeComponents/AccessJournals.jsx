@@ -1,16 +1,25 @@
 import { useState } from 'react';
 import { SelectInput } from './Search';
-// import { SUBJECTS } from './DUMMY_FILES';
 
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import Error from '../../utils/Error';
 import { useFetch } from '../../services/hooks';
 
+const journalOptions = [
+  { value: 'biology', label: 'Biology' },
+  { value: 'english', label: 'English' },
+  { value: 'maths', label: 'Maths' },
+  { value: 'physics', label: 'Physics' },
+];
+
+const inputStyle =
+  'my-3 lg:w-50 lg:block hidden w-60 border-slate-800 text-[12px] text-slate-800 border-solid border border-slate-400 placeholder:placeholder-custom-gray placeholder:text-[12px] px-4 py-1 rounded-md items-center focus:outline-none';
+
 export default function AccessJournals() {
   const [journal, setJournal] = useState('');
   const [isOpen, setIsOpen] = useState(false); // State to control dropdown visibility
-  const { data, isError, isLoading } = useFetch('/journals');
+  const { data, isError, isLoading } = useFetch('/journals/');
 
   function handleChange(event) {
     setJournal(event.target.value);
@@ -72,16 +81,6 @@ export default function AccessJournals() {
     content = <p className="text-center text-gray-500">No journals found.</p>;
   }
 
-  const journalOptions = [
-    { value: 'biology', label: 'Biology' },
-    { value: 'english', label: 'English' },
-    { value: 'maths', label: 'Maths' },
-    { value: 'physics', label: 'Physics' },
-  ];
-
-  const inputStyle =
-    'my-3 lg:w-50 lg:block hidden w-60 border-slate-800 text-[12px] text-slate-800 border-solid border border-slate-400 placeholder:placeholder-custom-gray placeholder:text-[12px] px-4 py-1 rounded-md items-center focus:outline-none';
-
   return (
     <div className="p-4 bg-white">
       {/* Header and Toggle Button */}
@@ -108,16 +107,9 @@ export default function AccessJournals() {
           options={journalOptions}
           className={inputStyle}
         />
-        {content}
-        {/* {SUBJECTS.map((subject, index) => (
-          <ul key={index} className="flex flex-col gap-2 mt-3 text-xs">
-            <li className="flex gap-3 items-center">
-              <img src={subject.img} className="w-10 h-10" />
-              <p>{subject.topic}</p>
-            </li>
-            <hr />
-          </ul>
-        ))} */}
+        {/* journal content */}
+        <div>{content}</div>
+
         <Link
           to={'/journals'}
           className="my-4 font-bold text-slate-800 hover:cursor-pointer hover:underline text-xs"

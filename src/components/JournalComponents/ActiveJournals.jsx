@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom';
 import { useFetch } from '../../services/hooks';
 
 export default function ActiveJournals() {
-  const { data, isError, isPending } = useFetch('/journals');
+  const { data, isError, isPending } = useFetch('/journals/');
   let content;
 
   if (isPending) {
     content = (
-      <div className="animate-pulse">
+      <>
         {Array.from({ length: 7 }).map((_, index) => (
           <tr
             key={index}
@@ -40,7 +40,7 @@ export default function ActiveJournals() {
             </td>
           </tr>
         ))}
-      </div>
+      </>
     );
   } else if (data && data.length > 0) {
     content = data.map((item, index) => (
@@ -99,6 +99,9 @@ export default function ActiveJournals() {
       </tr>
     );
   }
+
+  // For debugging purposes
+  console.log('Data received:', data);
 
   return (
     <div className="flex p-4 gap-2 overflow-hidden flex-col items-start justify-center text-slate-700 max-w-[60rem] bg-white">

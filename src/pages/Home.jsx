@@ -7,13 +7,12 @@ import {
   Search,
   Topics,
   Special,
-  SelectedCollectios,
+  SelectedCollections,
   JournalsBySubject,
 } from '../components/homeComponents';
 import Carousel from '../components/Carousel';
 // import { IMAGES } from '../components/DOCS';
 import HighlyAccessed from '../components/homeComponents/HighlyAccessed';
-import { BLOGS } from '../components/homeComponents/DUMMY_FILES';
 
 export default function Home() {
   return (
@@ -39,10 +38,10 @@ export default function Home() {
         {/* Last section */}
         <section className="flex-grow md:flex-grow-[1] md:basis-1/4 min-w-[10rem] w-full flex flex-col gap-3">
           <News />
-          <BlogPosts title={'Blog Posts'} blogs={BLOGS} />
+          <BlogPosts />
           <Topics />
           <Special />
-          <SelectedCollectios />
+          <SelectedCollections />
         </section>
       </div>
       {/* journals by subject */}

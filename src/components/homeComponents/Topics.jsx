@@ -11,7 +11,7 @@ export default function Topics() {
     data: topicsData,
     isLoading: isTopicsLoading,
     isError: isTopicsError,
-  } = useFetch();
+  } = useFetch('/topics/');
 
   let content;
   if (isTopicsLoading) {
@@ -66,6 +66,12 @@ export default function Topics() {
         <hr className="my-3"></hr>
       </ul>
     ));
+  } else {
+    content = (
+      <div className="">
+        <p className="text-slate-800 text-sm">No topics found</p>
+      </div>
+    );
   }
 
   return (

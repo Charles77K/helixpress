@@ -4,6 +4,7 @@ import Error from '../utils/Error';
 import { TiLockOpen } from 'react-icons/ti';
 import { RecentArticles } from '../components/homeComponents';
 import { useFetchById } from '../services/hooks';
+import { BASEURL } from '../services/http';
 
 export default function CurrentJournal() {
   const { id } = useParams();
@@ -22,10 +23,7 @@ export default function CurrentJournal() {
   } else if (data && !data.length > 0) {
     content = (
       <div className="text-sm">
-        <img
-          src={`https://ogbesomto.pythonanywhere.com/${data.pic}`}
-          className="w-full h-auto md:h-[23rem]"
-        />
+        <img src={`${data.pic}`} className="w-full h-auto md:h-[23rem]" />
         {/* journal description */}
         <h2 className="font-bold text-xl p-3">Journal Description</h2>
 
