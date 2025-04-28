@@ -15,6 +15,9 @@ export default {
       animation: {
         scroll: 'scroll 20s linear infinite',
       },
+      colors: {
+        primary: 'text-slate-700',
+      },
     },
   },
   plugins: [],

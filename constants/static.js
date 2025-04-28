@@ -62,7 +62,7 @@ export const NAV_LINKS = [
       { title: 'Careers', path: '/journals/sub3' },
       { title: 'News', path: '/about/news' },
       { title: 'Press', path: '/journals/sub3' },
-      { title: 'Blogs', path: '/journals/sub3' },
+      { title: 'Blogs', path: 'blogs' },
     ],
   },
 ];

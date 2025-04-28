@@ -4,7 +4,6 @@ import Error from '../utils/Error';
 import { TiLockOpen } from 'react-icons/ti';
 import { RecentArticles } from '../components/homeComponents';
 import { useFetchById } from '../services/hooks';
-import { BASEURL } from '../services/http';
 
 export default function CurrentJournal() {
   const { id } = useParams();

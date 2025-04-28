@@ -15,7 +15,7 @@ import {
   Editors,
   Institutional,
   Publishers,
-  Reasearch,
+  Research,
   Reviewers,
   Societies,
   Librarians,
@@ -26,6 +26,7 @@ import JournalPage from '../journalPages/JournalPage';
 import CurrentJournal from '../journalPages/CurrentJournal';
 import AllNews from '../pages/AllNews';
 import CurrentPaper from '../pages/CurrentPaper';
+import Blogs from '../pages/Blogs';
 
 const routesConfig = [
   {
@@ -68,13 +69,17 @@ const routesConfig = [
           { path: 'program', element: <Institutional /> },
           { path: 'editors', element: <Editors /> },
           { path: 'access', element: <AccessPolicy /> },
-          { path: 'research', element: <Reasearch /> },
+          { path: 'research', element: <Research /> },
           { path: 'article', element: <Articles /> },
           { path: 'editorial', element: <Editorial /> },
         ],
       },
       { path: 'information/librarians', element: <Librarians /> },
       { path: 'information/societies', element: <Societies /> },
+      {
+        path: '/blogs',
+        element: <Blogs />,
+      },
     ],
   },
   {
