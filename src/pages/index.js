@@ -4,5 +4,22 @@ import Topics from './Topics';
 import Contact from './Contact';
 import About from './About';
 import Information from './Information';
+import Submission from './Submission';
+import Blogs from './Blogs';
+import AllNews from './AllNews';
+import CurrentPaper from './CurrentPaper';
+import Login from './Login';
 
-export { Home, Journals, Topics, Contact, About, Information };
+export {
+  Home,
+  Journals,
+  Topics,
+  Contact,
+  About,
+  Information,
+  Blogs,
+  Submission,
+  AllNews,
+  CurrentPaper,
+  Login,
+};

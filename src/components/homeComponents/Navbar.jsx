@@ -106,9 +106,11 @@ const Navbar = () => {
             Sign In/Sign Up
           </Link>
           {/* create a submission */}
-          <button className="bg-slate-600 px-4 py-1.5 rounded-lg text-white text-xs hover:bg-slate-800 transition-bg ease-in-out duration-200">
-            Submit
-          </button>
+          <Link to="/submission">
+            <button className="bg-slate-600 px-4 py-1.5 rounded-lg text-white text-xs hover:bg-slate-800 transition-bg ease-in-out duration-200">
+              Submit
+            </button>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}

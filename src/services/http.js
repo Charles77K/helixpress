@@ -181,6 +181,19 @@ class AxiosHelper {
       throw this.handleError(error);
     }
   }
+  /**
+   * Performs a custom request
+   * @param {endpoint} string - the full api endpoint
+   * @returns {Promise} - Promise resolving to the response data
+   */
+  async customGet(endpoint) {
+    try {
+      const response = await axios.get(endpoint);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
 }
 
 export default AxiosHelper;

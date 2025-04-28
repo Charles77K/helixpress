@@ -1,5 +1,16 @@
 // routesConfig.js
-import { Home, About, Contact, Information, Topics, Journals } from '../pages';
+import {
+  Home,
+  About,
+  Contact,
+  Information,
+  Topics,
+  Journals,
+  Submission,
+  CurrentPaper,
+  AllNews,
+  Blogs,
+} from '../pages';
 import {
   FindJournal,
   JournalProposal,
@@ -21,12 +32,8 @@ import {
   Librarians,
 } from '../components/infoComponents';
 import MainLayout from './MainLayout';
-import Login from '../pages/Login';
 import JournalPage from '../journalPages/JournalPage';
 import CurrentJournal from '../journalPages/CurrentJournal';
-import AllNews from '../pages/AllNews';
-import CurrentPaper from '../pages/CurrentPaper';
-import Blogs from '../pages/Blogs';
 
 const routesConfig = [
   {
@@ -80,12 +87,16 @@ const routesConfig = [
         path: '/blogs',
         element: <Blogs />,
       },
+      {
+        path: '/submission',
+        element: <Submission />,
+      },
     ],
   },
-  {
-    path: '/login',
-    element: <Login />,
-  },
+  // {
+  //   path: '/login',
+  //   element: <Login />,
+  // },
   // {
   //   path: '/admin',
   //   element: <AdminLayout />,
