@@ -1,8 +1,9 @@
-import { useState, useMemo, useCallback } from 'react';
-import { useCreate, useFetch, useFetchCustom } from '../services/hooks';
-import { Button, Input, SelectInput } from '../UI/index';
+import { useState, useCallback } from 'react';
+import { useCreate, useFetch } from '../services/hooks';
+import { Button, FileInput, Input, SelectInput } from '../UI/index';
 import { validateField } from '../utils/SubmissionValidation';
 import { toast } from 'react-toastify';
+import { COUNTRIES } from '../../constants/static';
 
 const initialState = {
   firstname: '',
@@ -12,6 +13,8 @@ const initialState = {
   institution: '',
   country: '',
   journal: '',
+  manuscript: null,
+  supplementary: null,
   status: 'pending',
 };
 
@@ -23,6 +26,8 @@ const initialErrors = {
   institution: '',
   country: '',
   journal: '',
+  manuscript: '',
+  supplementary: null,
 };
 
 const Submission = () => {
@@ -33,20 +38,26 @@ const Submission = () => {
   const { data: journals, isPending: isJournalLoading } =
     useFetch('/journals/');
 
-  const { data: countries, isPending: isCountryPending } = useFetchCustom(
-    'https://restcountries.com/v3.1/all?fields=name,cca2'
-  );
-
-  const { mutate, isPending } = useCreate('/submission/');
+  const { mutate, isPending } = useCreate('/submissions/');
 
   // Enhanced change handler with input type handling
   const handleChange = useCallback(
     (e) => {
-      const { name, value, type } = e.target;
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: type === 'number' ? Number(value) : value,
-      }));
+      const { name, value, type, files } = e.target;
+
+      //  handler for file inputs
+      if (type === 'file') {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: files[0] || null,
+        }));
+        // handler for normal string inputs
+      } else {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: type === 'number' ? Number(value) : value,
+        }));
+      }
 
       // Clear error once user starts typing again
       if (errors[name]) {
@@ -86,6 +97,7 @@ const Submission = () => {
     return isValid;
   }, [formData]);
 
+  // On Submit function
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
@@ -97,7 +109,19 @@ const Submission = () => {
         return;
       }
 
-      mutate(formData, {
+      // Create a new FormData instance
+      const form = new FormData();
+
+      // Append each form field to the FormData object
+      Object.keys(formData).forEach((key) => {
+        // Only append if the value is not null or undefined
+        if (formData[key] !== null && formData[key] !== undefined) {
+          form.append(key, formData[key]);
+        }
+      });
+
+      // tanstack mutate fn for form submission
+      mutate(form, {
         onSuccess: () => {
           toast.success('Submission uploaded successfully');
           setFormData(initialState);
@@ -116,19 +140,6 @@ const Submission = () => {
     [formData, mutate, validateForm]
   );
 
-  // Sort countries alphabetically
-  const sortedCountries = useMemo(
-    () =>
-      isCountryPending
-        ? []
-        : [...countries].sort((a, b) => {
-            const nameA = a.name.common.toUpperCase();
-            const nameB = b.name.common.toUpperCase();
-            return nameA.localeCompare(nameB);
-          }),
-    [countries, isCountryPending]
-  );
-
   // Helper to check if form is in process
   const isProcessing = isPending || isSubmitting;
 
@@ -143,6 +154,7 @@ const Submission = () => {
           onSubmit={handleSubmit}
           className="flex flex-col gap-4"
           aria-label="Submission form"
+          encType="multipart/form-data"
         >
           {/* First and Last Name */}
           <div className="grid grid-cols-1 md:grid-cols-2 w-full items-center gap-3">
@@ -227,17 +239,29 @@ const Submission = () => {
             disabled={isProcessing}
           />
 
+          <FileInput
+            name={'manuscript'}
+            label={'Manuscript'}
+            onChange={handleChange}
+            accept=".pdf,.docx"
+          />
+          <FileInput
+            name={'supplementary'}
+            label={'Supplementary'}
+            onChange={handleChange}
+            accept=".pdf,.docx"
+          />
+
           {/* Country */}
           <SelectInput
             label="Country"
             name="country"
             onChange={handleChange}
             onBlur={handleBlur}
-            options={sortedCountries}
+            options={COUNTRIES}
             value={formData.country}
-            isLoading={isCountryPending}
-            optionLabel="name.common"
-            optionValue="name.common"
+            optionLabel="option"
+            optionValue="value"
             error={errors.country}
             required
             aria-required="true"

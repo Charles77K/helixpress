@@ -1,24 +1,16 @@
 import { useState } from 'react';
-import { SelectInput } from './homeComponents/Search';
 import { Link } from 'react-router-dom';
+import { useFetch } from '../services/hooks';
+import { Input, SelectInput } from '../UI';
 
 const Footer = () => {
   const [journal, setJournal] = useState('');
+  const { data, isPending } = useFetch('/journals/');
   const [email, setEmail] = useState('');
-
-  const journalOptions = [
-    { value: 'biology', label: 'Biology' },
-    { value: 'english', label: 'English' },
-    { value: 'maths', label: 'Maths' },
-    { value: 'physics', label: 'Physics' },
-  ];
 
   const handleChange = (e) => {
     setJournal(e.target.value);
   };
-
-  const inputStyle =
-    'my-3 w-60 border-slate-800 text-[12px] text-slate-800 border-solid border border-slate-400 placeholder:placeholder-custom-gray placeholder:text-[12px] px-4 py-1 rounded-md items-center focus:outline-none';
 
   const containerStyle = 'flex flex-col items-start gap-2';
 
@@ -30,21 +22,24 @@ const Footer = () => {
             <img src="/helixFooter.png" className="w-36 h-10 md:h-10 md:w-40" />
             <h4 className="text-sm text-white max-w-[18rem]">
               Subscribe to receive issue release notifications and newsletters
-              from MDPI journals
+              from Helixpress journals
             </h4>
             <SelectInput
               value={journal}
               onChange={handleChange}
+              name={'journal'}
               placeholder={'All Journals'}
-              options={journalOptions}
-              className={inputStyle}
+              optionLabel={'name'}
+              optionValue={'id'}
+              options={data}
+              isLoading={isPending}
             />
-            <input
+            <Input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
+              name={'email'}
               placeholder={'Your email address'}
-              className={inputStyle}
             />
             <button className="bg-[#404040] px-3 py-2 text-sm text-white rounded-md">
               Subscribe
@@ -62,10 +57,10 @@ const Footer = () => {
               Open Access Policy
             </Link>
             <Link className="text-xs font-bold hover:underline">
-              Contact MDPI
+              Contact Helixpress
             </Link>
             <Link className="text-xs font-bold hover:underline">
-              Jobs at MDPI
+              Jobs at Helixpress
             </Link>
           </section>
           <section className={containerStyle}>
@@ -90,10 +85,10 @@ const Footer = () => {
             </Link>
           </section>
           <section className={containerStyle}>
-            <h2 className="font-bold">MDPI Initiatives</h2>
+            <h2 className="font-bold">Helixpress Initiatives</h2>
             <Link className="text-xs font-bold hover:underline">Sciforum</Link>
             <Link className="text-xs font-bold hover:underline">
-              MDPI Books
+              Helixpress Books
             </Link>
             <Link className="text-xs font-bold hover:underline">
               Preprints.org
@@ -111,7 +106,7 @@ const Footer = () => {
             </Link>
           </section>
           <section className={containerStyle}>
-            <h2 className="font-bold">Follow MDPI</h2>
+            <h2 className="font-bold">Follow Helixpress</h2>
             <Link className="text-xs font-bold hover:underline">LinkedIn</Link>
             <Link className="text-xs font-bold hover:underline">Facebook</Link>
             <Link className="text-xs font-bold hover:underline">Twitter</Link>
@@ -120,7 +115,7 @@ const Footer = () => {
       </div>
       <div className="bg-[#404040] flex justify-between px-7 py-5 flex-wrap gap-5">
         <p className="text-xs text-white">
-          © 1996-2024 MDPI (Basel, Switzerland) unless otherwise stated
+          © 1996-2024 Helixpress (Basel, Switzerland) unless otherwise stated
         </p>
         <section className="flex gap-5 text-white text-[10px] md:text-xs">
           <Link className="font-bold hover:underline">Disclaimer</Link>

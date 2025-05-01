@@ -8,10 +8,6 @@ import { FaFilePdf } from 'react-icons/fa';
 import { useFetch } from '../../services/hooks';
 
 export default function RecentArticles() {
-  // Track the open state for each article
-  // const [openStates, setOpenStates] = useState(
-  //   Array(ARTICLES.length).fill(false)
-  // );
   const [isOpen, setIsOpen] = useState(false);
   const {
     data: papersData,
@@ -29,7 +25,7 @@ export default function RecentArticles() {
   } else if (isPapersError) {
     content = (
       <div className="flex justify-center">
-        <Error text="An Error occured while fetching paper" title="Error!!" />
+        <Error text="An Error occurred while fetching paper" title="Error!!" />
       </div>
     );
   } else if (papersData && papersData.length > 0) {

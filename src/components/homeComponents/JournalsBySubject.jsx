@@ -6,7 +6,7 @@ import { useFetch } from '../../services/hooks';
 
 export default function JournalsBySubject() {
   const [isSubjectListOpen, setIsSubjectListOpen] = React.useState(false);
-  const { data, isError, isLoading } = useFetch('/journals');
+  const { data, isError, isLoading } = useFetch('/journals/');
 
   let content;
 

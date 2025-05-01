@@ -2,34 +2,12 @@ import React from 'react';
 
 import { GiShare } from 'react-icons/gi';
 import { Search } from '../components/homeComponents';
-import { inputStyle, SelectInput } from '../components/homeComponents/Search';
 import { BiSolidMessageError } from 'react-icons/bi';
 import Error from '../utils/Error';
 import { useFetch } from '../services/hooks';
+import { DEADLINE, RESULTS, TOPICS } from '../../constants/static';
+import { SelectInput } from '../UI';
 
-const TOPICS = [
-  '  Biology & Life Sciences',
-  'Business & Economics',
-  'Chemistry & Materials Science',
-  'Computer Science & Mathematics',
-  'Engineering',
-  'Environmental & Earth Sciences',
-  'Medicine & Pharmacology',
-  'Physical Sciences',
-  'Social Sciences, Arts and Humanities',
-  'Public Health & Healthcare',
-  'All Disciplines',
-];
-const RESULTS = [
-  { value: '15', label: '15 Results per Page' },
-  { value: '50', label: '50 Results per Page' },
-  { value: '100', label: '100 Results per Page' },
-];
-const DEADLINE = [
-  { value: 'deadline', label: 'Submission Deadline' },
-  { value: 'times', label: 'Times Viewed' },
-  { value: 'Number', label: 'Number of Articles' },
-];
 export default function Topics() {
   const {
     data: topicsData,
@@ -154,17 +132,18 @@ export default function Topics() {
               </div>
               <div className="space-x-3">
                 <SelectInput
-                  className={inputStyle}
                   onChange={(e) => setResults(e.target.value)}
                   value={results}
-                  placeholder={'Select Prefered Result'}
                   options={RESULTS}
+                  optionLabel={'label'}
+                  optionValue={'value'}
                 />
                 <SelectInput
-                  className={inputStyle}
                   onChange={(e) => setDeadline(e.target.value)}
                   value={deadline}
                   placeholder={'Select Deadline'}
+                  optionLabel={'label'}
+                  optionValue={'value'}
                   options={DEADLINE}
                 />
               </div>

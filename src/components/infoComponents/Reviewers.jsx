@@ -1,6 +1,6 @@
 import React from 'react';
-import { SelectInput } from '../homeComponents/Search';
 import { REVIEWERS_GUIDE } from '../DOCS';
+import { SelectInput } from '../../UI';
 
 export default function Reviewers() {
   const [journal, setJournal] = React.useState('');
@@ -16,9 +16,6 @@ export default function Reviewers() {
     { value: 'physics', label: 'Physics' },
   ];
 
-  const inputStyle =
-    'my-3 w-full lg:block my-2 border-slate-800 text-[12px] text-slate-800 border-solid border border-slate-400 placeholder:placeholder-custom-gray placeholder:text-[12px] px-4 py-1 rounded-md items-center focus:outline-none';
-
   return (
     <div className="bg-white p-8 flex flex-col gap-10">
       <div>
@@ -27,10 +24,10 @@ export default function Reviewers() {
         </h1>
         <p className="text-xs leading-5">
           “We are sincerely grateful to scholars who give their time to
-          peer-review articles submitted to MDPI journals. Rigorous peer-review
-          is the cornerstone of high-quality academic publishing.”
+          peer-review articles submitted to helixpress journals. Rigorous
+          peer-review is the cornerstone of high-quality academic publishing.”
         </p>
-        <p className="text-xs leading-5">— The MDPI editorial team.</p>
+        <p className="text-xs leading-5">— The helixpress editorial team.</p>
       </div>
 
       <div>
@@ -42,7 +39,8 @@ export default function Reviewers() {
           onChange={handleChange}
           placeholder={'All Journals'}
           options={journalOptions}
-          className={inputStyle}
+          optionValue={'label'}
+          optionLabel={'label'}
         />
         <p className="space-x-3">
           <span className="px-5 py-1 text-center hover:bg-slate-700 hover:cursor-pointer border-2 text-slate-800 bg-white-100 md:w-56 w-40 rounded-md hover:text-stone-100 text-xs">
@@ -77,8 +75,8 @@ export default function Reviewers() {
         </h1>
         <p className="text-xs leading-5 my-3">
           Peer review is an essential part of the publication process and it
-          ensures that MDPI maintains the highest quality standards for its
-          published papers. All manuscripts submitted to our journals are
+          ensures that helixpress maintains the highest quality standards for
+          its published papers. All manuscripts submitted to our journals are
           strictly and thoroughly peer-reviewed by experts.
         </p>
         <p className="text-xs leading-5">
@@ -107,8 +105,8 @@ export default function Reviewers() {
         </h1>
         <p className="text-xs leading-5 my-3">
           Peer review is an essential part of the publication process and it
-          ensures that MDPI maintains the highest quality standards for its
-          published papers. All manuscripts submitted to our journals are
+          ensures that helixpress maintains the highest quality standards for
+          its published papers. All manuscripts submitted to our journals are
           strictly and thoroughly peer-reviewed by experts.
         </p>
         <p className="text-xs leading-5">

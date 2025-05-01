@@ -9,6 +9,7 @@ import Blogs from './Blogs';
 import AllNews from './AllNews';
 import CurrentPaper from './CurrentPaper';
 import Login from './Login';
+import SearchPage from './SearchPage';
 
 export {
   Home,
@@ -22,4 +23,5 @@ export {
   AllNews,
   CurrentPaper,
   Login,
+  SearchPage,
 };

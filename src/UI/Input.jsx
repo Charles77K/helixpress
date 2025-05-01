@@ -15,9 +15,11 @@ export default function Input({
 }) {
   return (
     <div>
-      <label className="block text-gray-700 text-sm font-semibold mb-1">
-        {label}
-      </label>
+      {label && (
+        <label className="block text-gray-700 text-sm font-semibold mb-1">
+          {label}
+        </label>
+      )}
       <input
         type={type}
         name={name}
@@ -31,18 +33,20 @@ export default function Input({
         )}
         {...props}
       />
-      <p className="text-xs min-h-[11px] text-red-600 mt-1">{error || ''}</p>
+      {error && (
+        <p className="text-xs min-h-[11px] text-red-600 mt-1">{error || ''}</p>
+      )}
     </div>
   );
 }
 
 Input.propTypes = {
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  type: PropTypes.string,
+  label: PropTypes.string,
   value: PropTypes.any,
   placeholder: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   onBlur: PropTypes.func,
   className: PropTypes.string,
   error: PropTypes.string,

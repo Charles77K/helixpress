@@ -10,6 +10,7 @@ import {
   CurrentPaper,
   AllNews,
   Blogs,
+  SearchPage,
 } from '../pages';
 import {
   FindJournal,
@@ -90,6 +91,10 @@ const routesConfig = [
       {
         path: '/submission',
         element: <Submission />,
+      },
+      {
+        path: '/search',
+        element: <SearchPage />,
       },
     ],
   },

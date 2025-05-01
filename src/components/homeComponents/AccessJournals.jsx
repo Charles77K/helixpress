@@ -1,20 +1,10 @@
 import { useState } from 'react';
-import { SelectInput } from './Search';
 
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import Error from '../../utils/Error';
 import { useFetch } from '../../services/hooks';
-
-const journalOptions = [
-  { value: 'biology', label: 'Biology' },
-  { value: 'english', label: 'English' },
-  { value: 'maths', label: 'Maths' },
-  { value: 'physics', label: 'Physics' },
-];
-
-const inputStyle =
-  'my-3 lg:w-50 lg:block hidden w-60 border-slate-800 text-[12px] text-slate-800 border-solid border border-slate-400 placeholder:placeholder-custom-gray placeholder:text-[12px] px-4 py-1 rounded-md items-center focus:outline-none';
+import { SelectInput } from '../../UI';
 
 export default function AccessJournals() {
   const [journal, setJournal] = useState('');
@@ -104,8 +94,11 @@ export default function AccessJournals() {
           value={journal}
           onChange={handleChange}
           placeholder={'All Journals'}
-          options={journalOptions}
-          className={inputStyle}
+          options={data}
+          name={'journal'}
+          isLoading={isLoading}
+          optionLabel={'name'}
+          optionValue={'id'}
         />
         {/* journal content */}
         <div>{content}</div>

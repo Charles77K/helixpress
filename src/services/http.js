@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const BASEURL = 'https://helixpress-backend.vercel.app/';
 
-const baseURL = 'https://helixpress-backend.vercel.app/api/v1'; // Use base URL
+const baseURL = 'https://somto042.pythonanywhere.com/api/v1'; // Use base URL
 
 class AxiosHelper {
   constructor(defaultHeaders = {}) {
@@ -12,6 +12,14 @@ class AxiosHelper {
         'Content-Type': 'application/json',
         ...defaultHeaders,
       },
+    });
+
+    // remove content type when needed
+    this.client.interceptors.request.use((config) => {
+      if (config.data instanceof FormData) {
+        delete config.headers['Content-Type']; // Let browser set it
+      }
+      return config;
     });
 
     // add interceptors for auth token
@@ -61,9 +69,11 @@ class AxiosHelper {
         `Request failed with status code ${error.response.status}`;
       errorResponse.status = error.response.status;
       errorResponse.data = error.response.data;
+      console.log(error.response.data);
     } else if (error.request) {
       // The request was made but no response was received
       errorResponse.message = 'No response received from server';
+      console.log(errorResponse.message);
     } else {
       // Something else caused the error
       errorResponse.message = error.message;
