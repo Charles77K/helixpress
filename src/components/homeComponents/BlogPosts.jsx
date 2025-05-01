@@ -13,8 +13,13 @@ export default function BlogPosts() {
 
   if (isLoading) {
     content = (
-      <div>
-        <p>Loading...</p>
+      <div className="animate-pulse space-y-4">
+        {Array.from({ length: 4 }).map((_, idx) => (
+          <ul key={idx}>
+            <p className="w-1/2 h-3 bg-gray-200 rounded"></p>
+            <p className="w-full h-5 bg-gray-200 mt-1 rounded"></p>
+          </ul>
+        ))}
       </div>
     );
   } else if (isError) {
@@ -28,8 +33,8 @@ export default function BlogPosts() {
       <ul key={index}>
         <li className="text-xs">
           <p className="my-1 text-black">{formatDate(item.date_created)}</p>
-          <Link to={`blog/${item.id}`}>
-            <p className="text-black font-semibold hover:underline">
+          <Link to={`/blogs/${item.id}`}>
+            <p className="text-black font-medium hover:underline">
               {item.title}
             </p>
           </Link>

@@ -6,10 +6,10 @@ export function cn(...inputs) {
 }
 
 export const formatDate = (date) => {
-  const newDate = new Date(date).toLocaleDateString('en-us', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-  return newDate;
+  const d = new Date(date);
+  const day = String(d.getDate()).padStart(2);
+  const month = d.toLocaleDateString('en-us', { month: 'long' });
+  const year = d.getFullYear();
+
+  return `${day}, ${month}, ${year}`;
 };

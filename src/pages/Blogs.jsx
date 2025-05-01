@@ -31,7 +31,7 @@ const Blogs = () => {
         {blogs.map((blog, index) => (
           <div key={blog.id || index}>
             <img src={blog.pic} alt="Blog-Image" className="w-80 h-52" />
-            <Link to={`blog/${blog.id}`} className="hover:underline">
+            <Link to={`${blog.id}`} className="hover:underline">
               <p className="text-lg font-light mt-2">{blog.title}</p>
             </Link>
             {/* Add more blog properties here as needed */}

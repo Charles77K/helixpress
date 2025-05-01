@@ -31,8 +31,8 @@ export default function Search() {
       } md:flex-row md:px-10 md:gap-10 px-4 py-4 flex-col flex-wrap md:flex w-full bg-white items-center gap-2`}
     >
       <div className="flex-col flex md:flex-row items-center gap-2">
-        <p className="text-slate-800 text-sm sm:text-base font-semibold">
-          Search for Journal:
+        <p className="text-slate-800 text-sm sm:text-base font-medium">
+          Search for Articles:
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 items-center gap-2 sm:gap-5">
           <Input

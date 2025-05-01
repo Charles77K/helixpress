@@ -107,7 +107,6 @@ class AxiosHelper {
       if (!id) {
         throw new Error('ID is required');
       }
-
       const url = endpoint.includes(':id')
         ? endpoint.replace(':id', id)
         : `${endpoint}/${id}`;

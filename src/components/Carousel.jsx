@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useFetch } from '../services/hooks';
 import Error from '../utils/Error';
+import NotFound from './NotFound';
 
 const Carousel = () => {
   const {
@@ -56,13 +57,12 @@ const Carousel = () => {
                 {index === currentIndex && (
                   <>
                     <img
-                      src={`https://ogbesomto.pythonanywhere.com/${slide.pic}`} // Assuming `pic` contains the image URL
+                      src={slide.pic} // Assuming `pic` contains the image URL
                       alt={slide.title}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute bottom-0 left-0 right-0 bg-teal-600 bg-opacity-75 text-white p-4">
+                    <div className="absolute bottom-10 left-0 right-0 bg-teal-600 w-fit bg-opacity-75 text-white p-4">
                       <h3 className="font-semibold text-lg">{slide.title}</h3>
-                      <p className="text-sm">{slide.body}</p>
                     </div>
                   </>
                 )}
@@ -95,7 +95,7 @@ const Carousel = () => {
       </div>
     );
   } else {
-    content = <p className="text-center text-gray-500">No data available</p>;
+    content = <NotFound label="Slider" />;
   }
 
   useEffect(() => {
@@ -107,7 +107,7 @@ const Carousel = () => {
     return () => clearInterval(intervalId);
   }, [currentIndex, isPaused, sliderData]);
 
-  return <>{content}</>;
+  return <div className="bg-white">{content}</div>;
 };
 
 export default Carousel;

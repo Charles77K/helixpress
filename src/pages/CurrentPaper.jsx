@@ -1,17 +1,22 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Share from '../components/Share';
+import useScrollToTop from '../utils/scrollToTop';
 import { News, Search } from '../components/homeComponents';
 import SkeletonArticle from '../components/SkeletonArticle';
 import Error from '../utils/Error';
 import { saveAs } from 'file-saver';
 import { useFetchById } from '../services/hooks';
+import NotFound from '../components/NotFound';
 
 export default function CurrentPaper() {
+  useScrollToTop();
   const { id } = useParams();
+  const navigate = useNavigate();
   const {
-    currentPaperData: item,
-    isCurrentPaperError,
-    isCurrentPaperLoading,
+    data: item,
+    isError: isCurrentPaperError,
+    isPending: isCurrentPaperLoading,
+    refetch,
   } = useFetchById('/papers/', id);
 
   const handleDownload = async () => {
@@ -39,7 +44,11 @@ export default function CurrentPaper() {
   } else if (isCurrentPaperError) {
     content = (
       <div className="flex justify-center">
-        <Error text="An Error occurred while fetching paper" title="Error!!" />
+        <Error
+          text="An Error occurred while fetching paper"
+          title="Error!!"
+          onRetry={() => refetch()}
+        />
       </div>
     );
   } else if (item && item.length !== 0) {
@@ -106,9 +115,11 @@ export default function CurrentPaper() {
     );
   } else {
     content = (
-      <div className="flex justify-center">
-        <p>No paper found</p>
-      </div>
+      <NotFound
+        label="Paper"
+        actionText={'Go Back'}
+        onAction={() => navigate(-1)}
+      />
     );
   }
 

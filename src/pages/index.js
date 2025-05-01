@@ -12,6 +12,7 @@ import Login from './Login';
 import SearchPage from './SearchPage';
 import BlogPage from './BlogPage';
 import NewsPage from './NewsPage';
+import TopicPage from './TopicPage';
 
 export {
   Home,
@@ -28,4 +29,5 @@ export {
   SearchPage,
   BlogPage,
   NewsPage,
+  TopicPage,
 };

@@ -39,11 +39,13 @@ export default function News() {
       </div>
     );
   } else if (newsData && newsData.length > 0) {
-    content = newsData.map((item, index) => (
-      <ul key={index} className="text-xs">
+    content = newsData.map((item) => (
+      <ul key={item.id} className="text-xs">
         <li className="flex flex-col items-start">
           <p className="my-1">{formatDate(item.date_created)}</p>
-          <p className="font-bold">{item.title}</p>
+          <Link to={`about/news/${item.id}`} className="hover:underline">
+            <p className="font-bold">{item.title}</p>
+          </Link>
         </li>
         <hr className="my-3"></hr>
       </ul>

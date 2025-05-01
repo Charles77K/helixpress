@@ -79,7 +79,7 @@ export default function AllNews() {
         </div>
         {/* Share Section */}
         <div className="bg-white p-6 hidden md:block">
-          <Share linkToShare={'https://mdpi.com/about/news'} />
+          <Share linkToShare={'about/news'} />
         </div>
       </div>
     </div>
