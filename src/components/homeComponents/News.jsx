@@ -3,14 +3,18 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import Error from '../../utils/Error';
 import { Link } from 'react-router-dom';
 import { useFetch } from '../../services/hooks';
+import { formatDate } from '../../utils/utils';
+
 export default function News() {
   const [isOpen, setIsOpen] = useState(false);
 
   const {
     isError: isNewsError,
     isLoading: isNewsLoading,
-    data: newsData,
+    data,
   } = useFetch('/news/');
+
+  const newsData = !isNewsLoading && data.results;
 
   let content;
 
@@ -38,14 +42,8 @@ export default function News() {
     content = newsData.map((item, index) => (
       <ul key={index} className="text-xs">
         <li className="flex flex-col items-start">
-          <p className="my-1">
-            {new Date(item.date_created).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </p>
-          <p className="font-bold">{item.body}</p>
+          <p className="my-1">{formatDate(item.date_created)}</p>
+          <p className="font-bold">{item.title}</p>
         </li>
         <hr className="my-3"></hr>
       </ul>

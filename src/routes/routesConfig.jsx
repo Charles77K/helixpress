@@ -11,6 +11,8 @@ import {
   AllNews,
   Blogs,
   SearchPage,
+  BlogPage,
+  NewsPage,
 } from '../pages';
 import {
   FindJournal,
@@ -47,7 +49,7 @@ const routesConfig = [
         element: <About />,
       },
       { path: '/about/news', element: <AllNews /> },
-      { path: '/about/news/:id', element: <AllNews /> },
+      { path: '/about/news/:id', element: <NewsPage /> },
       { path: '/about/contact', element: <Contact /> },
       { path: '/topics', element: <Topics /> },
       { path: '/paper/:id', element: <CurrentPaper /> },
@@ -87,6 +89,10 @@ const routesConfig = [
       {
         path: '/blogs',
         element: <Blogs />,
+      },
+      {
+        path: '/blog/:id',
+        element: <BlogPage />,
       },
       {
         path: '/submission',

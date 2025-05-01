@@ -63,23 +63,21 @@ class AxiosHelper {
     };
 
     if (error.response) {
-      // Server responded with a non-2xx status code
       errorResponse.message =
         error.response.data.message ||
         `Request failed with status code ${error.response.status}`;
       errorResponse.status = error.response.status;
       errorResponse.data = error.response.data;
-      console.log(error.response.data);
     } else if (error.request) {
-      // The request was made but no response was received
       errorResponse.message = 'No response received from server';
-      console.log(errorResponse.message);
     } else {
-      // Something else caused the error
       errorResponse.message = error.message;
     }
 
-    return errorResponse;
+    const customError = new Error(errorResponse.message);
+    customError.status = errorResponse.status;
+    customError.data = errorResponse.data;
+    return customError;
   }
 
   /**
@@ -106,6 +104,10 @@ class AxiosHelper {
    */
   async getById(endpoint, id, params = {}) {
     try {
+      if (!id) {
+        throw new Error('ID is required');
+      }
+
       const url = endpoint.includes(':id')
         ? endpoint.replace(':id', id)
         : `${endpoint}/${id}`;

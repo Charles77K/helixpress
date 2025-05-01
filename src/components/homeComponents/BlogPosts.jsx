@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { useFetch } from '../../services/hooks';
+import { formatDate } from '../../utils/utils';
+import { Link } from 'react-router-dom';
 
 export default function BlogPosts() {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: blogs, isError, isLoading } = useFetch('/blogs/');
+  const { data, isError, isLoading } = useFetch('/blogs/');
+  const blogs = !isLoading && data.results;
 
   let content;
 
@@ -24,8 +27,12 @@ export default function BlogPosts() {
     content = blogs.map((item, index) => (
       <ul key={index}>
         <li className="text-xs">
-          <p className="my-1">{item.date_created}</p>
-          <p>{item.body}</p>
+          <p className="my-1 text-black">{formatDate(item.date_created)}</p>
+          <Link to={`blog/${item.id}`}>
+            <p className="text-black font-semibold hover:underline">
+              {item.title}
+            </p>
+          </Link>
         </li>
         <hr className="my-2"></hr>
       </ul>
@@ -52,9 +59,12 @@ export default function BlogPosts() {
       >
         {content}
       </div>
-      <p className="text-xs text-slate-500 font-bold hover:underline hover:cursor-pointer hidden md:block">
+      <Link
+        to="/blogs"
+        className="text-xs text-slate-500 font-bold hover:underline hover:cursor-pointer hidden md:block"
+      >
         More From Our Blog..
-      </p>
+      </Link>
     </div>
   );
 }

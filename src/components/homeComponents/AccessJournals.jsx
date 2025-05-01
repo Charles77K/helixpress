@@ -46,7 +46,7 @@ export default function AccessJournals() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <img
-                  src={`https://ogbesomto.pythonanywhere.com/${journal.pic}`}
+                  src={journal.pic}
                   className="h-9 w-9"
                   alt={`${journal.name || 'N/A'}`}
                 />
@@ -68,7 +68,11 @@ export default function AccessJournals() {
       </ul>
     ));
   } else {
-    content = <p className="text-center text-gray-500">No journals found.</p>;
+    content = (
+      <div className="flex-center text-sm">
+        <p className="text-center text-gray-500">No journals found.</p>
+      </div>
+    );
   }
 
   return (

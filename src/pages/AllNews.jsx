@@ -6,10 +6,12 @@ import { useFetch } from '../services/hooks';
 
 export default function AllNews() {
   const {
-    data: newsData,
+    data,
     isPending: isNewsLoading,
     isError: isNewsError,
-  } = useFetch();
+  } = useFetch('/news/');
+
+  const newsData = !isNewsLoading && data.results;
 
   let content;
 
@@ -45,7 +47,7 @@ export default function AllNews() {
         >
           <Link to={`/about/news/${news.id}`}>
             <li className="text-slate-700 font-bold hover:underline cursor-pointer">
-              {news.body}
+              {news.title}
             </li>
           </Link>
           <li className="text-slate-800">
