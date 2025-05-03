@@ -2,8 +2,8 @@ import { Link, useParams } from 'react-router-dom';
 import Loader from '../UI/Loader';
 import Error from '../utils/Error';
 import { TiLockOpen } from 'react-icons/ti';
-import { RecentArticles } from '../components/homeComponents';
 import { useFetchById } from '../services/hooks';
+import JournalArticles from './JournalArticles';
 
 export default function CurrentJournal() {
   const { id } = useParams();
@@ -19,15 +19,16 @@ export default function CurrentJournal() {
     );
   } else if (isError) {
     content = <Error text={'Error fetching journals'} title={'Error!!'} />;
-  } else if (data && !data.length > 0) {
+  } else if (data) {
     content = (
       <div className="text-sm">
-        <img src={`${data.pic}`} className="w-full h-auto md:h-[23rem]" />
+        {data.pic && (
+          <img src={`${data.pic}`} className="w-full h-auto md:h-[23rem]" />
+        )}
         {/* journal description */}
-        <h2 className="font-bold text-xl p-3">Journal Description</h2>
 
         <div className={'flex flex-col items-start gap-4 p-4'}>
-          <p className="text-slate-800 font-bold text-2xl italic">
+          <p className="text-black font-semibold text-2xl italic">
             {data.name}
           </p>
           <p className="text-[13px] font-normal">{data.about}</p>
@@ -87,7 +88,7 @@ export default function CurrentJournal() {
     <div className="w-full">
       <div className="bg-white">{content}</div>
       <div className="mt-5">
-        <RecentArticles />
+        <JournalArticles journalId={id} />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFetchById } from '../services/hooks';
+import useScrollToTop from '../utils/scrollToTop';
 import PropTypes from 'prop-types';
 import Seo from '../components/Seo';
 import { Search } from '../components/homeComponents';
@@ -11,6 +12,7 @@ import { formatDate } from '../utils/utils';
 const TopicPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  useScrollToTop();
   const { data, isPending, isError, error, refetch } = useFetchById(
     '/topics/',
     id

@@ -1,5 +1,3 @@
-// SelectComponent.js
-// import React from 'react';
 import PropTypes from 'prop-types';
 
 const SelectComponent = ({
@@ -32,22 +30,29 @@ const SelectComponent = ({
         multiple={multiple}
         disabled={isDisabled}
       >
-        <option value="" disabled>
-          Select {label}
-        </option>
-        {isLoading && <option value={'loading'}>Loading...</option>}
-        {isError && <option value={'error'}>Error fetching data...</option>}
-        {options ? (
-          options.map((option, index) => (
-            <option
-              key={option.id ? option.id : index}
-              value={optionValue(option)}
-            >
-              {optionMain(option) ? optionMain(option) : `no ${label} found`}
-            </option>
-          ))
+        <option value="">Select {label}</option>
+        {isLoading && <option value="loading">Loading...</option>}
+        {isError && <option value="error">Error fetching data...</option>}
+
+        {Array.isArray(options) ? (
+          options.length > 0 ? (
+            options.map((option, index) => (
+              <option
+                key={option.id ?? index}
+                value={optionValue ? optionValue(option) : option.id}
+              >
+                {optionMain
+                  ? optionMain(option)
+                  : option.name ?? `No ${label} name`}
+              </option>
+            ))
+          ) : (
+            <option value="no-items">No {label} Found</option>
+          )
+        ) : options ? (
+          <option value={options.id}>{options.name ?? options}</option>
         ) : (
-          <option value={'no-items'}>No {label} Found</option>
+          <option value="no-items">No {label} Found</option>
         )}
       </select>
     </div>
@@ -55,20 +60,23 @@ const SelectComponent = ({
 };
 
 SelectComponent.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.any,
-      name: PropTypes.string,
-    })
-  ),
+  options: PropTypes.oneOfType([
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.any,
+        name: PropTypes.string,
+      })
+    ),
+    PropTypes.object,
+  ]),
   value: PropTypes.any.isRequired,
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   isLoading: PropTypes.bool,
   isError: PropTypes.bool,
-  isDisabled: PropTypes.any,
-  optionValue: PropTypes.func.isRequired,
-  optionMain: PropTypes.func.isRequired,
+  isDisabled: PropTypes.bool,
+  optionValue: PropTypes.func,
+  optionMain: PropTypes.func,
   name: PropTypes.string.isRequired,
   multiple: PropTypes.bool,
   chooseStyle: PropTypes.string,

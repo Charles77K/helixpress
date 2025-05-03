@@ -1,15 +1,41 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useFetch } from '../services/hooks';
+import { useCreate, useFetch } from '../services/hooks';
 import { Input, SelectInput } from '../UI';
+import { toast } from 'react-toastify';
+import Spinner from '../UI/Spinner';
+
+const initialState = {
+  journal: '',
+  email: '',
+};
 
 const Footer = () => {
-  const [journal, setJournal] = useState('');
+  const [formData, setFormData] = useState(initialState);
   const { data, isPending } = useFetch('/journals/');
-  const [email, setEmail] = useState('');
+  const { mutate, isPending: isSending } = useCreate('/newsletters/');
 
   const handleChange = (e) => {
-    setJournal(e.target.value);
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    mutate(formData, {
+      onSuccess: () => {
+        toast.success('Successfully subscribed', {
+          autoClose: 2000,
+        });
+        setFormData(initialState);
+      },
+      onError: (error) => {
+        toast.error(`${error || 'An unexpected error occurred'}`);
+      },
+    });
   };
 
   const containerStyle = 'flex flex-col items-start gap-2';
@@ -24,27 +50,36 @@ const Footer = () => {
               Subscribe to receive issue release notifications and newsletters
               from Helixpress journals
             </h4>
-            <SelectInput
-              value={journal}
-              onChange={handleChange}
-              name={'journal'}
-              placeholder={'All Journals'}
-              optionLabel={'name'}
-              optionValue={'id'}
-              options={data}
-              isLoading={isPending}
-            />
-            <Input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              name={'email'}
-              placeholder={'Your email address'}
-            />
-            <button className="bg-[#404040] px-3 py-2 text-sm text-white rounded-md">
-              Subscribe
-            </button>
+            <form className="space-y-3" onSubmit={handleSubmit}>
+              <SelectInput
+                value={formData.journal}
+                onChange={handleChange}
+                name={'journal'}
+                placeholder={'All Journals'}
+                optionLabel={'name'}
+                optionValue={'id'}
+                options={data}
+                isLoading={isPending}
+              />
+              <Input
+                value={formData.email}
+                onChange={handleChange}
+                type="email"
+                className={'w-full'}
+                name={'email'}
+                placeholder={'Your email address'}
+              />
+              <button
+                type="submit"
+                disabled={isPending}
+                className="bg-[#404040] px-3 py-2 text-sm text-white rounded-md disabled:cursor-not-allowed"
+              >
+                {isSending ? <Spinner /> : 'Subscribe'}
+              </button>
+            </form>
           </section>
+
+          {/* further information */}
           <section className={containerStyle}>
             <h2 className="font-bold">Further Information</h2>
             <Link className="text-xs font-bold hover:underline">
@@ -63,6 +98,8 @@ const Footer = () => {
               Jobs at Helixpress
             </Link>
           </section>
+
+          {/* Guidelines */}
           <section className={containerStyle}>
             <h2 className="font-bold">Guidelines</h2>
             <Link className="text-xs font-bold hover:underline">
@@ -84,6 +121,8 @@ const Footer = () => {
               For Conference Organizers
             </Link>
           </section>
+
+          {/* Initiatives */}
           <section className={containerStyle}>
             <h2 className="font-bold">Helixpress Initiatives</h2>
             <Link className="text-xs font-bold hover:underline">Sciforum</Link>
@@ -105,6 +144,8 @@ const Footer = () => {
               Proceeding Series
             </Link>
           </section>
+
+          {/* Our socials */}
           <section className={containerStyle}>
             <h2 className="font-bold">Follow Helixpress</h2>
             <Link className="text-xs font-bold hover:underline">LinkedIn</Link>
@@ -113,7 +154,8 @@ const Footer = () => {
           </section>
         </div>
       </div>
-      <div className="bg-[#404040] flex justify-between px-7 py-5 flex-wrap gap-5">
+
+      {/* <div className="bg-[#404040] flex justify-between px-7 py-5 flex-wrap gap-5">
         <p className="text-xs text-white">
           © 1996-2024 Helixpress (Basel, Switzerland) unless otherwise stated
         </p>
@@ -124,7 +166,7 @@ const Footer = () => {
           </Link>
           <Link className="font-bold hover:underline">Privacy Policy</Link>
         </section>
-      </div>
+      </div> */}
     </div>
   );
 };

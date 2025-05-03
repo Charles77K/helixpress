@@ -5,11 +5,12 @@ import { Link } from 'react-router-dom';
 import Error from '../../utils/Error';
 import { useFetch } from '../../services/hooks';
 import { SelectInput } from '../../UI';
+import NotFound from '../NotFound';
 
 export default function AccessJournals() {
   const [journal, setJournal] = useState('');
   const [isOpen, setIsOpen] = useState(false); // State to control dropdown visibility
-  const { data, isError, isLoading } = useFetch('/journals/');
+  const { data, isError, isLoading, refetch } = useFetch('/journals/');
 
   function handleChange(event) {
     setJournal(event.target.value);
@@ -30,9 +31,11 @@ export default function AccessJournals() {
     );
   } else if (isError) {
     content = (
-      <div className="flex justify-center">
-        <Error title="Error!" text="Error fetching journals" />
-      </div>
+      <Error
+        title="Error!"
+        text="Error fetching journals"
+        onRetry={() => refetch()}
+      />
     );
   } else if (data && data.length > 0) {
     content = data.map((journal, index) => (
@@ -47,14 +50,14 @@ export default function AccessJournals() {
               <div className="flex items-center space-x-3">
                 <img
                   src={journal.pic}
-                  className="h-9 w-9"
+                  className="h-9 w-9 text-xs"
                   alt={`${journal.name || 'N/A'}`}
                 />
                 <p className="text-sm font-bold hover:underline">
                   {journal.name || 'N/A'}
                 </p>
               </div>
-              <div className="rounded-full h-12 w-12 bg-yellow-400 text-slate-800 opacity-0 group-hover:opacity-100 flex transition-all duration-300 ease-in-out justify-center items-center flex-col">
+              <div className="rounded-full flex-shrink-0 h-12 w-12 bg-yellow-400 text-slate-800 opacity-0 group-hover:opacity-100 flex-center flex-col transition-all duration-300 ease-in-out ">
                 <p className="text-[7px] font-bold text-center">
                   IMPACT FACTOR
                 </p>
@@ -68,11 +71,7 @@ export default function AccessJournals() {
       </ul>
     ));
   } else {
-    content = (
-      <div className="flex-center text-sm">
-        <p className="text-center text-gray-500">No journals found.</p>
-      </div>
-    );
+    content = <NotFound label="Journal" />;
   }
 
   return (

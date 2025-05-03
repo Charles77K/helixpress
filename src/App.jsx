@@ -1,4 +1,5 @@
 import { SearchProvider } from './components/Context/SearchContext';
+import ErrorBoundary from './utils/ErrorBoundary';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ToastContainer } from 'react-toastify';
@@ -34,7 +35,9 @@ function App() {
               {/* UI and routing */}
               <ToastContainer />
               <Router>
-                <AppRoutes />
+                <ErrorBoundary>
+                  <AppRoutes />
+                </ErrorBoundary>
               </Router>
             </SearchProvider>
           </Provider>

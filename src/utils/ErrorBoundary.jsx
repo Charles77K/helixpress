@@ -1,42 +1,33 @@
-import { Component } from 'react';
+// ErrorBoundary.jsx
+import React from 'react';
 
-class ErrorBoundary extends Component {
+class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null, errorInfo: null };
+    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error) {
-    // Update state to indicate an error occurred
-    return { hasError: true, error };
+    return { hasError: true, error }; // Update state to trigger fallback UI
   }
 
-  componentDidCatch(error, errorInfo) {
-    // Log error details for debugging purposes
-    console.error('Error captured by ErrorBoundary:', error);
-    console.error('Error info:', errorInfo);
+  componentDidCatch(error, info) {
+    console.error('ErrorBoundary caught an error:', error, info); // You can log to external services here
   }
 
   render() {
     if (this.state.hasError) {
-      // Customize the fallback UI (can be anything you want)
       return (
-        <div
-          style={{
-            padding: '20px',
-            textAlign: 'center',
-            backgroundColor: '#f8d7da',
-            color: '#721c24',
-            border: '1px solid #f5c6cb',
-          }}
-        >
-          <h2>Oops! Something went wrong.</h2>
-          <p>Please try again later.</p>
+        <div className="p-4 text-center">
+          <h1 className="text-2xl font-bold text-red-500">
+            Something went wrong.
+          </h1>
+          <p className="text-gray-600">{this.state.error?.toString()}</p>
         </div>
       );
     }
 
-    return this.props.children; // Render the children components if no error
+    return this.props.children;
   }
 }
 

@@ -7,7 +7,6 @@ import {
   Search,
   Topics,
   Special,
-  SelectedCollections,
   JournalsBySubject,
 } from '../components/homeComponents';
 import Carousel from '../components/Carousel';
@@ -41,7 +40,7 @@ export default function Home() {
           <BlogPosts />
           <Topics />
           <Special />
-          <SelectedCollections />
+          {/* <SelectedCollections /> */}
         </section>
       </div>
       {/* journals by subject */}

@@ -17,7 +17,7 @@ export default function JournalPage() {
         <section className="flex-grow md:flex-grow-[1] md:basis-1/4 min-w-[10rem] w-full flex flex-col gap-3">
           <nav className="bg-white p-6">
             <h1 className="text-slate-700 text-xl font-bold">
-              Heli Express Journals
+              Helixpress Journals
             </h1>
             <ul className="space-y-2 text-xs">
               <li>
@@ -64,7 +64,7 @@ export default function JournalPage() {
         {/* Last section */}
         <section className="hidden flex-grow md:flex-grow-[1] md:basis-[25%] min-w-[10rem] w-full md:flex flex-col">
           <News />
-          <Share linkToShare={'https://www.mdpi.com/about/journals/'} />
+          <Share linkToShare={'about/journals/'} />
         </section>
       </div>
     </div>

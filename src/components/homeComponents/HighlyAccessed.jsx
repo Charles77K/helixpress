@@ -4,6 +4,7 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { useFetch } from '../../services/hooks';
 import { formatDate } from '../../utils/utils';
 import Error from '../../utils/Error';
+import NotFound from '../NotFound';
 
 export default function HighlyAccessed() {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,6 +63,8 @@ export default function HighlyAccessed() {
         </ul>
       );
     });
+  } else {
+    content = <NotFound label="Article" />;
   }
 
   return (

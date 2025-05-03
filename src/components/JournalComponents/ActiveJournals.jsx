@@ -1,154 +1,272 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFetch } from '../../services/hooks';
+import {
+  useReactTable,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
+} from '@tanstack/react-table';
+import { useState } from 'react';
+import SkeletonTable from '../LoadingSkeletons/SkeletonTables';
+import Error from '../../utils/Error';
+import NotFound from '../NotFound';
 
 export default function ActiveJournals() {
-  const { data, isError, isPending } = useFetch('/journals/');
-  let content;
+  const {
+    data: journalData,
+    isError,
+    isPending,
+    refetch,
+  } = useFetch('/journals/');
+  const navigate = useNavigate();
+  const [sorting, setSorting] = useState([]);
 
-  if (isPending) {
-    content = (
-      <>
-        {Array.from({ length: 7 }).map((_, index) => (
-          <tr
-            key={index}
-            className="border-b border-gray-200 text-[8px] sm:text-[10px] md:text-xs"
-          >
-            <td className="px-6 py-4">
-              <div className="h-4 bg-gray-300 rounded w-8"></div>
-            </td>
-            <td className="px-6 py-4 flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gray-300 rounded-sm"></div>
-              <div className="h-4 bg-gray-300 rounded w-20"></div>
-            </td>
-            <td className="px-6 py-4">
-              <div className="h-4 bg-gray-300 rounded w-16"></div>
-            </td>
-            <td className="px-6 py-4">
-              <div className="h-4 bg-gray-300 rounded w-12"></div>
-            </td>
-            <td className="px-6 py-4 hidden lg:table-cell">
-              <div className="h-4 bg-gray-300 rounded w-10"></div>
-            </td>
-            <td className="px-6 py-4 hidden lg:table-cell">
-              <div className="h-4 bg-gray-300 rounded w-10"></div>
-            </td>
-            <td className="px-6 py-4 hidden lg:table-cell">
-              <div className="h-4 bg-gray-300 rounded w-12"></div>
-            </td>
-            <td className="px-6 py-4">
-              <div className="h-4 bg-gray-300 rounded w-8"></div>
-            </td>
-          </tr>
-        ))}
-      </>
-    );
-  } else if (data && data.length > 0) {
-    content = data.map((item, index) => (
-      <tr
-        key={item.id}
-        className="border-b border-gray-200 text-[8px] sm:text-[10px] md:text-xs"
-      >
-        <td className="px-6 py-4 text-gray-600">{index + 1}</td>
-        <td className="px-6 py-4 flex items-center space-x-2 text-gray-600">
-          <img
-            src={`https://ogbesomto.pythonanywhere.com${item.pic}`}
-            alt={item.pic}
-            className="w-8 h-8 object-cover rounded-sm"
-          />
+  // Define columns for the table
+  const columns = [
+    {
+      accessorKey: 'index',
+      header: '#',
+      cell: (info) => info.row.index + 1,
+      size: 50,
+    },
+    {
+      accessorKey: 'name',
+      header: 'Journal Name',
+      cell: (info) => (
+        <div className="flex items-center space-x-2 text-gray-600">
+          {info.row.original.pic && (
+            <img
+              src={info.row.original.pic}
+              alt={info.row.original.name}
+              className="w-8 h-8 object-cover rounded-sm"
+            />
+          )}
           <Link
-            to={`/journal/${item.name.replace(/\s+/g, '-').toLowerCase()}/${
-              item.id
-            }`}
+            to={`/journal/${info.row.original.name
+              .replace(/\s+/g, '-')
+              .toLowerCase()}/${info.row.original.id}`}
             className="hover:underline"
           >
-            <span>{item.name}</span>
+            <span>{info.row.original.name}</span>
           </Link>
-        </td>
-        <td className="px-6 py-4 text-gray-600">{item.issn}</td>
-        <td className="px-6 py-4 text-gray-600">
-          {new Date(item.date_created).toLocaleDateString('en-US', {
-            year: 'numeric',
-          })}
-        </td>
-        <td className="px-6 py-4 text-gray-600 hidden lg:table-cell">
-          {item.impact}
-        </td>
-        <td className="px-6 py-4 text-gray-600 hidden lg:table-cell">
-          {item.cite_score}
-        </td>
-        <td className="px-6 py-4 text-gray-600 hidden lg:table-cell">
-          {item.currentIssue}
-        </td>
-        <td className="px-6 py-4 text-gray-600">{item.totalArticles}</td>
-      </tr>
-    ));
-  } else if (isError) {
-    content = (
-      <tr>
-        <td colSpan="8" className="px-6 py-4 text-center text-red-600">
-          Failed to load journals. Please try again later.
-        </td>
-      </tr>
-    );
-  } else {
-    content = (
-      <tr>
-        <td colSpan="8" className="px-6 py-4 text-center text-gray-600">
-          No journals available.
-        </td>
-      </tr>
-    );
-  }
+        </div>
+      ),
+      size: 400,
+    },
+    {
+      accessorKey: 'issn',
+      header: 'ISSN',
+      size: 100,
+    },
+    {
+      accessorKey: 'date_created',
+      header: 'Launch Date',
+      cell: (info) =>
+        new Date(info.getValue()).toLocaleDateString('en-US', {
+          year: 'numeric',
+        }),
+      size: 100,
+    },
+    {
+      accessorKey: 'impact',
+      header: 'IF',
+      size: 50,
+      meta: {
+        className: 'hidden lg:table-cell',
+      },
+    },
+    {
+      accessorKey: 'cite_score',
+      header: 'Cite Score',
+      size: 50,
+      meta: {
+        className: 'hidden lg:table-cell',
+      },
+    },
+    {
+      accessorKey: 'currentIssue',
+      header: 'Current Issue',
+      size: 120,
+      meta: {
+        className: 'hidden lg:table-cell',
+      },
+    },
+    {
+      accessorKey: 'totalArticles',
+      header: 'Total Articles',
+      size: 120,
+    },
+  ];
 
-  // For debugging purposes
-  console.log('Data received:', data);
+  // Initialize the table
+  const table = useReactTable({
+    data: journalData || [],
+    columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
 
   return (
     <div className="flex p-4 gap-2 overflow-hidden flex-col items-start justify-center text-slate-700 max-w-[60rem] bg-white">
       <section className="p-3 flex-col items-start flex gap-3">
-        <h1 className="text-3xl font-bold">Heli Express Journal List</h1>
-        <h2 className="text-xl font-bold">427 Journals</h2>
+        <h1 className="text-3xl font-bold">Helixpress Journal List</h1>
+        <h2 className="text-xl font-bold">{journalData?.length} Journals</h2>
         <p className="text-xs">
-          Heli Express currently publishes 418 peer-reviewed journals, and 9
+          Helixpress currently publishes 418 peer-reviewed journals, and 9
           conference journals which are dedicated to publishing outputs from
           academic conferences.
         </p>
-        <h1 className="text-xl font-bold">Journal Proposal</h1>
+        {/* <h1 className="text-xl font-bold">Journal Proposal</h1>
         <p className="text-xs">
-          As an open access pioneer and innovative publisher, MDPI is always
-          interested in exploring new opportunities for collaboration, including
-          the launch of new journals and the transfer of existing journals.
-          Researchers interested in submitting a proposal for a new journal for
-          consideration, or interested in having their journal published by
-          MDPI, can submit their proposal here.
-        </p>
+          As an open access pioneer and innovative publisher, Helixpress is
+          always interested in exploring new opportunities for collaboration,
+          including the launch of new journals and the transfer of existing
+          journals. Researchers interested in submitting a proposal for a new
+          journal for consideration, or interested in having their journal
+          published by Helixpress, can submit their proposal here.
+        </p> */}
       </section>
-      <div className="overflow-x-auto p-3">
+      <div className="overflow-x-auto p-3 w-full">
         <table className="min-w-full bg-white border-gray-200 rounded-md shadow-md">
           <thead className="border-gray-200 text-[8px] sm:text-xs md:text-[12px]">
-            <tr>
-              <th className="px-6 py-3 text-left text-gray-600">#</th>
-              <th className="px-6 py-3 text-left text-gray-600">
-                Journal Name
-              </th>
-              <th className="px-6 py-3 text-left text-gray-600">ISSN</th>
-              <th className="px-6 py-3 text-left text-gray-600">Launch Date</th>
-              <th className="px-6 py-3 text-left text-gray-600 hidden lg:table-cell">
-                Impact Factor
-              </th>
-              <th className="px-6 py-3 text-left text-gray-600 hidden lg:table-cell">
-                Cite Score
-              </th>
-              <th className="px-6 py-3 text-left text-gray-600 hidden lg:table-cell">
-                Current Issue
-              </th>
-              <th className="px-6 py-3 text-left text-gray-600">
-                Total Articles
-              </th>
-            </tr>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className={`px-6 py-3 text-left text-gray-600 ${
+                      header.column.columnDef.meta?.className || ''
+                    }`}
+                    style={{ width: header.column.getSize() }}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    <div className="flex items-center">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {{
+                        asc: ' 🔼',
+                        desc: ' 🔽',
+                      }[header.column.getIsSorted()] || null}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
           </thead>
-          <tbody>{content}</tbody>
+          <tbody>
+            {isPending ? (
+              <SkeletonTable />
+            ) : isError ? (
+              <tr>
+                <td
+                  colSpan={columns.length}
+                  className="px-6 py-4 text-center text-red-600"
+                >
+                  <Error
+                    title={'Error'}
+                    text={'An error occurred while fetching data'}
+                    onRetry={() => refetch}
+                  />
+                </td>
+              </tr>
+            ) : journalData && journalData.length > 0 ? (
+              table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className="border-b border-gray-200 text-[8px] sm:text-[10px] md:text-xs"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className={`px-6 py-4 text-gray-600 ${
+                        cell.column.columnDef.meta?.className || ''
+                      }`}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={columns.length}
+                  className="px-6 py-4 text-center text-gray-600"
+                >
+                  <NotFound
+                    label="Journal"
+                    actionText="Go back"
+                    onAction={() => navigate(-1)}
+                  />
+                </td>
+              </tr>
+            )}
+          </tbody>
         </table>
+
+        {/* Pagination controls */}
+        {journalData && journalData.length > 0 && (
+          <div className="mt-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <button
+                className="px-2 py-1 text-xs bg-gray-200 rounded disabled:opacity-50"
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+              >
+                {'<<'}
+              </button>
+              <button
+                className="px-2 py-1 text-xs bg-gray-200 rounded disabled:opacity-50"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                {'<'}
+              </button>
+              <button
+                className="px-2 py-1 text-xs bg-gray-200 rounded disabled:opacity-50"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                {'>'}
+              </button>
+              <button
+                className="px-2 py-1 text-xs bg-gray-200 rounded disabled:opacity-50"
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+              >
+                {'>>'}
+              </button>
+            </div>
+            <span className="text-xs">
+              Page {table.getState().pagination.pageIndex + 1} of{' '}
+              {table.getPageCount()}
+            </span>
+            <select
+              className="text-xs border rounded px-1 py-0.5"
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value));
+              }}
+            >
+              {[10, 20, 30, 40, 50].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  Show {pageSize}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
     </div>
   );

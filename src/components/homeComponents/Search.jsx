@@ -10,7 +10,6 @@ export default function Search() {
     title: '',
     author: '',
     journals: '',
-    articles: '',
   });
 
   const { data, isPending } = useFetch('/journals/');
@@ -22,6 +21,29 @@ export default function Search() {
       ...prevForm,
       [identifier]: value,
     }));
+  };
+
+  const handleSearch = () => {
+    // Build search query parameters
+    const params = new URLSearchParams();
+
+    // Only add parameters that have values
+    if (form.title) params.append('title', form.title);
+    if (form.author) params.append('author', form.author);
+    if (form.journals) params.append('journal', form.journals);
+
+    // Create search query string
+    const queryString = params.toString();
+
+    // Navigate to search page with query parameters
+    navigate(`/search${queryString ? `?${queryString}` : ''}`);
+  };
+
+  // Handle enter key press in input fields
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
@@ -40,12 +62,14 @@ export default function Search() {
             placeholder="Title/Keyword"
             value={form.title}
             onChange={(e) => handleChange('title', e.target.value)}
+            onKeyPress={handleKeyPress}
           />
           <Input
             type="text"
             placeholder="Author/Affiliation/Email"
             value={form.author}
             onChange={(e) => handleChange('author', e.target.value)}
+            onKeyPress={handleKeyPress}
           />
           <SelectInput
             value={form.journals}
@@ -59,7 +83,7 @@ export default function Search() {
           />
           <div className="">
             <button
-              onClick={() => navigate('/search')}
+              onClick={handleSearch}
               className="px-6 py-2 w-fit bg-slate-600 rounded-md text-stone-100 text-xs text-center hover:bg-slate-800 transition-all ease-in-out duration-200"
             >
               Search
