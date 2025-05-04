@@ -38,7 +38,7 @@ export default function Share({ linkToShare }) {
       {/* ShareModal Component */}
       <ShareModal
         ref={modalRef} // Pass ref to control modal
-        link={linkToShare} // Pass the link
+        link={`https://helixpress.com/${linkToShare}`} // Pass the link
         onClose={() => console.log('Modal closed')} // Optional onClose handler
       />
       <HelpModal ref={shareRef} />

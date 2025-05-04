@@ -3,20 +3,15 @@ import { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { Search } from '../components/homeComponents';
 import Share from '../components/Share';
-import { SelectInput } from '../components/homeComponents/Search';
+import { useFetch } from '../services/hooks';
+import { SelectInput } from '../UI';
 
 export const inputClass =
   'border border-gray-300 text-xs my-2 border-[0.5px] rounded-md p-1.5 w-full text-gray-700 focus:outline-none';
 
 export default function Journals() {
+  const { data: journals, isPending } = useFetch('/journals/');
   const [activeJournal, setActiveJournal] = useState('');
-
-  const journalOptions = [
-    { value: 'biology', label: 'Biology' },
-    { value: 'english', label: 'English' },
-    { value: 'maths', label: 'Maths' },
-    { value: 'physics', label: 'Physics' },
-  ];
 
   return (
     <div className="bg-gray-100">
@@ -26,13 +21,16 @@ export default function Journals() {
         <section className="flex-grow md:flex-grow-[1] md:basis-1/4 min-w-[10rem] w-full flex flex-col gap-3">
           <nav className="bg-white p-6">
             <h1 className="text-slate-700 text-xl font-bold">
-              Heli Express Journals
+              Helixpress Journals
             </h1>
             <SelectInput
               className={inputClass}
-              onChange={(e) => setActiveJournal(e.target.value)}
               value={activeJournal}
-              options={journalOptions}
+              onChange={(e) => setActiveJournal(e.target.value)}
+              optionLabel={'name'}
+              optionValue={'id'}
+              isLoading={isPending}
+              options={journals}
               placeholder={'Find active Journal'}
             />
             <ul className="space-y-2 text-xs">
@@ -72,7 +70,7 @@ export default function Journals() {
         </section>
         {/* Last section */}
         <section className="hidden flex-grow md:flex-grow-[1] md:basis-[10%] min-w-[10rem] w-full md:flex flex-col">
-          <Share linkToShare={'https://www.mdpi.com/about/journals/'} />
+          <Share linkToShare={'about/journals/'} />
         </section>
       </div>
     </div>

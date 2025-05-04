@@ -1,10 +1,72 @@
 import { useState } from 'react';
-import { HIGHLY_ACCESSED } from './DUMMY_FILES';
-
+import { Link } from 'react-router-dom';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import { useFetch } from '../../services/hooks';
+import { formatDate } from '../../utils/utils';
+import Error from '../../utils/Error';
+import NotFound from '../NotFound';
 
 export default function HighlyAccessed() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data, isPending, isError, refetch, error } = useFetch(
+    '/highly-accessed-papers/'
+  );
+  let content;
+
+  if (isPending) {
+    content = (
+      <div className="animate-pulse space-y-3">
+        {Array.from({ length: 4 }).map((_, idx) => (
+          <ul key={idx} className="flex flex-col gap-1">
+            <li className="w-1/4 bg-gray-200 h-3 rounded"></li>
+            <li className="w-3/4 bg-gray-200 h-5 rounded"></li>
+            <li className="w-full bg-gray-200 h-5 rounded"></li>
+            <li className="w-full bg-gray-200 h-14 rounded"></li>
+          </ul>
+        ))}
+      </div>
+    );
+  } else if (isError) {
+    content = (
+      <Error
+        title={'Error'}
+        text={`${error.message || 'An unexpected error occurred'}`}
+        onRetry={() => refetch()}
+      />
+    );
+  } else if (data && data.length > 0) {
+    content = data.map((item) => {
+      return (
+        <ul key={item.id} className="text-xs md:w-full">
+          <li>
+            <p className="text-red-500 mt-4">{item.type}</p>
+            <Link to={`paper/${item.id}`}>
+              <p className="hover:underline text-[14px] font-bold hover:cursor-pointer my-1">
+                {item.title}
+              </p>
+            </Link>
+            <p className="font-light mt-px">
+              by
+              <span className="font-bold"> {item.author.split(',')[0]} </span>
+              et al.
+            </p>
+
+            <p className="my-1">
+              {/* <span className="text-slate-500 italic">{item.journal} </span> */}
+              <span className="hover:underline hover:cursor-pointer">
+                {item.doi}
+              </span>
+            </p>
+            <p className="my-3">Published: {formatDate(item.date_created)}</p>
+            <img src={item.pic} alt={'Article-Image'} />
+          </li>
+        </ul>
+      );
+    });
+  } else {
+    content = <NotFound label="Article" />;
+  }
+
   return (
     <article className="p-4 bg-white">
       {/* header and toggle */}
@@ -23,37 +85,7 @@ export default function HighlyAccessed() {
           isOpen ? 'block' : 'hidden'
         } md:block`}
       >
-        {HIGHLY_ACCESSED.map((item, index) => {
-          return (
-            <ul key={index} className="text-xs md:w-full">
-              <li>
-                <p className="text-red-500 mt-4">{item.type}</p>
-                <p className="hover:underline hover:cursor-pointer mt-1">
-                  {item.title}
-                </p>
-                <p className="font-bold mt-2">
-                  {item.authors.length > 1 ? (
-                    <>
-                      By <span>{item.authors[0]}, </span>
-                      <span>{item.authors[1]}</span>
-                    </>
-                  ) : (
-                    <span>{item.authors[0]}</span>
-                  )}
-                </p>
-
-                <p className="my-2">
-                  <span className="text-slate-500 italic">{item.journal} </span>
-                  <span className="hover:underline hover:cursor-pointer">
-                    {item.doi}
-                  </span>
-                </p>
-                <p className="my-3">Published: {item.date}</p>
-                <img src={item.imageUrl} alt={'journal Image'} />
-              </li>
-            </ul>
-          );
-        })}
+        {content}
       </div>
     </article>
   );

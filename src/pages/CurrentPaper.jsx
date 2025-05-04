@@ -1,23 +1,27 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Share from '../components/Share';
+import useScrollToTop from '../utils/scrollToTop';
 import { News, Search } from '../components/homeComponents';
-import SkeletonArticle from '../components/SkeletonArticle';
+import SkeletonArticle from '../components/LoadingSkeletons/SkeletonArticle';
 import Error from '../utils/Error';
 import { saveAs } from 'file-saver';
 import { useFetchById } from '../services/hooks';
+import NotFound from '../components/NotFound';
 
 export default function CurrentPaper() {
+  useScrollToTop();
   const { id } = useParams();
+  const navigate = useNavigate();
   const {
-    currentPaperData: item,
-    isCurrentPaperError,
-    isCurrentPaperLoading,
+    data: item,
+    isError: isCurrentPaperError,
+    isPending: isCurrentPaperLoading,
+    refetch,
   } = useFetchById('/papers/', id);
 
   const handleDownload = async () => {
     try {
-      const baseUrl = 'https://helixpress-backend.vercel.app/'; // Adjust this to your API’s base URL
-      const documentUrl = `${baseUrl}${item.document}`;
+      const documentUrl = `${item.document}`;
 
       const response = await fetch(documentUrl);
       if (!response.ok) throw new Error('Network response was not ok.');
@@ -39,7 +43,11 @@ export default function CurrentPaper() {
   } else if (isCurrentPaperError) {
     content = (
       <div className="flex justify-center">
-        <Error text="An Error occurred while fetching paper" title="Error!!" />
+        <Error
+          text="An Error occurred while fetching paper"
+          title="Error!!"
+          onRetry={() => refetch()}
+        />
       </div>
     );
   } else if (item && item.length !== 0) {
@@ -106,9 +114,11 @@ export default function CurrentPaper() {
     );
   } else {
     content = (
-      <div className="flex justify-center">
-        <p>No paper found</p>
-      </div>
+      <NotFound
+        label="Paper"
+        actionText={'Go Back'}
+        onAction={() => navigate(-1)}
+      />
     );
   }
 
@@ -119,7 +129,9 @@ export default function CurrentPaper() {
         {/* First section */}
         <section className="flex-grow md:flex-grow-[1] md:basis-1/4 min-w-[10rem] w-full flex flex-col gap-3">
           <nav className="bg-white p-6">
-            <h1 className="text-slate-700 text-xl font-bold">MDPI Journals</h1>
+            <h1 className="text-slate-700 text-xl font-bold">
+              Helixpress Journals
+            </h1>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link
@@ -162,7 +174,7 @@ export default function CurrentPaper() {
         {/* Last section */}
         <section className="hidden flex-grow md:flex-grow-[1] md:basis-[25%] min-w-[10rem] w-full md:flex flex-col">
           <News />
-          <Share linkToShare={'https://www.mdpi.com/about/journals/'} />
+          <Share linkToShare={'/about/journals/'} />
         </section>
       </div>
     </div>

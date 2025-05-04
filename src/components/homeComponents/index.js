@@ -7,7 +7,7 @@ import News from './News';
 import BlogPosts from './BlogPosts';
 import Topics from './Topics';
 import Special from './Special';
-import SelectedCollectios from './SelectedCollections';
+import SelectedCollections from './SelectedCollections';
 import JournalsBySubject from './JournalsBySubject';
 
 export {
@@ -20,6 +20,6 @@ export {
   BlogPosts,
   Topics,
   Special,
-  SelectedCollectios,
+  SelectedCollections,
   JournalsBySubject,
 };

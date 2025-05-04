@@ -3,7 +3,7 @@ import Articles from './Articles';
 import AccessPolicy from './AccessPolicy';
 import Editorial from './Editorial';
 import Editors from './Editors';
-import Reasearch from './Reasearch';
+import Research from './Research';
 import Reviewers from './Reviewers';
 import Librarians from './Librarians';
 import Publishers from './Publishers';
@@ -17,7 +17,7 @@ export {
   AccessPolicy,
   Editorial,
   Editors,
-  Reasearch,
+  Research,
   Reviewers,
   Librarians,
   Publishers,

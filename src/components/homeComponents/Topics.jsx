@@ -1,71 +1,58 @@
 import { useState } from 'react';
-
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import Error from '../../utils/Error';
 import { Link } from 'react-router-dom';
 import { useFetch } from '../../services/hooks';
+import Error from '../../utils/Error';
+import HomeTopicsSkeleton from '../LoadingSkeletons/HomeTopicsSkeleton';
+import NotFound from '../NotFound';
+import { formatDate } from '../../utils/utils';
 
 export default function Topics() {
   const [isOpen, setIsOpen] = useState(false);
   const {
-    data: topicsData,
+    data,
     isLoading: isTopicsLoading,
     isError: isTopicsError,
-  } = useFetch();
+    refetch,
+    error,
+  } = useFetch('/topics/');
+
+  const topicsData = !isTopicsLoading && data?.results;
 
   let content;
   if (isTopicsLoading) {
-    content = (
-      <div className="animate-pulse space-y-3">
-        {/* Repeat this structure for each skeleton item */}
-        {[...Array(3)].map((_, index) => (
-          <ul key={index} className="text-xs space-y-2">
-            <li className="flex flex-col items-start">
-              <p className="bg-gray-300 h-4 w-32 rounded my-1"></p>
-              <p className="bg-gray-300 h-5 w-48 rounded font-bold my-1"></p>
-              <p className="bg-gray-300 h-4 w-64 rounded my-1"></p>
-              <p className="bg-gray-300 h-4 w-32 rounded text-red-500 my-1"></p>
-            </li>
-            <hr className="my-3" />
-          </ul>
-        ))}
-      </div>
-    );
+    content = <HomeTopicsSkeleton />;
   } else if (isTopicsError) {
     content = (
-      <div className="flex justify-center">
-        <Error text="Error fetching papers" title="Error!!" />
-      </div>
+      <Error
+        text={`${error || 'Error fetching topics'}`}
+        title="Error"
+        onRetry={() => refetch()}
+      />
     );
   } else if (topicsData && topicsData.length > 0) {
-    content = topicsData.map((item, index) => (
-      <ul key={index} className="text-xs">
+    content = topicsData.map((topic) => (
+      <ul key={topic.id} className="text-xs">
         <li className="flex flex-col items-start">
-          <p className="my-1 ">
-            Topic in <span className="italic">{item.keywords}</span>
+          <p className="my-1">
+            Topic in <span className="italic">{topic.keywords}</span>
           </p>
-          <Link to={`/topics/${item.id}`}>
-            <p className="font-bold	hover:underline cursor-pointer">
-              {item.title}
+          <Link to={`/topics/${topic.id}`}>
+            <p className="font-bold hover:underline cursor-pointer">
+              {topic.title}
             </p>
           </Link>
           <p className="text-gray-500 my-1">
             Topic Author:
-            <span>{' ' + item.author}</span>
+            <span>{' ' + topic.author}</span>
           </p>
-          <p className="text-red-500">
-            Deadline:
-            {' ' +
-              new Date(item.manuscript_deadline).toLocaleDateString('en-US', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              })}
-          </p>
+          <p className="text-red-500">Deadline: {formatDate(topic.deadline)}</p>
         </li>
-        <hr className="my-3"></hr>
+        <hr className="my-3" />
       </ul>
     ));
+  } else {
+    content = <NotFound label="Topics" />;
   }
 
   return (
@@ -75,6 +62,7 @@ export default function Topics() {
         <button
           className="md:hidden text-slate-600 hover:underline"
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? 'Hide topics' : 'Show topics'}
         >
           {isOpen ? <IoIosArrowUp size={23} /> : <IoIosArrowDown size={23} />}
         </button>
@@ -86,7 +74,7 @@ export default function Topics() {
       >
         {content}
       </div>
-      <Link to={'/topics'}>
+      <Link to="/topics">
         <p className="hidden md:block text-slate-500 hover:underline hover:cursor-pointer text-xs font-bold my-3">
           More Topics...
         </p>

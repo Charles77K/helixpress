@@ -1,12 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { FaLock, FaRegEye, FaRegEyeSlash, FaUser } from 'react-icons/fa';
-import { loginUser } from '../utils/auth';
 import { toast } from 'react-toastify';
 import * as z from 'zod'; // Import Zod
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setToken } from '../store/authentication';
+
 // Zod schema definition
 const loginSchema = z.object({
   username: z.string().min(1, 'Username is required'),
@@ -14,8 +10,6 @@ const loginSchema = z.object({
 });
 
 export default function Login() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -34,29 +28,29 @@ export default function Login() {
     }));
   };
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: loginUser,
-    onSuccess: (data) => {
-      console.log(data);
-      if (data?.token) {
-        localStorage.setItem('authToken', data.token);
-        dispatch(setToken(data.token));
-        toast.success(data.message);
-        setFormData((prevData) => ({
-          ...prevData,
-          username: '',
-          password: '',
-        }));
-        navigate('/admin', { replace: true });
-      } else {
-        toast.error('Login failed: Invalid response');
-      }
-    },
-    onError: (error) => {
-      toast.error('Login failed: Invalid username or password');
-      console.error('Login failed:', error);
-    },
-  });
+  // const { mutate, isPending } = useMutation({
+  //   mutationFn: loginUser,
+  //   onSuccess: (data) => {
+  //     console.log(data);
+  //     if (data?.token) {
+  //       localStorage.setItem('authToken', data.token);
+  //       dispatch(setToken(data.token));
+  //       toast.success(data.message);
+  //       setFormData((prevData) => ({
+  //         ...prevData,
+  //         username: '',
+  //         password: '',
+  //       }));
+  //       navigate('/admin', { replace: true });
+  //     } else {
+  //       toast.error('Login failed: Invalid response');
+  //     }
+  //   },
+  //   onError: (error) => {
+  //     toast.error('Login failed: Invalid username or password');
+  //     console.error('Login failed:', error);
+  //   },
+  // });
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -74,7 +68,6 @@ export default function Login() {
     }
 
     // If validation passes, attempt login
-    mutate({ data: formData });
   };
 
   return (
@@ -123,13 +116,13 @@ export default function Login() {
         </div>
 
         {/* Submit Button */}
-        <button
+        {/* <button
           type="submit"
           disabled={isPending}
           className="bg-slate-700 w-full py-2 text-white rounded-md hover:bg-slate-800 transition duration-200"
         >
           {isPending ? 'Logging in...' : 'Login'}
-        </button>
+        </button> */}
       </form>
     </div>
   );

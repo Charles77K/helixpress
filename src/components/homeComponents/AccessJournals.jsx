@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { SelectInput } from './Search';
-// import { SUBJECTS } from './DUMMY_FILES';
 
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import Error from '../../utils/Error';
 import { useFetch } from '../../services/hooks';
+import { SelectInput } from '../../UI';
+import NotFound from '../NotFound';
 
 export default function AccessJournals() {
   const [journal, setJournal] = useState('');
   const [isOpen, setIsOpen] = useState(false); // State to control dropdown visibility
-  const { data, isError, isLoading } = useFetch('/journals');
+  const { data, isError, isLoading, refetch } = useFetch('/journals/');
 
   function handleChange(event) {
     setJournal(event.target.value);
@@ -31,9 +31,11 @@ export default function AccessJournals() {
     );
   } else if (isError) {
     content = (
-      <div className="flex justify-center">
-        <Error title="Error!" text="Error fetching journals" />
-      </div>
+      <Error
+        title="Error!"
+        text="Error fetching journals"
+        onRetry={() => refetch()}
+      />
     );
   } else if (data && data.length > 0) {
     content = data.map((journal, index) => (
@@ -47,15 +49,15 @@ export default function AccessJournals() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <img
-                  src={`https://ogbesomto.pythonanywhere.com/${journal.pic}`}
-                  className="h-9 w-9"
+                  src={journal.pic}
+                  className="h-9 w-9 text-xs"
                   alt={`${journal.name || 'N/A'}`}
                 />
                 <p className="text-sm font-bold hover:underline">
                   {journal.name || 'N/A'}
                 </p>
               </div>
-              <div className="rounded-full h-12 w-12 bg-yellow-400 text-slate-800 opacity-0 group-hover:opacity-100 flex transition-all duration-300 ease-in-out justify-center items-center flex-col">
+              <div className="rounded-full flex-shrink-0 h-12 w-12 bg-yellow-400 text-slate-800 opacity-0 group-hover:opacity-100 flex-center flex-col transition-all duration-300 ease-in-out ">
                 <p className="text-[7px] font-bold text-center">
                   IMPACT FACTOR
                 </p>
@@ -69,18 +71,8 @@ export default function AccessJournals() {
       </ul>
     ));
   } else {
-    content = <p className="text-center text-gray-500">No journals found.</p>;
+    content = <NotFound label="Journal" />;
   }
-
-  const journalOptions = [
-    { value: 'biology', label: 'Biology' },
-    { value: 'english', label: 'English' },
-    { value: 'maths', label: 'Maths' },
-    { value: 'physics', label: 'Physics' },
-  ];
-
-  const inputStyle =
-    'my-3 lg:w-50 lg:block hidden w-60 border-slate-800 text-[12px] text-slate-800 border-solid border border-slate-400 placeholder:placeholder-custom-gray placeholder:text-[12px] px-4 py-1 rounded-md items-center focus:outline-none';
 
   return (
     <div className="p-4 bg-white">
@@ -105,19 +97,15 @@ export default function AccessJournals() {
           value={journal}
           onChange={handleChange}
           placeholder={'All Journals'}
-          options={journalOptions}
-          className={inputStyle}
+          options={data}
+          name={'journal'}
+          isLoading={isLoading}
+          optionLabel={'name'}
+          optionValue={'id'}
         />
-        {content}
-        {/* {SUBJECTS.map((subject, index) => (
-          <ul key={index} className="flex flex-col gap-2 mt-3 text-xs">
-            <li className="flex gap-3 items-center">
-              <img src={subject.img} className="w-10 h-10" />
-              <p>{subject.topic}</p>
-            </li>
-            <hr />
-          </ul>
-        ))} */}
+        {/* journal content */}
+        <div>{content}</div>
+
         <Link
           to={'/journals'}
           className="my-4 font-bold text-slate-800 hover:cursor-pointer hover:underline text-xs"

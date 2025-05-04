@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
+  safelist: ['animate-shimmer'],
   theme: {
     extend: {
       placeholderColor: {
@@ -14,6 +15,9 @@ export default {
       },
       animation: {
         scroll: 'scroll 20s linear infinite',
+      },
+      colors: {
+        primary: 'text-slate-700',
       },
     },
   },

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { COLLECTIONS } from './DUMMY_FILES';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
-export default function SelectedCollectios() {
+export default function SelectedCollections() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="bg-white p-4">

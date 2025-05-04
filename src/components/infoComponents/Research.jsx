@@ -1,7 +1,7 @@
 // import React from 'react';
 import { CONTENT } from '../DOCS';
 
-export default function Reasearch() {
+export default function Research() {
   return (
     <div className="bg-white p-8 flex flex-col gap-10">
       <div>

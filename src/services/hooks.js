@@ -123,6 +123,16 @@ export const useInfiniteScroll = (
   });
 };
 
+//custom hook that adapts
+export const useFetchCustom = (endpoint, options = {}) => {
+  const key = endpoint.split('.')[0].slice(8, 22);
+  return useQuery({
+    queryKey: [key],
+    queryFn: () => api.customGet(endpoint),
+    ...options,
+  });
+};
+
 // For checking loading state across the app
 export const useLoadingState = () => {
   const queryClient = useQueryClient();

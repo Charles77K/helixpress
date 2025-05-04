@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export const baseURL = 'https://helixpress-backend.vercel.app/api/v1'; // Use base URL
+export const BASEURL = 'https://helixpress-backend.vercel.app/';
+
+const baseURL = 'https://somto042.pythonanywhere.com/api/v1'; // Use base URL
 
 class AxiosHelper {
   constructor(defaultHeaders = {}) {
@@ -10,6 +12,14 @@ class AxiosHelper {
         'Content-Type': 'application/json',
         ...defaultHeaders,
       },
+    });
+
+    // remove content type when needed
+    this.client.interceptors.request.use((config) => {
+      if (config.data instanceof FormData) {
+        delete config.headers['Content-Type']; // Let browser set it
+      }
+      return config;
     });
 
     // add interceptors for auth token
@@ -53,21 +63,21 @@ class AxiosHelper {
     };
 
     if (error.response) {
-      // Server responded with a non-2xx status code
       errorResponse.message =
         error.response.data.message ||
         `Request failed with status code ${error.response.status}`;
       errorResponse.status = error.response.status;
       errorResponse.data = error.response.data;
     } else if (error.request) {
-      // The request was made but no response was received
       errorResponse.message = 'No response received from server';
     } else {
-      // Something else caused the error
       errorResponse.message = error.message;
     }
 
-    return errorResponse;
+    const customError = new Error(errorResponse.message);
+    customError.status = errorResponse.status;
+    customError.data = errorResponse.data;
+    return customError;
   }
 
   /**
@@ -94,6 +104,9 @@ class AxiosHelper {
    */
   async getById(endpoint, id, params = {}) {
     try {
+      if (!id) {
+        throw new Error('ID is required');
+      }
       const url = endpoint.includes(':id')
         ? endpoint.replace(':id', id)
         : `${endpoint}/${id}`;
@@ -174,6 +187,19 @@ class AxiosHelper {
   async request(config) {
     try {
       const response = await this.client.request(config);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+  /**
+   * Performs a custom request
+   * @param {endpoint} string - the full api endpoint
+   * @returns {Promise} - Promise resolving to the response data
+   */
+  async customGet(endpoint) {
+    try {
+      const response = await axios.get(endpoint);
       return response.data;
     } catch (error) {
       throw this.handleError(error);

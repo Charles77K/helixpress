@@ -1,6 +1,5 @@
 import React from 'react';
-import { SelectInput } from '../homeComponents/Search';
-import { inputClass } from '../../pages/Journals';
+import { SelectInput } from '../../UI';
 
 export default function FindJournal() {
   const [formData, setFormData] = React.useState({
@@ -55,11 +54,11 @@ export default function FindJournal() {
         <span className="flex-1 w-full">
           <label>impact factor</label>
           <SelectInput
-            className={inputClass}
             value={formData.impact}
+            optionLabel={'label'}
+            optionValue={'value'}
             onChange={(e) => handleChange('impact', e.target.value)}
             options={JOURNAL_OPTIONS}
-            placeholder={JOURNAL_OPTIONS[0].label}
           />
         </span>
         <span className="flex-1 w-full">

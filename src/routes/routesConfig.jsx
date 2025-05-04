@@ -1,11 +1,33 @@
 // routesConfig.js
-import { Home, About, Contact, Information, Topics, Journals } from '../pages';
+
+// Page imports - core site pages
+import {
+  Home,
+  About,
+  Contact,
+  Information,
+  Topics,
+  Journals,
+  Submission,
+  CurrentPaper,
+  SearchPage,
+} from '../pages';
+
+// Content page imports
+import { AllNews, Blogs, BlogPage, NewsPage, TopicPage } from '../pages';
+
+// Journal-related component imports
 import {
   FindJournal,
   JournalProposal,
   ProceedingSeries,
   ActiveJournals,
 } from '../components/JournalComponents';
+
+import JournalPage from '../journalPages/JournalPage';
+import CurrentJournal from '../journalPages/CurrentJournal';
+
+// Information section component imports
 import {
   AccessPolicy,
   Articles,
@@ -15,35 +37,53 @@ import {
   Editors,
   Institutional,
   Publishers,
-  Reasearch,
+  Research,
   Reviewers,
   Societies,
   Librarians,
 } from '../components/infoComponents';
+
+// Layout imports
 import MainLayout from './MainLayout';
-import Login from '../pages/Login';
-import JournalPage from '../journalPages/JournalPage';
-import CurrentJournal from '../journalPages/CurrentJournal';
-import AllNews from '../pages/AllNews';
-import CurrentPaper from '../pages/CurrentPaper';
+// import AdminLayout from './AdminLayout';
+// import Login from '../pages/Login';
+// import Admin from '../pages/Admin';
+// import ProtectedRoute from '../components/ProtectedRoute';
 
 const routesConfig = [
   {
     path: '/',
     element: <MainLayout />,
     children: [
-      { path: '/', element: <Home /> },
+      // Core pages
+      { index: true, element: <Home /> },
+      { path: 'search', element: <SearchPage /> },
+      { path: 'submission', element: <Submission /> },
+      { path: 'paper/:id', element: <CurrentPaper /> },
+
+      // About section
       {
-        path: '/about',
-        element: <About />,
+        path: 'about',
+        children: [
+          { index: true, element: <About /> },
+          { path: 'contact', element: <Contact /> },
+          { path: 'news', element: <AllNews /> },
+          { path: 'news/:id', element: <NewsPage /> },
+        ],
       },
-      { path: '/about/news', element: <AllNews /> },
-      { path: '/about/news/:id', element: <AllNews /> },
-      { path: '/about/contact', element: <Contact /> },
-      { path: '/topics', element: <Topics /> },
-      { path: '/paper/:id', element: <CurrentPaper /> },
+
+      // Topics section
       {
-        path: '/journals',
+        path: 'topics',
+        children: [
+          { index: true, element: <Topics /> },
+          { path: ':id', element: <TopicPage /> },
+        ],
+      },
+
+      // Journals section
+      {
+        path: 'journals',
         element: <Journals />,
         children: [
           { index: true, element: <ActiveJournals /> },
@@ -52,13 +92,17 @@ const routesConfig = [
           { path: 'proceeding', element: <ProceedingSeries /> },
         ],
       },
+
+      // Journal pages
       {
         path: 'journal/:name/:id',
         element: <JournalPage />,
         children: [{ index: true, element: <CurrentJournal /> }],
       },
+
+      // Information section
       {
-        path: '/information',
+        path: 'information',
         element: <Information />,
         children: [
           { index: true, element: <Authors /> },
@@ -68,25 +112,42 @@ const routesConfig = [
           { path: 'program', element: <Institutional /> },
           { path: 'editors', element: <Editors /> },
           { path: 'access', element: <AccessPolicy /> },
-          { path: 'research', element: <Reasearch /> },
+          { path: 'research', element: <Research /> },
           { path: 'article', element: <Articles /> },
           { path: 'editorial', element: <Editorial /> },
+          { path: 'librarians', element: <Librarians /> },
+          { path: 'societies', element: <Societies /> },
         ],
       },
-      { path: 'information/librarians', element: <Librarians /> },
-      { path: 'information/societies', element: <Societies /> },
+
+      // Blogs section
+      {
+        path: 'blogs',
+        children: [
+          { index: true, element: <Blogs /> },
+          { path: ':id', element: <BlogPage /> },
+        ],
+      },
+    ],
+  },
+
+  // Auth routes - currently commented out but organized for future use
+  /*
+  {
+    path: 'auth',
+    children: [
+      { path: 'login', element: <Login /> },
     ],
   },
   {
-    path: '/login',
-    element: <Login />,
+    path: 'admin',
+    element: <AdminLayout />,
+    // loader: checkAuthLoader,
+    children: [
+      { index: true, element: <ProtectedRoute element={<Admin />} /> }
+    ],
   },
-  // {
-  //   path: '/admin',
-  //   element: <AdminLayout />,
-  //   // loader: checkAuthLoader,
-  //   children: [{ path: '', element: <ProtectedRoute element={<Admin />} /> }],
-  // },
+  */
 ];
 
 export default routesConfig;

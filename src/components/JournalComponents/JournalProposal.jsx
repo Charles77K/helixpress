@@ -1,31 +1,9 @@
 import { useState } from 'react';
 import NewJournal from './NewJournal';
-import ExistingJournal from './ExistingJournal';
 
 import { IoMdRemoveCircleOutline } from 'react-icons/io';
 
 export default function JournalProposal() {
-  const [selectedJournal, setSelectedJournal] = useState('new');
-  const [existingJournal, setExistingJournal] = useState({
-    existingChief: '',
-    journalTitle: '',
-    aimScope: '',
-    website: '',
-    ISSN: '',
-    currentPublisher: '',
-    owner: '',
-    society: '',
-    publishingModel: '',
-    volume: '',
-    frequency: '',
-    items2024: '',
-    items2023: '',
-    items2022: '',
-    items2021: '',
-    items2020: '',
-    services: '',
-    information: '',
-  });
   const [newJournal, setNewJournal] = useState({
     editorInChief: '',
     proposedTitle: '',
@@ -36,10 +14,10 @@ export default function JournalProposal() {
     firstname: '',
     lastname: '',
     email: '',
-    affliations: [''], // Start with one empty affiliation
+    affiliations: [''], // Start with one empty affiliation
   });
 
-  function handleInputChage(e) {
+  function handleInputChange(e) {
     const { name, value } = e.target;
     setNewJournal({
       ...newJournal,
@@ -47,55 +25,27 @@ export default function JournalProposal() {
     });
   }
 
-  function handleFormChange(e) {
-    const { name, value } = e.target;
-    setExistingJournal({
-      ...existingJournal,
-      [name]: value,
-    });
-  }
-  console.log(existingJournal);
-  // console.log(newJournal);
-
-  const renderJournal = () => {
-    switch (selectedJournal) {
-      case 'new':
-        return (
-          <NewJournal formValues={newJournal} Changer={handleInputChage} />
-        );
-      case 'existing':
-        return (
-          <ExistingJournal
-            formValues={existingJournal}
-            Changer={handleFormChange}
-          />
-        );
-      default:
-        return 'new';
-    }
-  };
-
   const handleAddAffiliation = () => {
     setPersonalInfo((prevInfo) => ({
       ...prevInfo,
-      affliations: [...prevInfo.affliations, ''], // Add a new empty input field
+      affiliations: [...prevInfo.affiliations, ''], // Add a new empty input field
     }));
   };
 
   const handleAffiliationChange = (index, value) => {
     setPersonalInfo((prevInfo) => {
-      const updatedAffiliations = [...prevInfo.affliations];
+      const updatedAffiliations = [...prevInfo.affiliations];
       updatedAffiliations[index] = value;
       return {
         ...prevInfo,
-        affliations: updatedAffiliations,
+        affiliations: updatedAffiliations,
       };
     });
   };
   const handleRemoveAffiliation = (index) => {
     setPersonalInfo((prevInfo) => ({
       ...prevInfo,
-      affliations: prevInfo.affliations.filter((_, i) => i !== index), // Remove input at specified index
+      affiliations: prevInfo.affiliations.filter((_, i) => i !== index), // Remove input at specified index
     }));
   };
 
@@ -109,7 +59,7 @@ export default function JournalProposal() {
           required
           className="w-[75%] border-gray-300 mt-1 border-[0.5px] rounded-md text-xs p-1.5 text-gray-700 focus:outline-none mr-2"
         />
-        {personalInfo.affliations.length > 1 && (
+        {personalInfo.affiliations.length > 1 && (
           <button type="button" onClick={onRemove}>
             <IoMdRemoveCircleOutline color="#800000" size={25} />
           </button>
@@ -132,20 +82,9 @@ export default function JournalProposal() {
       </p>
       <div>
         <button
-          onClick={() => setSelectedJournal('new')}
-          className={`${
-            selectedJournal === 'new' ? 'font-bold ' : ''
-          }border-[0.5px] border-gray-300 p-2 hover:underline`}
+          className={'border-[0.5px] border-gray-300 p-2 hover:underline'}
         >
           New Journal
-        </button>
-        <button
-          onClick={() => setSelectedJournal('existing')}
-          className={`${
-            selectedJournal === 'existing' ? 'font-bold ' : ''
-          }border-[0.5px] border-gray-300 p-2 hover:underline`}
-        >
-          Existing Journal
         </button>
 
         <hr></hr>
@@ -193,12 +132,12 @@ export default function JournalProposal() {
           />
         </span>
       </p>
-      {/* affliations */}
+      {/* affiliations */}
       <p>
         <label>Affiliations</label>
         <span className="relative bottom-1"> req</span>
       </p>
-      {personalInfo.affliations.map((affiliation, index) => (
+      {personalInfo.affiliations.map((affiliation, index) => (
         <AffiliationItem
           key={index}
           affiliation={affiliation}
@@ -212,7 +151,9 @@ export default function JournalProposal() {
       >
         Add new affiliation
       </button>
-      <div>{renderJournal()}</div>
+      <div>
+        <NewJournal formValues={newJournal} Changer={handleInputChange} />
+      </div>
       <div>
         <h1 className="font-bold text-xl mb-4">Validate and Submit Form</h1>
         <button className="border-[0.5px] border-gray-300 w-1/2 p-1.5 rounded-md bg-slate-600 text-stone-50 text-sm">
