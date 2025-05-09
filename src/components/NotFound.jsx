@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { cn } from '../utils/utils';
 
 // Custom default icon component
 const DefaultNotFoundIcon = ({ className = '' }) => (
@@ -15,7 +16,10 @@ export default function NotFound({
 }) {
   return (
     <div
-      className={`flex flex-col items-center justify-center p-8 bg-gray-60 rounded-lg border border-gray-200 shadow-sm ${className}`}
+      className={cn(
+        'flex flex-col items-center justify-center p-8 bg-gray-60 rounded-lg border border-gray-200 shadow-sm',
+        className
+      )}
       role="status"
       aria-live="polite"
     >

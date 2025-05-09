@@ -52,7 +52,7 @@ const Navbar = () => {
             <div key={index} className="group relative">
               <Link
                 to={item.path}
-                className="text-slate-800 hover:underline font-semibold"
+                className="text-slate-800 hover:underline font-medium"
               >
                 {item.title}
               </Link>

@@ -11,5 +11,5 @@ export const formatDate = (date) => {
   const month = d.toLocaleDateString('en-us', { month: 'long' });
   const year = d.getFullYear();
 
-  return `${day}, ${month}, ${year}`;
+  return `${day} ${month} ${year}`;
 };

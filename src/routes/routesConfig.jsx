@@ -11,6 +11,7 @@ import {
   Submission,
   CurrentPaper,
   SearchPage,
+  Login,
 } from '../pages';
 
 // Content page imports
@@ -132,13 +133,12 @@ const routesConfig = [
   },
 
   // Auth routes - currently commented out but organized for future use
-  /*
+
   {
-    path: 'auth',
-    children: [
-      { path: 'login', element: <Login /> },
-    ],
+    path: '/login',
+    children: [{ index: true, element: <Login /> }],
   },
+  /*
   {
     path: 'admin',
     element: <AdminLayout />,

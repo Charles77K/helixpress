@@ -24,6 +24,7 @@ export default function Journals() {
               Helixpress Journals
             </h1>
             <SelectInput
+              name={'journal'}
               className={inputClass}
               value={activeJournal}
               onChange={(e) => setActiveJournal(e.target.value)}
