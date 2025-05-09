@@ -144,10 +144,10 @@ const Submission = () => {
   const isProcessing = isPending || isSubmitting;
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4">
+    <div className="flex items-center justify-center min-h-screen py-8 px-4">
       <main className="drop-shadow-xl shadow-2xl max-w-xl w-full rounded-2xl p-4">
         <h1 className="text-2xl font-bold mb-6 text-center">
-          Submit Your Application
+          Submit Your Paper
         </h1>
 
         <form
@@ -293,7 +293,7 @@ const Submission = () => {
             className={`mt-4 ${isProcessing ? 'opacity-70' : ''}`}
             aria-busy={isProcessing}
           >
-            {isProcessing ? 'Submitting...' : 'Submit Application'}
+            {isProcessing ? 'Submitting...' : 'Submit'}
           </Button>
         </form>
       </main>

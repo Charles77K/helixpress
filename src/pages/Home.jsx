@@ -17,9 +17,11 @@ export default function Home() {
   return (
     <div className="bg-gray-100">
       <Header
-        btnText={'find out more'}
-        headText={'This is just a sample'}
-        logoText={'important factor 2023'}
+        btnText={'Submit Paper'}
+        subText={
+          'Connecting researchers across disciplines with groundbreaking publications'
+        }
+        headText={'Discover Research That Matters'}
       />
       <Search />
       {/* rendering articles */}

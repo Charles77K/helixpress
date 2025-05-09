@@ -4,10 +4,11 @@ import Error from '../utils/Error';
 import { TiLockOpen } from 'react-icons/ti';
 import { useFetchById } from '../services/hooks';
 import JournalArticles from './JournalArticles';
+import useScrollToTop from '../utils/scrollToTop';
 
 export default function CurrentJournal() {
+  useScrollToTop();
   const { id } = useParams();
-
   const { data, isLoading, isError } = useFetchById('/journals/', id);
 
   let content;

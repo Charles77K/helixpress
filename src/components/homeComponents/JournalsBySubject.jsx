@@ -6,12 +6,12 @@ import JournalSubjectList from './JournalSubjectList';
 
 export default function JournalsBySubject() {
   const [isSubjectListOpen, setIsSubjectListOpen] = React.useState(false);
+  const { data, isError, isPending } = useFetch('/subjects/');
   const [subjectId, setSubjectId] = React.useState('');
-  const { data, isError, isLoading } = useFetch('/subjects/');
 
   let content;
 
-  if (isLoading) {
+  if (isPending) {
     content = (
       <div className="animate-pulse">
         {Array.from({ length: 4 }).map((_, index) => (
@@ -43,7 +43,7 @@ export default function JournalsBySubject() {
                 className="w-[2.2rem] h-[2.2rem]"
               />
             )}
-            <p className="group-hover:underline w-full text-xs text-center">
+            <p className="group-hover:underline cursor-pointer w-full text-xs text-center">
               {item.name}
             </p>
           </li>
@@ -55,7 +55,7 @@ export default function JournalsBySubject() {
   }
 
   return (
-    <div className="p-4 bg-white text-slate-800 grid grid-cols-5 justify-items-start">
+    <div className="px-20 py-4 bg-white text-slate-800 grid grid-cols-5 justify-items-start">
       {/* Journals by Subject Section */}
       <section className="flex flex-col items-start col-span-1">
         <h2 className="font-semibold md:text-xl mb-2">Journals by Subject</h2>
