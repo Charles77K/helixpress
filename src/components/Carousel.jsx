@@ -16,7 +16,7 @@ const Carousel = () => {
 
   if (isSliderLoading) {
     content = (
-      <div className="relative w-full max-w-4xl mx-auto">
+      <div className="w-full max-w-4xl mx-auto">
         <div className="w-full h-64 bg-gray-300 animate-pulse"></div>{' '}
         {/* Skeleton box for the image */}
       </div>
@@ -35,6 +35,7 @@ const Carousel = () => {
         onMouseLeave={() => setIsPaused(false)}
       >
         <div className="relative flex items-center">
+          {/* previous slide button */}
           <button
             className="absolute left-2 z-10 text-white rounded-full p-2 opacity-75 hover:opacity-100 focus:outline-none"
             onClick={() =>
@@ -46,13 +47,14 @@ const Carousel = () => {
             &#10094;
           </button>
 
+          {/* carousel image */}
           <div className="w-full h-64 relative overflow-hidden">
             {sliderData.map((slide, index) => (
               <div
                 key={slide.id}
                 className={`${
                   index === currentIndex ? 'opacity-100' : 'opacity-0'
-                } transition-opacity duration-500 ease-in-out absolute w-full h-full`}
+                } transition-opacity duration-500 ease-in-out  absolute w-full h-full`}
               >
                 {index === currentIndex && (
                   <>
@@ -62,12 +64,16 @@ const Carousel = () => {
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute bottom-10 left-0 right-0 bg-teal-600 w-fit bg-opacity-75 text-white p-4">
-                      <h3 className="font-semibold text-lg">{slide.title}</h3>
+                      <h3 className="font-semibold text-sm md:text-base lg:text-lg">
+                        {slide.title}
+                      </h3>
                     </div>
                   </>
                 )}
               </div>
             ))}
+
+            {/* dot indicators */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
               {sliderData.map((_, index) => (
                 <div
@@ -80,7 +86,7 @@ const Carousel = () => {
               ))}
             </div>
           </div>
-
+          {/* next slide button */}
           <button
             className="absolute right-2 z-10 text-white rounded-full p-2 opacity-75 hover:opacity-100 focus:outline-none"
             onClick={() =>

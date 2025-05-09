@@ -3,7 +3,7 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import Error from '../../utils/Error';
 import { Link } from 'react-router-dom';
 import { useFetch } from '../../services/hooks';
-import { formatDate } from '../../utils/utils';
+import { cn, formatDate } from '../../utils/utils';
 
 export default function News() {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,7 +73,12 @@ export default function News() {
         {content}
       </div>
       <Link to={'/about/news'}>
-        <p className="text-slate-500 hover:underline hover:cursor-pointer text-xs font-bold hidden md:block">
+        <p
+          className={cn(
+            'text-slate-500 hover:underline hover:cursor-pointer text-xs font-bold my-3',
+            isOpen ? 'block' : 'hidden'
+          )}
+        >
           More News and Announcements
         </p>
       </Link>

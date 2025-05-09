@@ -5,7 +5,7 @@ import { useFetch } from '../../services/hooks';
 import Error from '../../utils/Error';
 import HomeTopicsSkeleton from '../LoadingSkeletons/HomeTopicsSkeleton';
 import NotFound from '../NotFound';
-import { formatDate } from '../../utils/utils';
+import { cn, formatDate } from '../../utils/utils';
 
 export default function Topics() {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,7 +75,12 @@ export default function Topics() {
         {content}
       </div>
       <Link to="/topics">
-        <p className="hidden md:block text-slate-500 hover:underline hover:cursor-pointer text-xs font-bold my-3">
+        <p
+          className={cn(
+            'text-slate-500 hover:underline hover:cursor-pointer text-xs font-bold my-3',
+            isOpen ? 'block' : 'hidden'
+          )}
+        >
           More Topics...
         </p>
       </Link>

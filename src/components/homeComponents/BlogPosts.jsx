@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { useFetch } from '../../services/hooks';
-import { formatDate } from '../../utils/utils';
+import { cn, formatDate } from '../../utils/utils';
 import { Link } from 'react-router-dom';
 
 export default function BlogPosts() {
@@ -66,7 +66,10 @@ export default function BlogPosts() {
       </div>
       <Link
         to="/blogs"
-        className="text-xs text-slate-500 font-bold hover:underline hover:cursor-pointer hidden md:block"
+        className={cn(
+          'text-slate-500 hover:underline hover:cursor-pointer text-xs font-bold my-3',
+          isOpen ? 'block' : 'hidden'
+        )}
       >
         More From Our Blog..
       </Link>

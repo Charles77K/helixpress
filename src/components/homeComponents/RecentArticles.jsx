@@ -8,7 +8,7 @@ import { useFetch } from '../../services/hooks';
 import Article from '../Article';
 
 export default function RecentArticles() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const {
     data: papersData,
     isPending: isPapersLoading,
@@ -35,7 +35,7 @@ export default function RecentArticles() {
   }
 
   return (
-    <div className="p-4 bg-white mt-5 md:mt-0">
+    <div className="p-4 bg-white mt-5 mb-1 md:mt-0">
       <div className="flex items-center justify-between">
         <h2 className="font-bold my-1">Recent Articles</h2>
         <button

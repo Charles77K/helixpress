@@ -40,7 +40,7 @@ const JournalSubjectList = ({ id }) => {
     content = <Error onRetry={() => refetch()} title={'Error'} />;
   } else if (subjects && subjects.length > 0) {
     content = (
-      <div className="flex items-center gap-5">
+      <div className="flex flex-wrap items-center gap-5">
         {subjects.map((item) => (
           <ul key={item.id} className="border-b border-gray-200 p-2">
             <Link
@@ -56,7 +56,7 @@ const JournalSubjectList = ({ id }) => {
                       className="h-9 w-9 text-xs"
                       alt={`${item.name || 'N/A'}`}
                     />
-                    <p className="text-sm font-bold hover:underline">
+                    <p className="text-xs md:text-sm font-semibold hover:underline">
                       {item.name || 'N/A'}
                     </p>
                   </div>
