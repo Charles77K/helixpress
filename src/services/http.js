@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-export const BASEURL = 'https://helixpress-backend.vercel.app/';
-
-const baseURL = 'https://somto042.pythonanywhere.com/api/v1'; // Use base URL
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 class AxiosHelper {
   constructor(defaultHeaders = {}) {

@@ -31,7 +31,7 @@ export default function SelectInput({
       )}
       <select
         className={cn(
-          'w-full p-2 border border-gray-300 text-xs rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500',
+          'w-full p-4 md:p-2 border border-gray-300 text-xs rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500',
           className
         )}
         value={value}

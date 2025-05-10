@@ -9,7 +9,7 @@ import SelectInput from '../../UI/SelectInput';
 export default function JournalsBySubject() {
   const [isSubjectListOpen, setIsSubjectListOpen] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
-  const { data, isError, isPending } = useFetch('/subjects/');
+  const { data, isError, isPending, error } = useFetch('/subjects/');
   const [subjectId, setSubjectId] = React.useState('');
 
   React.useEffect(() => {
@@ -40,7 +40,7 @@ export default function JournalsBySubject() {
         name={'journal'}
         className={'mb-4'}
         isLoading={isPending}
-        error={isError}
+        error={error}
         options={data}
         optionLabel={'name'}
         optionValue={'id'}
