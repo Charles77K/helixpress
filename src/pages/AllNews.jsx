@@ -3,6 +3,7 @@ import Share from '../components/Share';
 import Error from '../utils/Error';
 import Search from './../components/homeComponents/Search';
 import { useFetch } from '../services/hooks';
+import React from 'react';
 
 export default function AllNews() {
   const {
@@ -39,12 +40,9 @@ export default function AllNews() {
       </div>
     );
   } else if (newsData && newsData.length > 0) {
-    content = newsData.map((news, index) => (
-      <>
-        <ul
-          key={index}
-          className="flex bg-white justify-between py-4 text-xs w-full"
-        >
+    content = newsData.map((news) => (
+      <React.Fragment key={news.id}>
+        <ul className="flex bg-white justify-between py-4 text-xs w-full">
           <Link to={`/about/news/${news.id}`}>
             <li className="text-slate-700 font-bold hover:underline cursor-pointer">
               {news.title}
@@ -59,7 +57,7 @@ export default function AllNews() {
           </li>
         </ul>
         <hr></hr>
-      </>
+      </React.Fragment>
     ));
   }
 
