@@ -78,7 +78,7 @@ export default function Topics() {
         <p
           className={cn(
             'text-slate-500 hover:underline hover:cursor-pointer text-xs font-bold my-3',
-            isOpen ? 'block' : 'hidden'
+            isOpen ? 'block' : 'hidden md:block'
           )}
         >
           More Topics...

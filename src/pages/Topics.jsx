@@ -20,7 +20,7 @@ export default function Topics() {
     data,
     isPending: isTopicsLoading,
     isError: isTopicsError,
-  } = useFetch('/topics');
+  } = useFetch('/topics/');
 
   const topicsData = !isTopicsLoading && data?.results;
 

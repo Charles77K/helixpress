@@ -3,10 +3,12 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { useFetch } from '../../services/hooks';
 import { cn, formatDate } from '../../utils/utils';
 import { Link } from 'react-router-dom';
+import NotFound from '../NotFound';
+import Error from '../../utils/Error';
 
 export default function BlogPosts() {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isError, isLoading } = useFetch('/blogs/');
+  const { data, isError, isLoading, refetch } = useFetch('/blogs/');
   const blogs = !isLoading && data.results;
 
   let content;
@@ -24,9 +26,11 @@ export default function BlogPosts() {
     );
   } else if (isError) {
     content = (
-      <div>
-        <p>An error occurred</p>
-      </div>
+      <Error
+        title={'Error'}
+        text={'An error occurred while fetching blog post'}
+        onRetry={() => refetch()}
+      />
     );
   } else if (blogs && blogs.length > 0) {
     content = blogs.map((item, index) => (
@@ -43,7 +47,7 @@ export default function BlogPosts() {
       </ul>
     ));
   } else {
-    content = <p>No blogs found</p>;
+    content = <NotFound label="Blogs Post" />;
   }
 
   return (
@@ -68,7 +72,7 @@ export default function BlogPosts() {
         to="/blogs"
         className={cn(
           'text-slate-500 hover:underline hover:cursor-pointer text-xs font-bold my-3',
-          isOpen ? 'block' : 'hidden'
+          isOpen ? 'block' : 'hidden md:block'
         )}
       >
         More From Our Blog..
