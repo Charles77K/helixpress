@@ -4,6 +4,7 @@ import Error from '../../utils/Error';
 import { Link } from 'react-router-dom';
 import { useFetch } from '../../services/hooks';
 import { cn, formatDate } from '../../utils/utils';
+import NotFound from '../NotFound';
 
 export default function News() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +52,7 @@ export default function News() {
       </ul>
     ));
   } else {
-    content = <p>No news found</p>;
+    content = <NotFound label="News" />;
   }
 
   return (
@@ -76,7 +77,7 @@ export default function News() {
         <p
           className={cn(
             'text-slate-500 hover:underline hover:cursor-pointer text-xs font-bold my-3',
-            isOpen ? 'block' : 'hidden'
+            isOpen ? 'block' : 'hidden md:block'
           )}
         >
           More News and Announcements

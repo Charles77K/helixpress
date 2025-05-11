@@ -2,8 +2,6 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-console.log(baseURL);
-
 class AxiosHelper {
   constructor(defaultHeaders = {}) {
     this.client = axios.create({
@@ -104,12 +102,12 @@ class AxiosHelper {
    */
   async getById(endpoint, id, params = {}) {
     try {
-      if (!id) {
-        throw new Error('ID is required');
-      }
+      // if (!id) {
+      //   throw new Error('ID is required');
+      // }
       const url = endpoint.includes(':id')
         ? endpoint.replace(':id', id)
-        : `${endpoint}/${id}`;
+        : `${endpoint}${id}`;
       const response = await this.client.get(url, { params });
       return response.data;
     } catch (error) {
