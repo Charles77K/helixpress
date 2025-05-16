@@ -2,8 +2,16 @@
 
 export default function Loader() {
   return (
-    <div className="flex items-center justify-center w-1/2 mt-5 h-full">
-      <div className="loader animate-spin rounded-full h-8 w-8 border-t-4 border-b-4 border-red-600"></div>
+    <div className="w-full h-full animate-pulse space-y-3">
+      <div className="bg-gray-200 w-full h-96 rounded" />
+      <div className="p-4 space-y-4">
+        <div className="w-2/3 bg-gray-200 h-7 rounded"></div>
+        <div className="w-3/4 bg-gray-200 h-5 rounded"></div>
+        <div className="w-4/5 bg-gray-200 h-5 rounded"></div>
+        <div className="w-1/4 bg-gray-200 h-5 rounded"></div>
+        <div className="w-1/4 bg-gray-200 h-5 rounded"></div>
+        <div className="w-4/5 bg-gray-200 h-8 rounded"></div>
+      </div>
     </div>
   );
 }
