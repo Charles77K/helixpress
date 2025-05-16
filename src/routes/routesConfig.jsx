@@ -1,104 +1,138 @@
+/* eslint-disable react-refresh/only-export-components */
+import { lazy, Suspense } from 'react';
 // routesConfig.js
 
-// Page imports - core site pages
-import {
-  Home,
-  About,
-  Contact,
-  Information,
-  Topics,
-  Journals,
-  Submission,
-  CurrentPaper,
-  SearchPage,
-  Login,
-} from '../pages';
+// Core pages - immediate load for critical/frequently accessed pages
+import Home from '../pages/Home';
+import About from '../pages/About';
+import Topics from '../pages/Topics';
+import Information from '../pages/Information';
 
-// Content page imports
-import { AllNews, Blogs, BlogPage, NewsPage, TopicPage } from '../pages';
+// Lazy-loaded pages (less frequently accessed)
+const Contact = lazy(() => import('../pages/Contact'));
+const Submission = lazy(() => import('../pages/Submission'));
+const CurrentPaper = lazy(() => import('../pages/CurrentPaper'));
+const SearchPage = lazy(() => import('../pages/SearchPage'));
+const Login = lazy(() => import('../pages/Login'));
 
-// Journal-related component imports
-import {
-  FindJournal,
-  JournalProposal,
-  ProceedingSeries,
-  ActiveJournals,
-} from '../components/JournalComponents';
+// Content pages with lazy loading
+const AllNews = lazy(() => import('../pages/AllNews'));
+const Blogs = lazy(() => import('../pages/Blogs'));
+const BlogPage = lazy(() => import('../pages/BlogPage'));
+const NewsPage = lazy(() => import('../pages/NewsPage'));
+const TopicPage = lazy(() => import('../pages/TopicPage'));
+const Journals = lazy(() => import('../pages/Journals'));
 
-import JournalPage from '../journalPages/JournalPage';
-import CurrentJournal from '../journalPages/CurrentJournal';
+// Journal-related components with lazy loading
+const FindJournal = lazy(() =>
+  import('../components/JournalComponents/FindJournal')
+);
+const JournalProposal = lazy(() =>
+  import('../components/JournalComponents/JournalProposal')
+);
+const ProceedingSeries = lazy(() =>
+  import('../components/JournalComponents/ProceedingSeries')
+);
+const ActiveJournals = lazy(() =>
+  import('../components/JournalComponents/ActiveJournals')
+);
+const JournalPage = lazy(() => import('../journalPages/JournalPage'));
+const CurrentJournal = lazy(() => import('../journalPages/CurrentJournal'));
 
-// Information section component imports
-import {
-  AccessPolicy,
-  Articles,
-  Authors,
-  Conference,
-  Editorial,
-  Editors,
-  Institutional,
-  Publishers,
-  Research,
-  Reviewers,
-  Societies,
-  Librarians,
-} from '../components/infoComponents';
+// Information section components with lazy loading
+const AccessPolicy = lazy(() =>
+  import('../components/infoComponents/AccessPolicy')
+);
+const Articles = lazy(() => import('../components/infoComponents/Articles'));
+const Authors = lazy(() => import('../components/infoComponents/Authors'));
+const Conference = lazy(() =>
+  import('../components/infoComponents/Conference')
+);
+const Editorial = lazy(() => import('../components/infoComponents/Editorial'));
+const Editors = lazy(() => import('../components/infoComponents/Editors'));
+const Institutional = lazy(() =>
+  import('../components/infoComponents/Institutional')
+);
+const Publishers = lazy(() =>
+  import('../components/infoComponents/Publishers')
+);
+const Research = lazy(() => import('../components/infoComponents/Research'));
+const Reviewers = lazy(() => import('../components/infoComponents/Reviewers'));
+const Societies = lazy(() => import('../components/infoComponents/Societies'));
+const Librarians = lazy(() =>
+  import('../components/infoComponents/Librarians')
+);
 
 // Layout imports
 import MainLayout from './MainLayout';
 // import AdminLayout from './AdminLayout';
-// import Login from '../pages/Login';
-// import Admin from '../pages/Admin';
 // import ProtectedRoute from '../components/ProtectedRoute';
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center p-8">
+    <div className="text-center">
+      <div className="w-16 h-16 border-4 border-t-blue-500 border-gray-200 rounded-full animate-spin mx-auto"></div>
+      <p className="mt-4 text-gray-600">Loading...</p>
+    </div>
+  </div>
+);
+
+// Helper function to wrap components with Suspense
+const withSuspense = (Component) => (
+  <Suspense fallback={<LoadingFallback />}>
+    <Component />
+  </Suspense>
+);
 
 const routesConfig = [
   {
     path: '/',
     element: <MainLayout />,
     children: [
-      // Core pages
+      // Core pages - no Suspense for critical routes
       { index: true, element: <Home /> },
-      { path: 'search', element: <SearchPage /> },
-      { path: 'submission', element: <Submission /> },
-      { path: 'paper/:id', element: <CurrentPaper /> },
+      { path: 'search', element: withSuspense(SearchPage) },
+      { path: 'submission', element: withSuspense(Submission) },
+      { path: 'paper/:id', element: withSuspense(CurrentPaper) },
 
       // About section
       {
         path: 'about',
         children: [
           { index: true, element: <About /> },
-          { path: 'contact', element: <Contact /> },
-          { path: 'news', element: <AllNews /> },
-          { path: 'news/:id', element: <NewsPage /> },
+          { path: 'contact', element: withSuspense(Contact) },
+          { path: 'news', element: withSuspense(AllNews) },
+          { path: 'news/:id', element: withSuspense(NewsPage) },
         ],
       },
 
-      // Topics section
+      // Topics section - frequently accessed
       {
         path: 'topics',
         children: [
           { index: true, element: <Topics /> },
-          { path: ':id', element: <TopicPage /> },
+          { path: ':id', element: withSuspense(TopicPage) },
         ],
       },
 
       // Journals section
       {
         path: 'journals',
-        element: <Journals />,
+        element: withSuspense(Journals),
         children: [
-          { index: true, element: <ActiveJournals /> },
-          { path: 'find', element: <FindJournal /> },
-          { path: 'proposal', element: <JournalProposal /> },
-          { path: 'proceeding', element: <ProceedingSeries /> },
+          { index: true, element: withSuspense(ActiveJournals) },
+          { path: 'find', element: withSuspense(FindJournal) },
+          { path: 'proposal', element: withSuspense(JournalProposal) },
+          { path: 'proceeding', element: withSuspense(ProceedingSeries) },
         ],
       },
 
       // Journal pages
       {
         path: 'journal/:name/:id',
-        element: <JournalPage />,
-        children: [{ index: true, element: <CurrentJournal /> }],
+        element: withSuspense(JournalPage),
+        children: [{ index: true, element: withSuspense(CurrentJournal) }],
       },
 
       // Information section
@@ -106,18 +140,18 @@ const routesConfig = [
         path: 'information',
         element: <Information />,
         children: [
-          { index: true, element: <Authors /> },
-          { path: 'reviewers', element: <Reviewers /> },
-          { path: 'publishers', element: <Publishers /> },
-          { path: 'conference', element: <Conference /> },
-          { path: 'program', element: <Institutional /> },
-          { path: 'editors', element: <Editors /> },
-          { path: 'access', element: <AccessPolicy /> },
-          { path: 'research', element: <Research /> },
-          { path: 'article', element: <Articles /> },
-          { path: 'editorial', element: <Editorial /> },
-          { path: 'librarians', element: <Librarians /> },
-          { path: 'societies', element: <Societies /> },
+          { index: true, element: withSuspense(Authors) },
+          { path: 'reviewers', element: withSuspense(Reviewers) },
+          { path: 'publishers', element: withSuspense(Publishers) },
+          { path: 'conference', element: withSuspense(Conference) },
+          { path: 'program', element: withSuspense(Institutional) },
+          { path: 'editors', element: withSuspense(Editors) },
+          { path: 'access', element: withSuspense(AccessPolicy) },
+          { path: 'research', element: withSuspense(Research) },
+          { path: 'article', element: withSuspense(Articles) },
+          { path: 'editorial', element: withSuspense(Editorial) },
+          { path: 'librarians', element: withSuspense(Librarians) },
+          { path: 'societies', element: withSuspense(Societies) },
         ],
       },
 
@@ -125,15 +159,14 @@ const routesConfig = [
       {
         path: 'blogs',
         children: [
-          { index: true, element: <Blogs /> },
-          { path: ':id', element: <BlogPage /> },
+          { index: true, element: withSuspense(Blogs) },
+          { path: ':id', element: withSuspense(BlogPage) },
         ],
       },
     ],
   },
 
-  // Auth routes - currently commented out but organized for future use
-
+  // Auth routes
   {
     path: '/login',
     children: [{ index: true, element: <Login /> }],
@@ -144,7 +177,7 @@ const routesConfig = [
     element: <AdminLayout />,
     // loader: checkAuthLoader,
     children: [
-      { index: true, element: <ProtectedRoute element={<Admin />} /> }
+      { index: true, element: <ProtectedRoute element={withSuspense(Admin)} /> }
     ],
   },
   */

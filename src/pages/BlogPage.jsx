@@ -10,11 +10,12 @@ import NotFound from '../components/NotFound';
 const BlogPage = () => {
   useScrollToTop();
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const { data, isPending, isError, error, refetch } = useFetchById(
     '/blogs/',
     id
   );
-  const navigate = useNavigate();
 
   let content;
   if (isPending) {
