@@ -65,22 +65,13 @@ const Librarians = lazy(() =>
 
 // Layout imports
 import MainLayout from './MainLayout';
+import LoadingAnimation from '../UI/LoadingAnimation';
 // import AdminLayout from './AdminLayout';
 // import ProtectedRoute from '../components/ProtectedRoute';
 
-// Loading fallback component
-const LoadingFallback = () => (
-  <div className="flex items-center justify-center p-8">
-    <div className="text-center">
-      <div className="w-16 h-16 border-4 border-t-blue-500 border-gray-200 rounded-full animate-spin mx-auto"></div>
-      <p className="mt-4 text-gray-600">Loading...</p>
-    </div>
-  </div>
-);
-
 // Helper function to wrap components with Suspense
 const withSuspense = (Component) => (
-  <Suspense fallback={<LoadingFallback />}>
+  <Suspense fallback={<LoadingAnimation />}>
     <Component />
   </Suspense>
 );
